@@ -43,7 +43,7 @@ Measured, 18 Oct:
 | WP    | Title                                           | Size | Status      |
 | ----- | ----------------------------------------------- | ---- | ----------- |
 | WP-01 | Package skeleton, core and CI                   | S    | Done        |
-| WP-02 | ArcaMasthead: the file, its values and Markdown | S    | Not Started |
+| WP-02 | ArcaMasthead: the file, its values and Markdown | S    | WIP         |
 | WP-03 | ArcaMasthead: the menu row and the About window | M    | Not Started |
 | WP-04 | menuz adopts ArcaMasthead                       | S    | Not Started |
 | WP-05 | Gtools.app adopts ArcaMasthead                  | S    | Not Started |

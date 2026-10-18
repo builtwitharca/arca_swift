@@ -23,7 +23,7 @@
       "seq": 2,
       "title": "ArcaMasthead: the file, its values and Markdown",
       "scope": "S",
-      "status": "not-started",
+      "status": "wip",
       "objective": "The pure half of the top line:\n- masthead.yaml's schema and its checks, each refusal naming the file, the key and the value;\n- the bundled default and the user's file;\n- the values from the bundle and from the app's provider;\n- the heading and the subheading as text;\n- the About body as HTML, with Markdown going through cmark-gfm.\n\nIt is tested with Swift Testing. Size: S.",
       "body": "",
       "preamble": ""
@@ -137,6 +137,117 @@
         "is": "satisfied",
         "evidence": "107e74c. README.md has the icon from design/icons/arca_swift-icon.svg, the libraries, requirements, adding it, building and testing, design, and licence. CHANGELOG.md follows Keep a Changelog, under Unreleased. LICENSE is arca_notionex's MIT text, byte for byte. hv, in ic's session at 12:06:55Z: \"2: MIT: Yep\"."
       }
+    },
+    {
+      "id": "AC-02.1",
+      "text": "masthead.yaml is checked against its schema. heading is required text that is not blank; subheading is text; icon is app or none, and app when it is absent; about is required, with body, the name of a .md or .html file, and css, the name of an optional .css file, each a file name with no folder in it. A key the file does not have, a value of the wrong kind, a value the key does not take and a required key that is missing are each refused in one line naming the file, the key and the value.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-02.2",
+      "text": "A masthead's values come from the bundle and from the app. The bundle gives {name}, {version}, {commit} and {kind}, from its Info.plist's CFBundleName, CFBundleShortVersionString, ArcaCommit and ArcaKind, and a stamp that is absent, empty or not text gives no value. The app names the values it gives, once, each adding a value or taking the bundle's place, and is asked for those alone. A value it names but has not got yet is missing, whatever the bundle gives.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-02.3",
+      "text": "The heading and the subheading are their templates with the values in, each line on its own. A heading with a value missing, or that comes out blank, is the app's name alone, which is its {name} value or nothing; a subheading with a value missing, or that comes out blank, is hidden. A token that names no value the app gives is refused, naming the token and the values there are.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-02.4",
+      "text": "The user's masthead.yaml is used when the app's config folder holds one that is read and checked without a refusal. One that is refused leaves the bundled default in use, and the subheading says what was wrong. With no copy that can be used, the heading is the app's name and the subheading the first refusal. Every refusal is kept, in order, for the app's log.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-02.5",
+      "text": "The About body is HTML: an about.md goes through cmark-gfm, and an about.html is used as written. Its tokens then take their values, each escaped for HTML, so a value is never markup in an element's text or a quoted attribute; a token in a Markdown link's address is left as written. The body and the stylesheet are each found as masthead.yaml is, the config folder's copy first and then the bundle's, and a copy that is refused leaves the next in use.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-02.6",
+      "text": "README.md says how masthead.yaml is written, which values its tokens take and where each comes from, the ArcaCommit and ArcaKind stamps an app's Info.plist carries among them. CHANGELOG.md says what this work package added.",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "id": "AT-02.1",
+      "kind": "test",
+      "file": "Tests/ArcaMastheadTests/MastheadFileTests.swift",
+      "covers": [
+        "AC-02.1"
+      ],
+      "status": "green",
+      "note": "Red in slot 22 (18 Oct 2026, 14:30:41Z to 14:31:05Z), against compiling stubs; log test-3.log. Masthead file: all 11 tests (15 cases) failed, 32 issues, the stubs' every expectation. Green in slot 27 (18 Oct 2026, 15:26:54Z to 15:27:00Z), after both critic-swift reports' fixes (bank 2c5f3cfb); log test-4.log. Masthead file: all 12 tests passed. blankSubheading, and wrongKind's icon and about.css expectations, came with the fixes and were seen only green; the rest were seen red in slot 22, before About gained its kind."
+    },
+    {
+      "id": "AT-02.2",
+      "kind": "test",
+      "file": "Tests/ArcaMastheadTests/MastheadValuesTests.swift",
+      "covers": [
+        "AC-02.2"
+      ],
+      "status": "green",
+      "note": "Red in slot 22 (18 Oct 2026, 14:30:41Z to 14:31:05Z), against compiling stubs; log test-3.log. Masthead values: all 5 tests failed, 9 issues. Green in slot 27 (18 Oct 2026, 15:26:54Z to 15:27:00Z), after both critic-swift reports' fixes (bank 2c5f3cfb); log test-4.log. Masthead values: all 6 tests passed. The suite was rewritten for the app's named values (owned, value) after the code review, and askedOwned is new: in this form their expectations were seen only green. Reading Bundle.main's Info.plist into the dictionary these tests start from is WP-03's."
+    },
+    {
+      "id": "AT-02.3",
+      "kind": "test",
+      "file": "Tests/ArcaMastheadTests/MastheadLinesTests.swift",
+      "covers": [
+        "AC-02.3"
+      ],
+      "status": "green",
+      "note": "Red in slot 22 (18 Oct 2026, 14:30:41Z to 14:31:05Z), against compiling stubs; log test-3.log. Masthead lines: all 6 tests failed, 8 issues. Green in slot 27 (18 Oct 2026, 15:26:54Z to 15:27:00Z), after both critic-swift reports' fixes (bank 2c5f3cfb); log test-4.log. Masthead lines: all 9 tests passed. eachLine, blankHeading and noName came with the fixes and were seen only green, as were subheadingHidden's nil expectations, which held against the stubs too: that test went red on its positive control."
+    },
+    {
+      "id": "AT-02.4",
+      "kind": "test",
+      "file": "Tests/ArcaMastheadTests/MastheadLoadTests.swift",
+      "covers": [
+        "AC-02.4"
+      ],
+      "status": "green",
+      "note": "Red in slot 22 (18 Oct 2026, 14:30:41Z to 14:31:05Z), against compiling stubs; log test-3.log. Masthead load: all 7 tests failed, 11 issues. Green in slot 27 (18 Oct 2026, 15:26:54Z to 15:27:00Z), after both critic-swift reports' fixes (bank 2c5f3cfb); log test-4.log. Masthead load: all 9 tests passed. usedCopy and noCopyUsed, for the pure Masthead(found:values:), and unreadableCopy's whole-value form came with the fixes and were seen only green."
+    },
+    {
+      "id": "AT-02.5",
+      "kind": "test",
+      "file": "Tests/ArcaMastheadTests/AboutContentTests.swift",
+      "covers": [
+        "AC-02.5"
+      ],
+      "status": "green",
+      "note": "Red in slot 22 (18 Oct 2026, 14:30:41Z to 14:31:05Z), against compiling stubs; log test-3.log. About content: all 9 tests failed, 11 issues; HTML: both tests failed, 2 issues. Green in slot 27 (18 Oct 2026, 15:26:54Z to 15:27:00Z), after both critic-swift reports' fixes (bank 2c5f3cfb); log test-4.log. About content: all 9 tests passed; HTML: both passed. html's new body came with the fixes, with a second expectation showing that the Markdown path changes that body, so the first can pass only if an about.html skips cmark-gfm. It, refusedCopies' refused stylesheet and found's user stylesheet were seen only green."
+    },
+    {
+      "id": "AT-02.6",
+      "kind": "test",
+      "file": "Tests/ArcaCoreTests/ConfigFileTests.swift",
+      "covers": [
+        "AC-02.4",
+        "AC-02.5"
+      ],
+      "status": "green",
+      "note": "Red in slot 22 (18 Oct 2026, 14:30:41Z to 14:31:05Z), against compiling stubs; log test-3.log. Config file: the 4 new tests failed, 9 issues; its 8 WP-01 tests passed. Green in slot 27 (18 Oct 2026, 15:26:54Z to 15:27:00Z), after both critic-swift reports' fixes (bank 2c5f3cfb); log test-4.log. Config file: all 13 tests passed, WP-01's 8 and 5 new. refusedAlone came with the fixes and was seen only green. Of the 4 seen red in slot 22, the three value == nil expectations cannot fail and the three refusals.isEmpty ones held against the stub; each test went red through another."
     }
   ],
   "attachments": [

@@ -1,0 +1,14 @@
+{
+  "id": "01M57SH2BY9MMW2W4KVZEF4VKX",
+  "ts": "2026-10-18T15:19:19.166Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-02.3"
+  },
+  "payload": {
+    "text": "The heading and the subheading are their templates with the values in, each line on its own. A heading with a value missing, or that comes out blank, is the app's name alone, which is its {name} value or nothing; a subheading with a value missing, or that comes out blank, is hidden. A token that names no value the app gives is refused, naming the token and the values there are."
+  }
+}

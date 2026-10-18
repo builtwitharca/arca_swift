@@ -25,7 +25,7 @@ package struct ConfigFile: Equatable, Sendable {
   package static func candidates(
     name: String, folder: String, bundled: String?, exists: (String) -> Bool
   ) -> [ConfigFile] {
-    let user = (folder as NSString).appendingPathComponent(name)
+    let user = userPath(name, in: folder)
     var files: [ConfigFile] = []
     if exists(user) { files.append(ConfigFile(path: user, origin: .user)) }
     if let bundled { files.append(ConfigFile(path: bundled, origin: .bundled)) }
@@ -65,6 +65,41 @@ package struct ConfigFile: Equatable, Sendable {
   /// The file's top-level entries: its text, read as YAML.
   package func entries() -> Result<[ConfigEntry], Refusal> {
     text().flatMap { ConfigDocument.entries($0, file: path) }
+  }
+
+  /// The first of `files` that `read` takes without a refusal, and the
+  /// refusals of those before it, in order. A file after the one taken is
+  /// not read.
+  static func first<Value>(
+    of files: [ConfigFile], _ read: (ConfigFile) -> Result<Value, Refusal>
+  ) -> (value: Value?, refusals: [Refusal]) {
+    var refusals: [Refusal] = []
+    for file in files {
+      switch read(file) {
+      case .success(let value): return (value, refusals)
+      case .failure(let refusal): refusals.append(refusal)
+      }
+    }
+    return (nil, refusals)
+  }
+
+  /// The same for the copies of `name`: the user's in `folder`, then
+  /// `bundle`'s. With neither, the refusal names where the user's would be.
+  package static func first<Value>(
+    named name: String, folder: String, bundle: Bundle, _ read: (ConfigFile) -> Result<Value, Refusal>
+  ) -> (value: Value?, refusals: [Refusal]) {
+    let files = candidates(name: name, folder: folder, bundle: bundle)
+    guard !files.isEmpty else {
+      let absent = Refusal(
+        file: userPath(name, in: folder), key: nil, value: nil, why: "is not there, and the app's bundle has none")
+      return (nil, [absent])
+    }
+    return first(of: files, read)
+  }
+
+  /// Where the user's copy of `name` is, or would be.
+  private static func userPath(_ name: String, in folder: String) -> String {
+    (folder as NSString).appendingPathComponent(name)
   }
 
   private func refusal(_ why: String) -> Refusal {

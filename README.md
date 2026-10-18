@@ -23,10 +23,44 @@ Shared Swift libraries for macOS menu bar apps. Each app imports only the librar
 ## Adding it to an app
 
 ```swift
-.package(url: "https://github.com/matthewsinclair/arca_swift", from: "0.1.0"),
+.package(url: "https://github.com/builtwitharca/arca_swift", from: "0.1.0"),
 ```
 
 Then depend on the library the app uses, eg `.product(name: "ArcaMasthead", package: "arca_swift")`. No release is tagged yet.
+
+## masthead.yaml
+
+An app that uses `ArcaMasthead` ships a `masthead.yaml` in its bundle's resources. Its user can put their own in the app's config folder, `${XDG_CONFIG_HOME:-$HOME/.config}/<app>/`, with no rebuild. The user's copy is used when it passes its checks. One that does not leaves the bundle's in use, and the subheading says what is wrong.
+
+```yaml
+heading: "{name} {version}"
+subheading: "{commit} · {kind}"
+icon: app
+about:
+  body: about.md
+  css: about.css
+```
+
+| Key          | What it holds                                                |
+| ------------ | ------------------------------------------------------------ |
+| `heading`    | The top line. Required.                                      |
+| `subheading` | The smaller line under it.                                   |
+| `icon`       | `app` for the app's icon, which is the default, or `none`.   |
+| `about.body` | The About window's page, a `.md` or `.html` file. Required.  |
+| `about.css`  | A stylesheet laid over the window's own.                     |
+
+The About files are found as `masthead.yaml` is: the config folder's copy first, then the bundle's. So a user can replace the page and keep the rest.
+
+Each `{token}` takes a value. The bundle gives four, from the app's Info.plist, and the app can add its own values or replace these.
+
+| Token       | Info.plist key               |
+| ----------- | ---------------------------- |
+| `{name}`    | `CFBundleName`               |
+| `{version}` | `CFBundleShortVersionString` |
+| `{commit}`  | `ArcaCommit`                 |
+| `{kind}`    | `ArcaKind`                   |
+
+Each line stands on its own. Until the heading's values are there, it is the app's name alone, and until the subheading's are, it is hidden; a line that comes out blank is treated the same way. A token in the heading or the subheading that names no value is refused. In the About page each value is escaped for HTML, so a value never becomes markup in text or in a quoted attribute: put an attribute's value in quotes. A token in a Markdown link's address is left as written, since cmark-gfm percent-encodes its braces, so write that link in HTML.
 
 ## Building and testing
 

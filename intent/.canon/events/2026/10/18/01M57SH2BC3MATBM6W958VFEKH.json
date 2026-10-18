@@ -1,0 +1,14 @@
+{
+  "id": "01M57SH2BC3MATBM6W958VFEKH",
+  "ts": "2026-10-18T15:19:19.148Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-02.2"
+  },
+  "payload": {
+    "text": "A masthead's values come from the bundle and from the app. The bundle gives {name}, {version}, {commit} and {kind}, from its Info.plist's CFBundleName, CFBundleShortVersionString, ArcaCommit and ArcaKind, and a stamp that is absent, empty or not text gives no value. The app names the values it gives, once, each adding a value or taking the bundle's place, and is asked for those alone. A value it names but has not got yet is missing, whatever the bundle gives."
+  }
+}

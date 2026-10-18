@@ -1,3 +1,4 @@
+import ArcaTestSupport
 import Foundation
 import Testing
 
@@ -36,16 +37,15 @@ struct ConfigFileTests {
   @Test("the file system and the bundle's resources are asked for the same file")
   func onDisk() throws {
     try Scratch.folder { scratch in
-      let folder = try Scratch.folders("\(scratch)/config/menuz")
-      let resources = try Scratch.folders("\(scratch)/Example.bundle/Contents/Resources")
-      let bundled = try Scratch.write("heading: bundled\n", to: "masthead.yaml", in: resources)
-      let bundle = try #require(Bundle(path: "\(scratch)/Example.bundle"))
+      let app = try Scratch.app(in: scratch)
+      let bundled = try Scratch.write("heading: bundled\n", to: "masthead.yaml", in: app.resources)
+      let bundle = try #require(Bundle(path: app.bundle))
       #expect(
-        ConfigFile.candidates(name: "masthead.yaml", folder: folder, bundle: bundle)
+        ConfigFile.candidates(name: "masthead.yaml", folder: app.folder, bundle: bundle)
           == [ConfigFile(path: bundled, origin: .bundled)])
-      let user = try Scratch.write("heading: user\n", to: "masthead.yaml", in: folder)
+      let user = try Scratch.write("heading: user\n", to: "masthead.yaml", in: app.folder)
       #expect(
-        ConfigFile.candidates(name: "masthead.yaml", folder: folder, bundle: bundle)
+        ConfigFile.candidates(name: "masthead.yaml", folder: app.folder, bundle: bundle)
           == [ConfigFile(path: user, origin: .user), ConfigFile(path: bundled, origin: .bundled)])
     }
   }
@@ -53,13 +53,12 @@ struct ConfigFileTests {
   @Test("a bundle that ships no copy adds none")
   func noBundled() throws {
     try Scratch.folder { scratch in
-      let folder = try Scratch.folders("\(scratch)/config/menuz")
-      _ = try Scratch.folders("\(scratch)/Bare.bundle/Contents/Resources")
-      let bundle = try #require(Bundle(path: "\(scratch)/Bare.bundle"))
-      #expect(ConfigFile.candidates(name: "masthead.yaml", folder: folder, bundle: bundle).isEmpty)
-      let user = try Scratch.write("heading: user\n", to: "masthead.yaml", in: folder)
+      let app = try Scratch.app(in: scratch)
+      let bundle = try #require(Bundle(path: app.bundle))
+      #expect(ConfigFile.candidates(name: "masthead.yaml", folder: app.folder, bundle: bundle).isEmpty)
+      let user = try Scratch.write("heading: user\n", to: "masthead.yaml", in: app.folder)
       #expect(
-        ConfigFile.candidates(name: "masthead.yaml", folder: folder, bundle: bundle)
+        ConfigFile.candidates(name: "masthead.yaml", folder: app.folder, bundle: bundle)
           == [ConfigFile(path: user, origin: .user)])
     }
   }
@@ -67,9 +66,9 @@ struct ConfigFileTests {
   @Test("a broken link, or a folder the app may not search, is refused in the system's words, not passed over")
   func notPassedOver() throws {
     try Scratch.folder { scratch in
-      let resources = try Scratch.folders("\(scratch)/Example.bundle/Contents/Resources")
-      let bundled = try Scratch.write("heading: bundled\n", to: "masthead.yaml", in: resources)
-      let bundle = try #require(Bundle(path: "\(scratch)/Example.bundle"))
+      let app = try Scratch.app(in: scratch)
+      let bundled = try Scratch.write("heading: bundled\n", to: "masthead.yaml", in: app.resources)
+      let bundle = try #require(Bundle(path: app.bundle))
 
       let linked = try Scratch.folders("\(scratch)/linked")
       let link = "\(linked)/masthead.yaml"
@@ -134,6 +133,85 @@ struct ConfigFileTests {
       #expect(
         ConfigFile(path: list, origin: .user).entries()
           == .failure(Refusal(file: list, key: nil, value: nil, why: "the file is not a mapping of keys")))
+    }
+  }
+
+  static let user = ConfigFile(path: "/home/ada/.config/menuz/masthead.yaml", origin: .user)
+  static let shipped = ConfigFile(path: bundled, origin: .bundled)
+
+  static func latin1(_ file: ConfigFile) -> Refusal {
+    Refusal(file: file.path, key: nil, value: nil, why: "not UTF-8 text")
+  }
+
+  @Test("the first file read without a refusal is taken, after the refusals of those before it")
+  func first() {
+    let found = ConfigFile.first(of: [Self.user, Self.shipped]) { file -> Result<String, Refusal> in
+      file.origin == .user ? .failure(Self.latin1(file)) : .success(file.path)
+    }
+    #expect(found.value == Self.bundled)
+    #expect(found.refusals == [Self.latin1(Self.user)])
+  }
+
+  @Test("a file after the one taken is not read")
+  func firstStops() {
+    var read: [String] = []
+    let found = ConfigFile.first(of: [Self.user, Self.shipped]) { file -> Result<String, Refusal> in
+      read.append(file.path)
+      return .success(file.path)
+    }
+    #expect(found.value == Self.user.path)
+    #expect(found.refusals.isEmpty)
+    #expect(read == [Self.user.path])
+  }
+
+  @Test("with every file refused, nothing is taken and each refusal is kept in order; with no file, neither")
+  func noneTaken() {
+    let refused = ConfigFile.first(of: [Self.user, Self.shipped]) { file -> Result<String, Refusal> in
+      .failure(Self.latin1(file))
+    }
+    #expect(refused.value == nil)
+    #expect(refused.refusals == [Self.latin1(Self.user), Self.latin1(Self.shipped)])
+    let none = ConfigFile.first(of: []) { file -> Result<String, Refusal> in .success(file.path) }
+    #expect(none.value == nil)
+    #expect(none.refusals.isEmpty)
+  }
+
+  @Test("a name's copies are tried the user's first, and with neither the refusal names where the user's would be")
+  func firstNamed() throws {
+    try Scratch.folder { scratch in
+      let app = try Scratch.app(in: scratch)
+      _ = try Scratch.write("user\n", to: "about.md", in: app.folder)
+      _ = try Scratch.write("bundled\n", to: "about.md", in: app.resources)
+      let notes = "\(app.folder)/notes.md"
+      try Data([0x68, 0xFC, 0x0A]).write(to: URL(fileURLWithPath: notes))
+      _ = try Scratch.write("bundled notes\n", to: "notes.md", in: app.resources)
+      let bundle = try #require(Bundle(path: app.bundle))
+
+      let about = ConfigFile.first(named: "about.md", folder: app.folder, bundle: bundle) { $0.text() }
+      #expect(about.value == "user\n")
+      #expect(about.refusals.isEmpty)
+      let refused = ConfigFile.first(named: "notes.md", folder: app.folder, bundle: bundle) { $0.text() }
+      #expect(refused.value == "bundled notes\n")
+      #expect(refused.refusals == [Refusal(file: notes, key: nil, value: nil, why: "not UTF-8 text")])
+      let css = ConfigFile.first(named: "about.css", folder: app.folder, bundle: bundle) { $0.text() }
+      #expect(css.value == nil)
+      #expect(
+        css.refusals == [
+          Refusal(
+            file: "\(app.folder)/about.css", key: nil, value: nil, why: "is not there, and the app's bundle has none")
+        ])
+    }
+  }
+
+  @Test("a refused user's copy with none in the bundle is the one refusal")
+  func refusedAlone() throws {
+    try Scratch.folder { scratch in
+      let app = try Scratch.app(in: scratch)
+      let guide = "\(app.folder)/guide.md"
+      try Data([0x68, 0xFC, 0x0A]).write(to: URL(fileURLWithPath: guide))
+      let bundle = try #require(Bundle(path: app.bundle))
+      let found = ConfigFile.first(named: "guide.md", folder: app.folder, bundle: bundle) { $0.text() }
+      #expect(found.refusals == [Refusal(file: guide, key: nil, value: nil, why: "not UTF-8 text")])
     }
   }
 }

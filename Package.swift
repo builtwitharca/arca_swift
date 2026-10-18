@@ -3,7 +3,8 @@
 // 6.2 is the first tools version that names macOS 26, the floor WebKit's
 // SwiftUI web view sets (design.md "The package"). ArcaCore is internal: the
 // libraries share it, and an app imports only the libraries it uses.
-// ArcaLogConsole's product joins with its code (WP-09). A warning fails the
+// ArcaLogConsole's product joins with its code (WP-09). ArcaTestSupport holds
+// what the test targets share, and no product has it. A warning fails the
 // build of this package's own targets; SwiftPM drops the setting when an app
 // builds the package as a dependency (SE-0480).
 import PackageDescription
@@ -31,7 +32,10 @@ let package = Package(
       ],
       swiftSettings: settings
     ),
-    .testTarget(name: "ArcaCoreTests", dependencies: ["ArcaCore"], swiftSettings: settings),
-    .testTarget(name: "ArcaMastheadTests", dependencies: ["ArcaMasthead"], swiftSettings: settings),
+    .target(name: "ArcaTestSupport", path: "Tests/ArcaTestSupport", swiftSettings: settings),
+    .testTarget(name: "ArcaCoreTests", dependencies: ["ArcaCore", "ArcaTestSupport"], swiftSettings: settings),
+    .testTarget(
+      name: "ArcaMastheadTests", dependencies: ["ArcaMasthead", "ArcaCore", "ArcaTestSupport"], swiftSettings: settings
+    ),
   ]
 )

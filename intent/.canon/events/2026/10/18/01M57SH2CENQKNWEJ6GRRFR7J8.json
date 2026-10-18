@@ -1,0 +1,14 @@
+{
+  "id": "01M57SH2CENQKNWEJ6GRRFR7J8",
+  "ts": "2026-10-18T15:19:19.182Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-02.5"
+  },
+  "payload": {
+    "text": "The About body is HTML: an about.md goes through cmark-gfm, and an about.html is used as written. Its tokens then take their values, each escaped for HTML, so a value is never markup in an element's text or a quoted attribute; a token in a Markdown link's address is left as written. The body and the stylesheet are each found as masthead.yaml is, the config folder's copy first and then the bundle's, and a copy that is refused leaves the next in use."
+  }
+}

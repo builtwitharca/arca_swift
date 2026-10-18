@@ -43,15 +43,15 @@ As agreed with hv, 18 Oct 2026.
 
 - **Values:**
   - The bundle gives `{name}`, `{version}`, `{commit}` and `{kind}`.
-  - The app adds its own, eg `{status}` or `{user}`, through a provider that is asked at each menu open.
-  - A value the app cannot give yet leaves the heading as the app's name alone.
+  - The app names its own once, eg `{status}` or `{user}`, and is asked for their values at each menu open. Naming one of the bundle's takes its place.
+  - A value the app cannot give yet leaves the heading as the app's name alone, and hides a subheading that names it. Each line stands on its own.
 - **The file is read again** when the menu or the About window opens, if it has changed, so nothing watches it.
 - **A file that fails keeps the bundled default,** and the subheading says what is wrong. The app's log hook gets the same line.
 
 ### The About window
 
 - **A window holding WebKit's SwiftUI web view** (`WebPage`), which needs macOS 26.
-- **Markdown becomes HTML through cmark-gfm.** HTML inside Markdown passes through, so `about.html` and `about.md` take one path.
+- **Markdown becomes HTML through cmark-gfm,** and HTML inside it passes through. An `about.html` is used as written.
 - **The page's JavaScript is off.** A link opens in the browser, the default stylesheet follows light and dark mode, and `{tokens}` expand in the body.
 - **An app with no Dock icon is brought forward** to show the window.
 

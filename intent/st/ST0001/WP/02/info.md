@@ -2,7 +2,7 @@
 wp_id: WP-02
 title: ArcaMasthead: the file, its values and Markdown
 scope: S
-status: Not Started
+status: WIP
 ---
 
 # WP-02: ArcaMasthead: the file, its values and Markdown
