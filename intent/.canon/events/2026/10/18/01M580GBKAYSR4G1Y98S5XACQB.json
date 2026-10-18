@@ -1,0 +1,14 @@
+{
+  "id": "01M580GBKAYSR4G1Y98S5XACQB",
+  "ts": "2026-10-18T17:21:15.882Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-03.8"
+  },
+  "payload": {
+    "evidence": "04f8589: README.md's section The row and the About window (one MastheadRow, a menu item the menu keeps, made with the app's name, its bundle, the values it names and its log hook, and put at the top of its menu; what the About page allows: its policy, images by file name found user-first, links to the browser; the example app) and CHANGELOG.md's three bullets (MastheadRow, the About window, ArcaMastheadExample). CI run 39148967192 on 04f8589 was green on macos-26 (Xcode 26.6, Swift 6.3.3): Build complete! (67.27s) and Test run with 142 tests in 19 suites passed."
+  }
+}

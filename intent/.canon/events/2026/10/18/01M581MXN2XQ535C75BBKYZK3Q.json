@@ -1,0 +1,14 @@
+{
+  "id": "01M581MXN2XQ535C75BBKYZK3Q",
+  "ts": "2026-10-18T17:41:14.018Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-03.7"
+  },
+  "payload": {
+    "evidence": "hv's word in ic's session (18 Oct 2026): \"Got it.\", with hv's own screenshots of the Arca status menu's top row (arca-example 0.1.0 in bold over dev · dev) and of the About window that choosing it opened, in front. vc's slot 35 (17:23:41Z to 17:23:45Z) captured the example's About window launched with --about: it was the frontmost window, showing the bundled page with arca.svg served by file name and the tokens in. CI run 39148967192 on 04f8589 built the ArcaMastheadExample target on macos-26."
+  }
+}

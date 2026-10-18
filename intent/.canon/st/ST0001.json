@@ -32,7 +32,7 @@
       "seq": 3,
       "title": "ArcaMasthead: the menu row and the About window",
       "scope": "M",
-      "status": "wip",
+      "status": "done",
       "objective": "The AppKit and SwiftUI half of the top line:\n- the menu item, with the heading as its title, the subheading as its subtitle and the app's icon as its image, enabled, and opening the About window;\n- the About window, as WebKit's SwiftUI web view, with the page's JavaScript off, links opening in the browser, and a stylesheet that follows light and dark mode;\n- the file read again whenever the menu or the window opens.\n\nAn example app target shows both, so they can be seen without an adopter. Size: M.",
       "body": "",
       "preamble": ""
@@ -240,7 +240,8 @@
       "text": "An example app in the package shows the row and the About window with its own masthead.yaml, about.md, about.css and an image, and brings the window forward though it has no Dock icon. CI builds it.",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "satisfied",
+        "evidence": "hv's word in ic's session (18 Oct 2026): \"Got it.\", with hv's own screenshots of the Arca status menu's top row (arca-example 0.1.0 in bold over dev · dev) and of the About window that choosing it opened, in front. vc's slot 35 (17:23:41Z to 17:23:45Z) captured the example's About window launched with --about: it was the frontmost window, showing the bundled page with arca.svg served by file name and the tokens in. CI run 39148967192 on 04f8589 built the ArcaMastheadExample target on macos-26."
       }
     },
     {
@@ -248,7 +249,8 @@
       "text": "README.md says how an app adds the row and the About window: the one type it makes, with its config folder, its bundle, the values it names and its log hook; where it puts the row; and what the About page allows. CHANGELOG.md says what this work package added.",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "satisfied",
+        "evidence": "04f8589: README.md's section The row and the About window (one MastheadRow, a menu item the menu keeps, made with the app's name, its bundle, the values it names and its log hook, and put at the top of its menu; what the About page allows: its policy, images by file name found user-first, links to the browser; the example app) and CHANGELOG.md's three bullets (MastheadRow, the About window, ArcaMastheadExample). CI run 39148967192 on 04f8589 was green on macos-26 (Xcode 26.6, Swift 6.3.3): Build complete! (67.27s) and Test run with 142 tests in 19 suites passed."
       }
     }
   ],
