@@ -16,7 +16,7 @@ A DOING / TODO / DONE view, projected from steel-thread and work-package status:
   - [ ] 05: Gtools.app adopts ArcaMasthead
   - [ ] 06: Intent.app adopts ArcaMasthead
   - [ ] 07: Conflab.app adopts ArcaMasthead
-  - [ ] 08: ArcaLogConsole: review and proposal
+  - [x] 08: ArcaLogConsole: review and proposal
   - [ ] 09: ArcaLogConsole: build
   - [ ] 10: The apps adopt ArcaLogConsole
 

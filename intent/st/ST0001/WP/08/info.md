@@ -2,7 +2,7 @@
 wp_id: WP-08
 title: ArcaLogConsole: review and proposal
 scope: S
-status: Not Started
+status: Done
 ---
 
 # WP-08: ArcaLogConsole: review and proposal

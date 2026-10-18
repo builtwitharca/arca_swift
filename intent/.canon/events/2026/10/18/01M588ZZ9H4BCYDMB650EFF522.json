@@ -1,0 +1,14 @@
+{
+  "id": "01M588ZZ9H4BCYDMB650EFF522",
+  "ts": "2026-10-18T19:49:36.177Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-08.1"
+  },
+  "payload": {
+    "evidence": "hv's word in ic's session (18 Oct 2026, 18:41Z): \"Ok, go for it. Use your recs.\", answering ic's two calls on the review's proposal: 1A, in-process file following, with a command source kept for logs only a CLI can render; and 2A, Gtools.app's tail -f gap fixed in its adoption (WP-10) with a criterion there (AC-10.1), and no Gtools issue now. The review's conditions (a directory watch, the old file drained before a reopen, one line assembler, batched reads off the main actor, source ids, keys in the window, 0.2.0, five more file-source tests) are folded in. design.md's ArcaLogConsole section records the agreed shape."
+  }
+}

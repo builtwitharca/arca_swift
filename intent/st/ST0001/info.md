@@ -49,7 +49,7 @@ Measured, 18 Oct:
 | WP-05 | Gtools.app adopts ArcaMasthead                  | S    | Not Started |
 | WP-06 | Intent.app adopts ArcaMasthead                  | S    | Not Started |
 | WP-07 | Conflab.app adopts ArcaMasthead                 | S    | Not Started |
-| WP-08 | ArcaLogConsole: review and proposal             | S    | Not Started |
+| WP-08 | ArcaLogConsole: review and proposal             | S    | Done        |
 | WP-09 | ArcaLogConsole: build                           | M    | Not Started |
 | WP-10 | The apps adopt ArcaLogConsole                   | M    | Not Started |
 

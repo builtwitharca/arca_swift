@@ -71,11 +71,43 @@ As agreed with hv, 18 Oct 2026.
 
 ## ArcaLogConsole
 
-It is reviewed before any code (WP-08), as Masthead was. The review measures how Gtools.app's and Intent.app's consoles differ, and covers:
+It was reviewed before any code (WP-08), as Masthead was. The review read Gtools.app's and Intent.app's consoles, which began as one copy and have drifted, and what menuz needs. hv agreed the shape below on 18 Oct 2026, with the review's conditions.
 
-- the CLI runs whose only output is the console, eg Run Doctor and Rebuild Search Index;
-- a daemon's log, tailed while the window is open;
-- menuz's run log, which must keep being followed when it is truncated or rotated under the tail.
+- **The line model:** `ConsoleLine(text, kind, source)`.
+  - The kinds are log, error, warning, marker and quiet. Quiet lines are dimmed, and hidden when the app asks.
+  - A line's source is an id the app gives, one for each file or command it follows, so a window can show several sources and replace one source's lines.
+- **The classifier is the app's,** `(String) -> Kind`, since each daemon's log has its own tokens. The library gives two pieces: a start-of-line matcher for `error:`, `caused by:`, `warning:` and `remedy:`, and a skip of one leading RFC 3339 timestamp.
+- **The ring:** bounded, 5000 lines by default, with clear() and the removal of one source's lines. WP-09 decides whether the capacity is per source or shared, since a shared ring lets a busy source evict a quiet one's lines. The view counts lines, not newline runs.
+- **The sources:**
+  - **A file the app names, followed in-process.** A dispatch source watches the file and its directory, as menuz's config watcher does, and the file's identity and size are checked at each event.
+    - A truncated file is read again from the start.
+    - A renamed one is drained to its end, then the path is reopened when the new file appears, so lines written before the rename still arrive.
+    - A log that does not exist yet is picked up when it does.
+    - A bounded backlog, eg the last 40 lines, is replayed when the window opens.
+    - There is no child process.
+  - **A command's output,** for Run Doctor and Rebuild Search Index, and for a log only a CLI can render, eg `intent daemon logs --follow`, which merges two logs.
+    - One pipe takes stdout and stderr, read through an AsyncStream.
+    - stdin is held, so the child dies with the app.
+    - The run is framed by `» cmd` and `» exit N · 1.2s`, and a second run is refused while one goes.
+    - The launcher and the clock are injectable.
+  - **The app's own notes,** as marker lines.
+  - **One line assembler serves both.** Bytes are split on 0x0A, each complete line is decoded with bad bytes as U+FFFD, and a fragment is held until its newline arrives, so a character split across two reads stays one character.
+  - **Reads happen off the main actor,** and the view gets one batch per event: one text-storage edit and one trim.
+- **The window:** AppKit, built in code, with a read-only text view that follows the end and stops following when scrolled up.
+  - Find (⌘F, ⌘G), Clear (⌘K) and Close (⌘W) are handled by the window itself, since a library cannot rely on the host's main menu.
+  - The app gives a theme of colours and a font, and the library owns the default.
+  - It is brought forward with NSApp.activate(), as the About window is.
+  - A "show quiet lines" toggle filters in the view.
+- **Tests:** Swift Testing.
+  - The line model, the ring and the classifier helpers.
+  - The file source, against temporary files: an append; a truncation; a truncation then a short append; a rename with the new file a moment later; a log missing at open and created later; a character split across two reads; and a last line with no newline.
+  - The runner, against a stub launcher.
+  - The window, by eye in an example app.
+- **Its release is 0.2.0,** since it adds a product. An app moves its pin to `.upToNextMinor(from: "0.2.0")` when it adopts it.
+- **The adoptions (WP-10):**
+  - Gtools.app follows each site's log as a file source, or `gtools cms logs` as a command source, with its own classifier and its Verbose as quiet lines. Its console keeps following across a `cms start` that renames a log over 1 MB.
+  - Intent.app runs `intent daemon logs --follow` as a command source.
+  - menuz follows menuz.log as a file source, with no runs.
 
 ## The work
 
