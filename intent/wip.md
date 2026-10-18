@@ -22,7 +22,7 @@ verblock: "2026-10-18T11:29:06Z:v0.2: matts - ST0001 drafted"
 
 ## Notes
 
-- ic builds the package and adopts it in menuz and Gtools.app. The Intent and Conflab ICs adopt it from ic's brief, in their own repos and under their own gates.
+- ic builds the package. The roll-out is selective, app by app, each done by its own project's IC from ic's brief, in its own repo and under its own gates.
 
 ## Context for LLM
 
