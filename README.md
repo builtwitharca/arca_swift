@@ -1,4 +1,4 @@
-<p align="center"><img src="design/icons/arca_swift-icon.svg" width="128" height="128" alt="The arca_swift icon: a white swift rising from a chest, on an orange tile"></p>
+<p align="center"><img src="design/icons/arca_swift-icon.svg" width="128" height="128" alt="The arca_swift icon: a swift rising out of the Arca box"></p>
 
 # arca_swift
 

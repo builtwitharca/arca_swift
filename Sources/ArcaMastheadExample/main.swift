@@ -6,9 +6,9 @@ import ArcaMasthead
 /// masthead.yaml, about.md, about.css and arca.svg are its defaults, and a
 /// copy of any of them in its config folder, arca-example, is used first. An
 /// executable that SwiftPM builds has no Info.plist or icon of its own, so
-/// the app names its own values, and takes the Arca box, copied from
-/// arca_design's icons, as its icon in the row and in the menu bar. With
-/// --about it opens the About window as it starts.
+/// the app names its own values, and takes the Arca box as its icon in the
+/// row and in the menu bar. With --about it opens the About window as it
+/// starts.
 @MainActor
 final class Example: NSObject, NSApplicationDelegate {
   private var status: NSStatusItem?
