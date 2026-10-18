@@ -1,0 +1,6 @@
+heading: "{name} {version}"
+subheading: "{commit} · {kind}"
+icon: app
+about:
+  body: about.md
+  css: about.css

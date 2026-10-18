@@ -32,7 +32,7 @@
       "seq": 3,
       "title": "ArcaMasthead: the menu row and the About window",
       "scope": "M",
-      "status": "not-started",
+      "status": "wip",
       "objective": "The AppKit and SwiftUI half of the top line:\n- the menu item, with the heading as its title, the subheading as its subtitle and the app's icon as its image, enabled, and opening the About window;\n- the About window, as WebKit's SwiftUI web view, with the page's JavaScript off, links opening in the browser, and a stylesheet that follows light and dark mode;\n- the file read again whenever the menu or the window opens.\n\nAn example app target shows both, so they can be seen without an adopter. Size: M.",
       "body": "",
       "preamble": ""
@@ -186,6 +186,70 @@
         "is": "satisfied",
         "evidence": "79762d3: README.md's masthead.yaml section (the file's sketch, its keys, and its tokens with the Info.plist key each comes from, ArcaCommit and ArcaKind among them) and CHANGELOG.md's Unreleased entry for masthead.yaml; on GitHub, where CI run 39140780658 is green (88 tests in 12 suites)"
       }
+    },
+    {
+      "id": "AC-03.1",
+      "text": "The row is one menu item, made from the masthead, which the menu that holds it keeps: its title is the heading in bold, its subtitle the subheading, with none when the subheading is hidden, and its image the app's icon at the row's size, or none when the icon is none, the app's own icon left as it is. It is enabled, and choosing it opens the About window.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.2",
+      "text": "The row reads masthead.yaml again each time its menu opens, and the About window reads it and its files again each time the window opens, asking the app for its values each time. A refusal goes to the app's log once, when it first appears, and again only after it has gone and come back.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.3",
+      "text": "The About page is one HTML document: a Content-Security-Policy that comes before anything it governs and allows no source but the page's own styles, data: images and the images the app serves; then the default stylesheet, which follows light and dark mode; then the app's stylesheet, which cannot end its style element; then each refusal, escaped for HTML, masthead.yaml's before the About files'; then the body. A token in the body's HTML that names no value the app gives is refused, naming the token and the values there are, on the page and in the app's log; a Markdown link's address holds no token, since cmark-gfm encodes its braces.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.4",
+      "text": "In the About window the page's own load, at its own address, is followed, and so is a link to a place in the page. A link the user follows to an http, https or mailto address opens in the browser, not in the window, and so does one that would open a window. Every other navigation is cancelled, among them a form, a reload, a refresh, a frame, and a link to a file or to another of the page's addresses. The page's JavaScript is off, and a load that fails is told to the app's log.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.5",
+      "text": "An image the body names by a file name is found as masthead.yaml is, the config folder's copy first and then the bundle's, and served to the page with its type. A name with a folder in it, or one that is not a .png, .jpg, .jpeg, .gif, .webp or .svg file in any case, is refused, and so is a copy that cannot be read, which leaves the next in use. Each refusal goes to the app's log.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.6",
+      "text": "WebKit holds the page to these rules. Under the window's own settings, an image, a stylesheet, a frame and a refresh that name another address make no request, the page's script does not run, and an image the body names is shown. The same page without those settings makes each request and runs its script.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.7",
+      "text": "An example app in the package shows the row and the About window with its own masthead.yaml, about.md, about.css and an image, and brings the window forward though it has no Dock icon. CI builds it.",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
+      "id": "AC-03.8",
+      "text": "README.md says how an app adds the row and the About window: the one type it makes, with its config folder, its bundle, the values it names and its log hook; where it puts the row; and what the About page allows. CHANGELOG.md says what this work package added.",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
     }
   ],
   "tests": [
@@ -249,6 +313,69 @@
       ],
       "status": "green",
       "note": "Red in slot 22 (18 Oct 2026, 14:30:41Z to 14:31:05Z), against compiling stubs; log test-3.log. Config file: the 4 new tests failed, 9 issues; its 8 WP-01 tests passed. Green in slot 27 (18 Oct 2026, 15:26:54Z to 15:27:00Z), after both critic-swift reports' fixes (bank 2c5f3cfb); log test-4.log. Config file: all 13 tests passed, WP-01's 8 and 5 new. refusedAlone came with the fixes and was seen only green. Of the 4 seen red in slot 22, the three value == nil expectations cannot fail and the three refusals.isEmpty ones held against the stub; each test went red through another."
+    },
+    {
+      "id": "AT-03.1",
+      "kind": "test",
+      "file": "Tests/ArcaMastheadTests/MastheadRowTests.swift",
+      "covers": [
+        "AC-03.1",
+        "AC-03.2"
+      ],
+      "status": "green",
+      "note": "Red in slot 30 (18 Oct 2026, 16:31:35Z to 16:31:54Z), against compiling stubs (bank b3efb780); log test-5.log. Masthead row: all 7 tests failed, 20 issues; two expectations passed against the stub's empty item, made's isEnabled (a new item is enabled) and readOnOpen's nil subtitle. Refusal log: all 3 tests failed, 7 issues; the expectations of an empty answer passed against the stub's. Green in slot 34 (18 Oct 2026, 17:16:40Z to 17:16:45Z), after both critic-swift reports' fixes and slot 33's (bank 84bbdbc3); log test-7.log. Masthead row: all 11 tests passed; Refusal log: all 4 passed. Seen red in slot 30: Masthead row's 7 first tests and Refusal log's 3. With the fixes, after both critic-swift reports, and seen only green: the row as a menu item kept by its menu (kept), the Info.plist and config-folder path (appsOwn), choosing the row three times through its target and action (chosen), an image refusal logged once an open (imageLogged), and the log's order (order); made no longer checks the action, which chosen performs. Never seen red: the checks a #require stopped in slot 30 (lines' bold, image's size, copy and icon none) and made's isEnabled, which the stub's new item already had."
+    },
+    {
+      "id": "AT-03.2",
+      "kind": "test",
+      "file": "Tests/ArcaMastheadTests/AboutDocumentTests.swift",
+      "covers": [
+        "AC-03.3"
+      ],
+      "status": "green",
+      "note": "Red in slot 30 (18 Oct 2026, 16:31:35Z to 16:31:54Z), against compiling stubs (bank b3efb780); log test-5.log. About document: all 7 tests failed, 12 issues; the expectations of what the page does not hold passed against the stub's empty page. Green in slot 34 (18 Oct 2026, 17:16:40Z to 17:16:45Z), after both critic-swift reports' fixes and slot 33's (bank 84bbdbc3); log test-7.log. About document: all 9 tests passed. Seen red in slot 30: the 7 first tests. With the fixes and seen only green: page and pageAlone, what the page holds. parts' first expectation changed after the red, from the word \"refusals\", which the window's stylesheet also holds, to the list element."
+    },
+    {
+      "id": "AT-03.3",
+      "kind": "test",
+      "file": "Tests/ArcaMastheadTests/AboutNavigationTests.swift",
+      "covers": [
+        "AC-03.4"
+      ],
+      "status": "green",
+      "note": "Red in slot 30 (18 Oct 2026, 16:31:35Z to 16:31:54Z), against compiling stubs (bank b3efb780); log test-5.log. About navigation: all 3 tests failed, each of their 22 cases once against the stub's answer, the browser at the page's own address. Green in slot 34 (18 Oct 2026, 17:16:40Z to 17:16:45Z), after both critic-swift reports' fixes and slot 33's (bank 84bbdbc3); log test-7.log. About navigation: all 4 tests (27 cases) passed. Seen red in slot 30: 3 tests (22 cases). With the fixes and seen only green: the page's own load as its own decision, only at the page's own address (load), and five cancelled cases (an https address while the page loads, a reload, back or forward and a refresh to a place in the page, and a frame's link to one)."
+    },
+    {
+      "id": "AT-03.4",
+      "kind": "test",
+      "file": "Tests/ArcaMastheadTests/AboutImagesTests.swift",
+      "covers": [
+        "AC-03.5"
+      ],
+      "status": "green",
+      "note": "Red in slot 30 (18 Oct 2026, 16:31:35Z to 16:31:54Z), against compiling stubs (bank b3efb780); log test-5.log. About images: all 7 tests (17 cases) failed, 19 issues; the expectations of no image passed against the stub's nil, and each image and refusal expectation failed. Green in slot 34 (18 Oct 2026, 17:16:40Z to 17:16:45Z), after both critic-swift reports' fixes and slot 33's (bank 84bbdbc3); log test-7.log. About images: all 8 tests (21 cases) passed. Seen red in slot 30: the 7 first tests. With the fixes and seen only green: the one file-name rule, a folder or a control character (fileNameRule, 4 cases)."
+    },
+    {
+      "id": "AT-03.5",
+      "kind": "test",
+      "file": "Tests/ArcaMastheadTests/AboutPageTests.swift",
+      "covers": [
+        "AC-03.4",
+        "AC-03.5",
+        "AC-03.6"
+      ],
+      "status": "green",
+      "note": "Red in slot 30 (18 Oct 2026, 16:31:35Z to 16:31:54Z), against compiling stubs (bank b3efb780); log test-5.log. About page in WebKit: the 5 tests of the window's settings failed, 7 issues, and the 4 controls passed, so WebKit loads a page inside swift test, makes its image, stylesheet and frame requests and its refresh, runs its script, and reports a script's click as linkActivated. The expectations of no request in noLoads and noRefresh passed against the stub's empty page. Green in slot 34 (18 Oct 2026, 17:16:40Z to 17:16:45Z), after both critic-swift reports' fixes and slot 33's (bank 84bbdbc3); log test-7.log. About page in WebKit: all 14 tests passed. Seen red in slot 30: the 5 first window tests, most against the document's stub rather than the window's settings (the test-check's finding): only noScript's first arm failed for its own reason. With the fixes and seen only green: noDocument (under the window's settings with no document an image and a stylesheet are asked and a frame is cancelled), colourScheme (\"light dark\"), noReload, newWindow (a target=_blank link is browsed), watched (a load that fails or stops early is logged, by streams), link's cancel of the mailto address and noLoads' element count. Slot 33 measured that a cancelled own load leaves WebKit's sequence open, so watched replaced a WebKit test of it."
+    },
+    {
+      "id": "AT-03.6",
+      "kind": "test",
+      "file": "Tests/ArcaMastheadTests/AboutContentTests.swift",
+      "covers": [
+        "AC-03.3"
+      ],
+      "status": "green",
+      "note": "Red in slot 30 (18 Oct 2026, 16:31:35Z to 16:31:54Z), against compiling stubs (bank b3efb780); log test-5.log. About body tokens: all 3 tests failed, 3 issues. The file's WP-02 suites, About content (9 tests) and HTML (2), passed. Green in slot 34 (18 Oct 2026, 17:16:40Z to 17:16:45Z), after both critic-swift reports' fixes and slot 33's (bank 84bbdbc3); log test-7.log. About body tokens: all 4 tests passed. Seen red in slot 30: the 3 first. With the fixes and seen only green: a Markdown link's address holds no token (linkAddress)."
     }
   ],
   "attachments": [

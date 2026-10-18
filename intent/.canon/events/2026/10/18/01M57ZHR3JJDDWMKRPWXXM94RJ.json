@@ -1,0 +1,14 @@
+{
+  "id": "01M57ZHR3JJDDWMKRPWXXM94RJ",
+  "ts": "2026-10-18T17:04:32.882Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-03.3"
+  },
+  "payload": {
+    "text": "The About page is one HTML document: a Content-Security-Policy that comes before anything it governs and allows no source but the page's own styles, data: images and the images the app serves; then the default stylesheet, which follows light and dark mode; then the app's stylesheet, which cannot end its style element; then each refusal, escaped for HTML, masthead.yaml's before the About files'; then the body. A token in the body's HTML that names no value the app gives is refused, naming the token and the values there are, on the page and in the app's log; a Markdown link's address holds no token, since cmark-gfm encodes its braces."
+  }
+}

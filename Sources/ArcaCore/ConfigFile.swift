@@ -50,16 +50,21 @@ package struct ConfigFile: Equatable, Sendable {
 
   /// The file's text, or why it could not be read.
   package func text() -> Result<String, Refusal> {
-    let data: Data
+    data().flatMap { data in
+      guard let text = String(data: data, encoding: .utf8) else {
+        return .failure(refusal("not UTF-8 text"))
+      }
+      return .success(text)
+    }
+  }
+
+  /// The file's bytes, or why they could not be read.
+  package func data() -> Result<Data, Refusal> {
     do {
-      data = try Data(contentsOf: URL(fileURLWithPath: path))
+      return .success(try Data(contentsOf: URL(fileURLWithPath: path)))
     } catch {
       return .failure(refusal("cannot be read: \(Self.reason(error))"))
     }
-    guard let text = String(data: data, encoding: .utf8) else {
-      return .failure(refusal("not UTF-8 text"))
-    }
-    return .success(text)
   }
 
   /// The file's top-level entries: its text, read as YAML.

@@ -20,10 +20,34 @@ package enum Scratch {
   /// body returns, and as a Leftover, with the body's failure, when it
   /// throws.
   package static func folder<T>(_ body: (String) throws -> T) throws -> T {
+    let path = try made()
+    return try removed(path, after: Result { try body(path) })
+  }
+
+  /// The same for a body that waits, which runs where its caller does.
+  package static func folder<T>(
+    isolation: isolated (any Actor)? = #isolation, _ body: (String) async throws -> T
+  ) async throws -> T {
+    let path = try made()
+    let outcome: Result<T, any Error>
+    do {
+      outcome = .success(try await body(path))
+    } catch {
+      outcome = .failure(error)
+    }
+    return try removed(path, after: outcome)
+  }
+
+  /// A new folder under the temporary directory.
+  private static func made() throws -> String {
     let temporary = (NSTemporaryDirectory() as NSString).resolvingSymlinksInPath
     let path = (temporary as NSString).appendingPathComponent("arca-\(UUID().uuidString)")
     try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: false)
-    let outcome = Result { try body(path) }
+    return path
+  }
+
+  /// The body's value once its folder is removed, or why not.
+  private static func removed<T>(_ path: String, after outcome: Result<T, any Error>) throws -> T {
     let removal = Result { try FileManager.default.removeItem(atPath: path) }
     switch (outcome, removal) {
     case (.success(let value), .success): return value

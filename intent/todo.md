@@ -11,7 +11,7 @@ A DOING / TODO / DONE view, projected from steel-thread and work-package status:
 - [-] ST0001: Shared Swift libraries for the menu bar apps: Masthead, then LogConsole
   - [x] 01: Package skeleton, core and CI
   - [x] 02: ArcaMasthead: the file, its values and Markdown
-  - [ ] 03: ArcaMasthead: the menu row and the About window
+  - [-] 03: ArcaMasthead: the menu row and the About window
   - [ ] 04: menuz adopts ArcaMasthead
   - [ ] 05: Gtools.app adopts ArcaMasthead
   - [ ] 06: Intent.app adopts ArcaMasthead

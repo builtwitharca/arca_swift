@@ -2,7 +2,7 @@
 wp_id: WP-03
 title: ArcaMasthead: the menu row and the About window
 scope: M
-status: Not Started
+status: WIP
 ---
 
 # WP-03: ArcaMasthead: the menu row and the About window

@@ -45,7 +45,7 @@ As agreed with hv, 18 Oct 2026.
   - The bundle gives `{name}`, `{version}`, `{commit}` and `{kind}`.
   - The app names its own once, eg `{status}` or `{user}`, and is asked for their values at each menu open. Naming one of the bundle's takes its place.
   - A value the app cannot give yet leaves the heading as the app's name alone, and hides a subheading that names it. Each line stands on its own.
-- **The file is read again** when the menu or the About window opens, if it has changed, so nothing watches it.
+- **The file is read again** each time the menu or the About window opens, so nothing watches it.
 - **A file that fails keeps the bundled default,** and the subheading says what is wrong. The app's log hook gets the same line.
 
 ### The About window
@@ -53,6 +53,7 @@ As agreed with hv, 18 Oct 2026.
 - **A window holding WebKit's SwiftUI web view** (`WebPage`), which needs macOS 26.
 - **Markdown becomes HTML through cmark-gfm,** and HTML inside it passes through. An `about.html` is used as written.
 - **The page's JavaScript is off.** A link opens in the browser, the default stylesheet follows light and dark mode, and `{tokens}` expand in the body.
+- **The page loads nothing from outside.** Its Content-Security-Policy allows only its own styles, `data:` images and the images the body names by file name, which the app serves from the config folder or the bundle. Any navigation other than a link opened in the browser is cancelled.
 - **An app with no Dock icon is brought forward** to show the window.
 
 ### The four apps

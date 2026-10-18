@@ -1,0 +1,14 @@
+{
+  "id": "01M57ZHR30DMXVSEC6Q8WF43YK",
+  "ts": "2026-10-18T17:04:32.864Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-03.1"
+  },
+  "payload": {
+    "text": "The row is one menu item, made from the masthead, which the menu that holds it keeps: its title is the heading in bold, its subtitle the subheading, with none when the subheading is hidden, and its image the app's icon at the row's size, or none when the icon is none, the app's own icon left as it is. It is enabled, and choosing it opens the About window."
+  }
+}

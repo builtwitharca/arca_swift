@@ -63,6 +63,29 @@ struct MastheadFile: Equatable, Sendable {
   fileprivate static func isBlank(_ text: String) -> Bool {
     text.allSatisfy(\.isWhitespace)
   }
+
+  /// A file name's extension, in lower case, so that its case does not
+  /// count: the one place a file name's extension is read.
+  static func suffix(_ name: String) -> String {
+    (name as NSString).pathExtension.lowercased()
+  }
+
+  /// Why `name` cannot be a file found beside masthead.yaml, or nil when it
+  /// can: a name with a folder in it, or with a control character, is
+  /// refused. The one rule for every file name the masthead's files give.
+  static func fileNameRefusal(_ name: String) -> String? {
+    if name.contains("/") { return "is a path, not a file name" }
+    if name.unicodeScalars.contains(where: { $0.properties.generalCategory == .control }) {
+      return "has a control character in it"
+    }
+    return nil
+  }
+
+  /// `a, b and c`, or with `word` in the place of "and".
+  static func list(_ items: [String], _ word: String = "and") -> String {
+    guard let last = items.last, items.count > 1 else { return items.first ?? "" }
+    return items.dropLast().joined(separator: ", ") + " \(word) " + last
+  }
 }
 
 /// The check of masthead.yaml's entries. Each key is checked where the file
@@ -108,8 +131,7 @@ private struct Check {
   func template(_ text: String, at key: String) throws(Refusal) -> Template {
     let template = Template(text)
     if let token = template.tokens.first(where: { !names.contains($0) }) {
-      let those = Self.list(names.sorted().map { "{\($0)}" })
-      throw refusal(key, text, "has {\(token)}, which is not a value the app gives: those are \(those)")
+      throw refusal(key, text, MastheadValues.unknown(token, names: names))
     }
     return template
   }
@@ -130,11 +152,13 @@ private struct Check {
       switch entry.key {
       case "body":
         let name = try fileName(entry.value, at: key)
-        guard let kind = Self.kinds[Self.suffix(name)] else { throw refusal(key, name, "is not a .md or .html file") }
+        guard let kind = Self.kinds[MastheadFile.suffix(name)] else {
+          throw refusal(key, name, "is not a .md or .html file")
+        }
         body = (name: name, kind: kind)
       case "css":
         let name = try fileName(entry.value, at: key)
-        guard Self.suffix(name) == "css" else { throw refusal(key, name, "is not a .css file") }
+        guard MastheadFile.suffix(name) == "css" else { throw refusal(key, name, "is not a .css file") }
         css = name
       default: throw unknown(entry, at: key, keys: Self.aboutKeys)
       }
@@ -147,7 +171,7 @@ private struct Check {
   /// masthead.yaml.
   func fileName(_ node: ConfigNode, at key: String) throws(Refusal) -> String {
     let name = try text(node, at: key)
-    guard !name.contains("/") else { throw refusal(key, name, "is a path, not a file name") }
+    if let why = MastheadFile.fileNameRefusal(name) { throw refusal(key, name, why) }
     return name
   }
 
@@ -173,16 +197,11 @@ private struct Check {
   }
 
   func unknown(_ entry: ConfigEntry, at key: String, keys: [String]) -> Refusal {
-    refusal(key, Self.text(of: entry.value), "is not one of the keys \(Self.list(keys))")
+    refusal(key, Self.text(of: entry.value), "is not one of the keys \(MastheadFile.list(keys))")
   }
 
   func refusal(_ key: String, _ value: String?, _ why: String) -> Refusal {
     Refusal(file: file, key: key, value: value, why: why)
-  }
-
-  /// A file name's extension, in lower case, so that its case does not count.
-  static func suffix(_ name: String) -> String {
-    (name as NSString).pathExtension.lowercased()
   }
 
   /// A node's text, or nil for a list or a mapping, which a refusal prints
@@ -190,11 +209,5 @@ private struct Check {
   static func text(of node: ConfigNode) -> String? {
     guard case .text(let text) = node else { return nil }
     return text
-  }
-
-  /// `a, b and c`.
-  static func list(_ items: [String]) -> String {
-    guard let last = items.last, items.count > 1 else { return items.first ?? "" }
-    return items.dropLast().joined(separator: ", ") + " and " + last
   }
 }

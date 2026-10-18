@@ -62,6 +62,31 @@ Each `{token}` takes a value. The bundle gives four, from the app's Info.plist, 
 
 Each line stands on its own. Until the heading's values are there, it is the app's name alone, and until the subheading's are, it is hidden; a line that comes out blank is treated the same way. A token in the heading or the subheading that names no value is refused. In the About page each value is escaped for HTML, so a value never becomes markup in text or in a quoted attribute: put an attribute's value in quotes. A token in a Markdown link's address is left as written, since cmark-gfm percent-encodes its braces, so write that link in HTML.
 
+## The row and the About window
+
+An app makes one `MastheadRow`, a menu item, and puts it at the top of its menu, which keeps it. The row reads `masthead.yaml` again each time that menu opens, and choosing it opens the About window.
+
+```swift
+import ArcaMasthead
+
+let row = MastheadRow(
+  app: "gtools", owned: ["version", "commit"], value: { stamp[$0] }, log: { logger.warning("\($0)") })
+menu.insertItem(row, at: 0)
+```
+
+- `app` names the config folder, `${XDG_CONFIG_HOME:-$HOME/.config}/<app>/`. A GUI app is given none of the user's environment, so an app that captures its login shell's passes it as `environment`.
+- `bundle` holds the defaults, `masthead.yaml` and the About files. It is the app's own bundle unless the app passes another.
+- `owned` names the values the app gives, and `value` is asked for each of them at every open. nil means the app has not got that value yet.
+- `log` gets each refusal once, when it first appears, and again only after a read without it.
+
+The About page is the body, under the window's own stylesheet and the app's. The window's follows light and dark mode, and the app's is laid over it. What was refused is listed above the body.
+
+The page runs no JavaScript and loads nothing from outside. Its policy allows only its own styles, `data:` images and the images the app serves. An image the body names by a file name, as in `![logo](logo.png)`, is found as the About files are: the config folder's copy first, then the bundle's. The name must be a `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp` or `.svg` file with no folder in it.
+
+A link to an `http`, `https` or `mailto` address opens in the browser. Every other navigation is cancelled.
+
+`ArcaMastheadExample` is an app that shows both. Run it with `swift run ArcaMastheadExample`, adding `--about` to open the window as it starts.
+
 ## Building and testing
 
 ```sh

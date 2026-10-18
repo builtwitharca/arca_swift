@@ -44,7 +44,7 @@ Measured, 18 Oct:
 | ----- | ----------------------------------------------- | ---- | ----------- |
 | WP-01 | Package skeleton, core and CI                   | S    | Done        |
 | WP-02 | ArcaMasthead: the file, its values and Markdown | S    | Done        |
-| WP-03 | ArcaMasthead: the menu row and the About window | M    | Not Started |
+| WP-03 | ArcaMasthead: the menu row and the About window | M    | WIP         |
 | WP-04 | menuz adopts ArcaMasthead                       | S    | Not Started |
 | WP-05 | Gtools.app adopts ArcaMasthead                  | S    | Not Started |
 | WP-06 | Intent.app adopts ArcaMasthead                  | S    | Not Started |

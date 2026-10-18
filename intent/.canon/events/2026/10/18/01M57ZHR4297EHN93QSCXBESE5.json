@@ -1,0 +1,14 @@
+{
+  "id": "01M57ZHR4297EHN93QSCXBESE5",
+  "ts": "2026-10-18T17:04:32.898Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-03.4"
+  },
+  "payload": {
+    "text": "In the About window the page's own load, at its own address, is followed, and so is a link to a place in the page. A link the user follows to an http, https or mailto address opens in the browser, not in the window, and so does one that would open a window. Every other navigation is cancelled, among them a form, a reload, a refresh, a frame, and a link to a file or to another of the page's addresses. The page's JavaScript is off, and a load that fails is told to the app's log."
+  }
+}

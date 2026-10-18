@@ -4,9 +4,11 @@
 // SwiftUI web view sets (design.md "The package"). ArcaCore is internal: the
 // libraries share it, and an app imports only the libraries it uses.
 // ArcaLogConsole's product joins with its code (WP-09). ArcaTestSupport holds
-// what the test targets share, and no product has it. A warning fails the
-// build of this package's own targets; SwiftPM drops the setting when an app
-// builds the package as a dependency (SE-0480).
+// what the test targets share, and no product has it. ArcaMastheadExample is
+// an app that shows the row and the About window, built here and by CI, and
+// in no product. A warning fails the build of this package's own targets;
+// SwiftPM drops the setting when an app builds the package as a dependency
+// (SE-0480).
 import PackageDescription
 
 let settings: [SwiftSetting] = [.treatAllWarnings(as: .error)]
@@ -30,6 +32,10 @@ let package = Package(
         .product(name: "cmark-gfm", package: "swift-cmark"),
         .product(name: "cmark-gfm-extensions", package: "swift-cmark"),
       ],
+      swiftSettings: settings
+    ),
+    .executableTarget(
+      name: "ArcaMastheadExample", dependencies: ["ArcaMasthead"], resources: [.process("Resources")],
       swiftSettings: settings
     ),
     .target(name: "ArcaTestSupport", path: "Tests/ArcaTestSupport", swiftSettings: settings),

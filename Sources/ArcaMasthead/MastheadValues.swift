@@ -36,4 +36,11 @@ struct MastheadValues: Equatable, Sendable {
   var appName: String {
     given["name"] ?? ""
   }
+
+  /// Why `token` is refused, in a line or in the About body: it names no
+  /// value the app gives, and `names` are those it does.
+  static func unknown(_ token: String, names: Set<String>) -> String {
+    let those = MastheadFile.list(names.sorted().map { "{\($0)}" })
+    return "has {\(token)}, which is not a value the app gives: those are \(those)"
+  }
 }
