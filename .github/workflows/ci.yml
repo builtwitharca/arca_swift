@@ -1,0 +1,43 @@
+name: CI
+
+# Builds and tests the package on every push and pull request. macOS runners
+# cost nothing on a public repository, which is why this one is public.
+on:
+  push:
+    branches: [main]
+    # A push that only moves the thread records under intent/ starts no run.
+    paths-ignore:
+      - 'intent/**'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# A newer run cancels the one in progress, as in the other Arca repos. The
+# event is part of the key, so a push and an on-demand run on one ref do not
+# cancel each other.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    # macOS 26 is the package's floor.
+    runs-on: macos-26
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Show the toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Check formatting
+        run: swift format lint --strict --recursive Package.swift Sources Tests
+
+      # A warning in the package's own targets fails the build (Package.swift).
+      - name: Build
+        run: swift build --build-tests
+
+      - name: Test
+        run: swift test --skip-build

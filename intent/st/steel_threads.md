@@ -4,7 +4,7 @@ An index of every steel thread in the project. A steel thread is a self-containe
 
 | ID     | Title                                                                   | Status | Created    | Completed |
 | ------ | ----------------------------------------------------------------------- | ------ | ---------- | --------- |
-| ST0001 | Shared Swift libraries for the menu bar apps: Masthead, then LogConsole | Triage | 2026-10-18 |           |
+| ST0001 | Shared Swift libraries for the menu bar apps: Masthead, then LogConsole | WIP    | 2026-10-18 |           |
 
 ---
 

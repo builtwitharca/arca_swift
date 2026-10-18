@@ -4,3 +4,13 @@ intent/.cache/
 
 # Intent's store snapshots and text exports: per-machine, never committed.
 intent/.backup/
+
+# SwiftPM's build products and Xcode's per-user state, as `swift package init` writes them.
+.DS_Store
+/.build
+/Packages
+xcuserdata/
+DerivedData/
+.swiftpm/configuration/registries.json
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.netrc
