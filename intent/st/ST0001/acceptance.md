@@ -13,7 +13,18 @@ title: Shared Swift libraries for the menu bar apps: Masthead, then LogConsole
 
 ## Acceptance Criteria
 
+### WP-01 -- Package skeleton, core and CI (status: Done)
+
+- AC-01.1 (non-test) The package resolves and builds for macOS 26 with Swift 6.2 or later, a warning fails the build of its own targets, and its Swift Testing suites pass. -- evidence: 107e74c. CI run 39127260563 on macos-26 (Xcode 26.6, Swift 6.3.3): "Build complete! (39.20s)" and "Test run with 36 tests in 6 suites passed". Locally in vc's slot 16 (Swift 6.4, Xcode 27.1): swift build --build-tests exit 0 with 0 warnings; swift test exit 0, with 32 tests in 5 suites and 4 in 1. Package.swift: swift-tools-version 6.2, .macOS(.v26), and .treatAllWarnings(as: .error) on its four own targets. -- satisfied: yes
+- AC-01.2 (non-test) A GitHub Actions workflow on the macos-26 runners checks the formatting, builds the package and runs its tests for each push to main and each pull request, cancelling a superseded run; its first run, on the first push, is green. -- evidence: .github/workflows/ci.yml at 107e74c, actionlint clean. It runs on push and pull_request to main, with concurrency keyed on the workflow, the event and the ref, and cancel-in-progress. The job runs on macos-26: swift format lint --strict, swift build --build-tests, then swift test --skip-build. Its first run, 39127260563, came from the first push (107e74c to github.com/matthewsinclair/arca_swift at 12:26:04Z) and passed every step, 12:26:08Z to 12:27:30Z. -- satisfied: yes
+- AC-01.3 (non-test) ArcaCore finds an app's config file in its config folder or its bundle, reads it as YAML with every scalar as written, refuses what it cannot read in one line naming the file, the key and the value, and expands {token} templates, naming any token left without a value. ArcaMasthead turns Markdown into HTML through cmark-gfm with GitHub's tables, strikethrough, autolinks and task lists, passing HTML through. -- evidence: Tests/ArcaCoreTests (32 tests in 5 suites) and Tests/ArcaMastheadTests (4 in 1) at 107e74c, green locally in slot 16 and in CI run 39127260563. They follow two critic-swift passes on 18 Oct: the review found 0 critical and 3 warnings, and the test check 0 critical and 1 warning. Each warning was fixed before 107e74c and is pinned by a test: the not-YAML problem with its line and column; a key given twice, whatever its tag; and a broken link or unsearchable folder refused rather than passed over. -- satisfied: yes
+- AC-01.4 (non-test) The repo carries README.md with the icon, CHANGELOG.md, and the MIT LICENSE (hv, 18 Oct 2026: "MIT: Yep"). -- evidence: 107e74c. README.md has the icon from design/icons/arca_swift-icon.svg, the libraries, requirements, adding it, building and testing, design, and licence. CHANGELOG.md follows Keep a Changelog, under Unreleased. LICENSE is arca_notionex's MIT text, byte for byte. hv, in ic's session at 12:06:55Z: "2: MIT: Yep". -- satisfied: yes
+
 ## Acceptance Tests
+
+### WP-01 -- Package skeleton, core and CI (status: Done)
+
+_(no tests in this group)_
 
 ---
 

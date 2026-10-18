@@ -1,0 +1,14 @@
+{
+  "id": "01M57FVBN4N26YTVPYHDZDHYHZ",
+  "ts": "2026-10-18T12:30:10.596Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-01.4"
+  },
+  "payload": {
+    "evidence": "107e74c. README.md has the icon from design/icons/arca_swift-icon.svg, the libraries, requirements, adding it, building and testing, design, and licence. CHANGELOG.md follows Keep a Changelog, under Unreleased. LICENSE is arca_notionex's MIT text, byte for byte. hv, in ic's session at 12:06:55Z: \"2: MIT: Yep\"."
+  }
+}

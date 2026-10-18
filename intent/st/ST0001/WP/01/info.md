@@ -2,7 +2,7 @@
 wp_id: WP-01
 title: Package skeleton, core and CI
 scope: S
-status: WIP
+status: Done
 ---
 
 # WP-01: Package skeleton, core and CI

@@ -1,0 +1,14 @@
+{
+  "id": "01M57FVBM6DGDHH6MSCKSCSQQG",
+  "ts": "2026-10-18T12:30:10.566Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-01.2"
+  },
+  "payload": {
+    "evidence": ".github/workflows/ci.yml at 107e74c, actionlint clean. It runs on push and pull_request to main, with concurrency keyed on the workflow, the event and the ref, and cancel-in-progress. The job runs on macos-26: swift format lint --strict, swift build --build-tests, then swift test --skip-build. Its first run, 39127260563, came from the first push (107e74c to github.com/matthewsinclair/arca_swift at 12:26:04Z) and passed every step, 12:26:08Z to 12:27:30Z."
+  }
+}

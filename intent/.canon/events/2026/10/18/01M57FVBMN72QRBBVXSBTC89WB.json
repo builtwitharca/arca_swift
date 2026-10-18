@@ -1,0 +1,14 @@
+{
+  "id": "01M57FVBMN72QRBBVXSBTC89WB",
+  "ts": "2026-10-18T12:30:10.581Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-01.3"
+  },
+  "payload": {
+    "evidence": "Tests/ArcaCoreTests (32 tests in 5 suites) and Tests/ArcaMastheadTests (4 in 1) at 107e74c, green locally in slot 16 and in CI run 39127260563. They follow two critic-swift passes on 18 Oct: the review found 0 critical and 3 warnings, and the test check 0 critical and 1 warning. Each warning was fixed before 107e74c and is pinned by a test: the not-YAML problem with its line and column; a key given twice, whatever its tag; and a broken link or unsearchable folder refused rather than passed over."
+  }
+}
