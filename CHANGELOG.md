@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-18
+
 ### Added
 
 - The package, for macOS 26 and Swift 6.2 or later. It has one library, `ArcaMasthead`, and the internal target `ArcaCore`, and it depends on Yams for YAML and on swift-cmark for cmark-gfm. A warning in the package's own code fails its build.

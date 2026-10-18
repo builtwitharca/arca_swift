@@ -23,10 +23,10 @@ Shared Swift libraries for macOS menu bar apps. Each app imports only the librar
 ## Adding it to an app
 
 ```swift
-.package(url: "https://github.com/builtwitharca/arca_swift", from: "0.1.0"),
+.package(url: "https://github.com/builtwitharca/arca_swift", .upToNextMinor(from: "0.1.0")),
 ```
 
-Then depend on the library the app uses, eg `.product(name: "ArcaMasthead", package: "arca_swift")`. No release is tagged yet.
+Then depend on the library the app uses, eg `.product(name: "ArcaMasthead", package: "arca_swift")`. Until 1.0 a minor release may change the API, so pin the minor version, as above.
 
 ## masthead.yaml
 
