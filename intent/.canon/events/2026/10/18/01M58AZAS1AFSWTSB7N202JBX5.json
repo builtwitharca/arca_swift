@@ -1,0 +1,15 @@
+{
+  "id": "01M58AZAS1AFSWTSB7N202JBX5",
+  "ts": "2026-10-18T20:24:12.321Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0001"
+  },
+  "payload": {
+    "severity": "low",
+    "title": "The About window is not brought to the front when the masthead row is chosen while it is already open"
+  }
+}
