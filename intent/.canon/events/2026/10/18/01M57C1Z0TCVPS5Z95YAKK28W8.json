@@ -1,0 +1,14 @@
+{
+  "id": "01M57C1Z0TCVPS5Z95YAKK28W8",
+  "ts": "2026-10-18T11:23:52.730Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "arca_swift",
+  "op": "init",
+  "subject": {
+    "type": "project",
+    "id": "arca_swift"
+  },
+  "payload": {
+    "intent_version": "3.2.4"
+  }
+}

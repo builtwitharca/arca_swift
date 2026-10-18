@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="title desc">
+  <title id="title">arca_swift</title>
+  <desc id="desc">A swift rising from an arca, a chest, on an orange tile.</desc>
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF9A4D"/>
+      <stop offset="1" stop-color="#E8432B"/>
+    </linearGradient>
+    <linearGradient id="chest" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#FFE4D6"/>
+    </linearGradient>
+    <clipPath id="chest-shape">
+      <path d="M136 276 V258 C136 222 164 204 200 204 H312 C348 204 376 222 376 258 V276 Z"/>
+      <rect x="136" y="288" width="240" height="132" rx="22"/>
+    </clipPath>
+  </defs>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#tile)"/>
+  <!-- The swift: swept wings and a forked tail, rising from the chest. -->
+  <path fill="#FFFFFF" transform="translate(0 -14)" d="M256 90 C263 90 268 98 270 108 C318 84 376 104 408 170 C366 134 312 128 276 144 L290 186 L256 166 L222 186 L236 144 C200 128 146 134 104 170 C136 104 194 84 242 108 C244 98 249 90 256 90 Z"/>
+  <!-- The arca: a domed lid over its body, two bands, and a clasp across the seam. -->
+  <g clip-path="url(#chest-shape)">
+    <rect x="136" y="200" width="240" height="224" fill="url(#chest)"/>
+    <rect x="170" y="200" width="16" height="224" fill="#FFD2BE"/>
+    <rect x="326" y="200" width="16" height="224" fill="#FFD2BE"/>
+  </g>
+  <rect x="234" y="254" width="44" height="58" rx="12" fill="#C9361F"/>
+  <circle cx="256" cy="279" r="7" fill="#FFFFFF"/>
+  <rect x="253" y="282" width="6" height="14" rx="3" fill="#FFFFFF"/>
+</svg>

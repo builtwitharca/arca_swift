@@ -1,0 +1,15 @@
+{
+  "id": "01M57CA13GHQTHD7F275HA6WPN",
+  "ts": "2026-10-18T11:28:17.008Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "wp.new",
+  "subject": {
+    "type": "wp",
+    "id": "ST0001/03"
+  },
+  "payload": {
+    "scope": "S",
+    "title": "ArcaMasthead: the menu row and the About window"
+  }
+}

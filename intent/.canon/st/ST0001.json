@@ -1,0 +1,112 @@
+{
+  "schema": "intent/thread@3.0",
+  "id": "ST0001",
+  "title": "Shared Swift libraries for the menu bar apps: Masthead, then LogConsole",
+  "slug": "shared-swift-libraries-for-the-menu-bar-apps-mas",
+  "status": "triage",
+  "created": "2026-10-18",
+  "objective": "hv's four menu bar apps (menuz, Gtools.app, Intent.app and Conflab.app) share one top line and About panel, and then one log console, from this public Swift package. Each app imports only what it uses, and what the top line and the About panel say comes from files that change without a rebuild.",
+  "context": "hv, 18 Oct 2026: the four menu bar apps' top lines \"all seem to be subtly different\", so \"normalise this functionality across the four apps into a single codebase that each one uses\".\n\n- **The top line** has two lines: a heading, which is the app's name and version, and a smaller subheading.\n- **It is selectable,** and opens an About panel that renders Markdown or HTML.\n- **Both are configured from files,** so a change needs no recompile.\n- **It is reusable in other Swift projects,** as Arca's first Swift.\n\nhv then folded the log console in: \"Yes. Most definitely. ... And it would have: mastehead, logconsole, etc.\"\n\nhv's calls:\n- macOS only, with Tahoe (macOS 26) as the floor. WebKit's SwiftUI web view needs it.\n- A `masthead.yaml` per app, with a default in the bundle.\n- The About page in a web view, with Markdown through cmark-gfm.\n- This public repo, so CI costs nothing.\n- Each app's heading, subheading and own rows worked out from what it shows today.\n\nMeasured, 18 Oct:\n- All four apps build the row by hand, as a disabled bold 13 pt menu item, from different sources. menuz reads its bundle's stamps, Gtools.app and Intent.app read their CLI's `version`, and Conflab.app shows the signed-in user.\n- All four target macOS 14.0.\n- Gtools.app's and Intent.app's consoles are separate copies that have drifted apart, at about 500 and 690 lines of Swift, and menuz was to get a third.\n- Conflab.app has its own About tab in its Settings window.\n\n`design.md` holds the design as agreed. The work packages build the package first, Masthead and then LogConsole, and each app's adoption is a work package of its own. ic adopts it in menuz and Gtools.app. The Intent and Conflab ICs adopt it from ic's brief, in their own repos and under their own gates.",
+  "body": "",
+  "preamble": "",
+  "wps": [
+    {
+      "seq": 1,
+      "title": "Package skeleton, core and CI",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "The package builds and tests on macOS 26 with the current toolchain. It has a Package.swift with the ArcaMasthead and ArcaLogConsole products and the internal ArcaCore target, with Yams and swift-cmark as dependencies, Swift Testing, a README carrying the icon, and a GitHub Actions workflow that builds and tests every push. ArcaCore reads a config file from the app's config folder or its bundle, and expands `{token}` templates. Size: S.",
+      "body": "",
+      "preamble": ""
+    },
+    {
+      "seq": 2,
+      "title": "ArcaMasthead: the file, its values and Markdown",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "The pure half of the top line:\n- masthead.yaml's schema and its checks, each refusal naming the file, the key and the value;\n- the bundled default and the user's file;\n- the values from the bundle and from the app's provider;\n- the heading and the subheading as text;\n- the About body as HTML, with Markdown going through cmark-gfm.\n\nIt is tested with Swift Testing. Size: S.",
+      "body": "",
+      "preamble": ""
+    },
+    {
+      "seq": 3,
+      "title": "ArcaMasthead: the menu row and the About window",
+      "scope": "M",
+      "status": "not-started",
+      "objective": "The AppKit and SwiftUI half of the top line:\n- the menu item, with the heading as its title, the subheading as its subtitle and the app's icon as its image, enabled, and opening the About window;\n- the About window, as WebKit's SwiftUI web view, with the page's JavaScript off, links opening in the browser, and a stylesheet that follows light and dark mode;\n- the file read again whenever the menu or the window opens.\n\nAn example app target shows both, so they can be seen without an adopter. Size: M.",
+      "body": "",
+      "preamble": ""
+    },
+    {
+      "seq": 4,
+      "title": "menuz adopts ArcaMasthead",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "In Utilz, as a Utilz issue. menuz's identity row becomes the package's row, with menuz's own values from its stamps, and a masthead.yaml and about.md in its bundle and its config folder. The floor moves to macOS 26, and menuz's tests and help are updated. Size: S.",
+      "body": "",
+      "preamble": ""
+    },
+    {
+      "seq": 5,
+      "title": "Gtools.app adopts ArcaMasthead",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "In Gtools. The identity row becomes the package's row, with its version and commit from `gtools version` as today. The CMS status row and the estate flyout stay the app's own. The floor moves to macOS 26, under Gtools' gates. Size: S.",
+      "body": "",
+      "preamble": ""
+    },
+    {
+      "seq": 6,
+      "title": "Intent.app adopts ArcaMasthead",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "In Intent, done by its IC from ic's brief. The identity row becomes the package's row, with its version and commit from `intent version`. The intentd status row stays the app's own. The floor moves to macOS 26, under Intent's gates, and ic reviews the diff against the brief. Size: S.",
+      "body": "",
+      "preamble": ""
+    },
+    {
+      "seq": 7,
+      "title": "Conflab.app adopts ArcaMasthead",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "In Conflab, done by its IC from ic's brief.\n- The heading becomes the app's own version, and the signed-in user becomes the subheading.\n- The conflabd status row stays the app's own, in Gtools' shape.\n- The About tab becomes about.md.\n- The floor moves to macOS 26, under Conflab's gates.\n\nic reviews the diff against the brief. Size: S.",
+      "body": "",
+      "preamble": ""
+    },
+    {
+      "seq": 8,
+      "title": "ArcaLogConsole: review and proposal",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "A review before any code. It measures how Gtools.app's and Intent.app's consoles differ, and what menuz needs. It then proposes LogConsole's shape to hv:\n- its line model and classifier;\n- its ring;\n- its tail runner, which keeps following a file truncated or rotated under it;\n- its window.\n\nSize: S.",
+      "body": "",
+      "preamble": ""
+    },
+    {
+      "seq": 9,
+      "title": "ArcaLogConsole: build",
+      "scope": "M",
+      "status": "not-started",
+      "objective": "LogConsole as hv agreed in WP-08, its pure half tested with Swift Testing. Size: M.",
+      "body": "",
+      "preamble": ""
+    },
+    {
+      "seq": 10,
+      "title": "The apps adopt ArcaLogConsole",
+      "scope": "M",
+      "status": "not-started",
+      "objective": "Gtools.app and Intent.app replace their own consoles with the package's, and menuz gains one: Utilz issue 0072, re-shaped from a copy. Each app works under its own gates. Size: M.",
+      "body": "",
+      "preamble": ""
+    }
+  ],
+  "attachments": [
+    {
+      "path": "design.md",
+      "text": "# ST0001 design: shared Swift libraries for the menu bar apps\n\nAs agreed with hv, 18 Oct 2026.\n\n## The package\n\n- **One Swift package,** `arca_swift`, for macOS 26 and later, in the Swift 6 language mode, built with the current toolchain.\n- **Library products, each imported on its own:**\n  - `ArcaMasthead`: the top line and the About window.\n  - `ArcaLogConsole`: the log console.\n\n  Module names carry the `Arca` prefix because a module name must be unique across an app's dependencies.\n- **One internal target, `ArcaCore`,** holds what both libraries read:\n  - a config file found in the app's config folder or, failing that, in its bundle;\n  - YAML, read through Yams;\n  - `{token}` templates.\n\n  So neither library grows its own reader.\n- **Dependencies:** Yams, and Apple's swift-cmark (cmark-gfm) for Markdown.\n- **A pure core, tested with Swift Testing, and a thin AppKit and SwiftUI layer** that parses, calls and renders.\n- **CI on GitHub Actions' macOS runners,** which are free for a public repo, builds and tests every push. A release is a tag, and the apps pin it.\n\n## ArcaMasthead\n\n### The row\n\n- **One menu item at the top of the app's menu:** the heading as its title in bold, the subheading as its subtitle, and the app's icon as its image. macOS draws it, so highlighting, clicks and the keyboard work as for any other item. A subtitle under an attributed title shows from macOS 15.\n- **It is enabled,** and choosing it opens the About window.\n\n### The file\n\n- **`masthead.yaml` lives in the app's config folder** (eg `~/.config/<app>/`). Without one, the default the app ships in its bundle is used. Nothing in the bundle is edited, because that breaks the app's signature.\n- **A sketch of the file:**\n\n  ```yaml\n  heading: \"{name} {version}\"\n  subheading: \"{commit} · {kind}\"\n  icon: app\n  about:\n    body: about.md # or about.html\n    css: about.css # optional\n  ```\n\n- **Values:**\n  - The bundle gives `{name}`, `{version}`, `{commit}` and `{kind}`.\n  - The app adds its own, eg `{status}` or `{user}`, through a provider that is asked at each menu open.\n  - A value the app cannot give yet leaves the heading as the app's name alone.\n- **The file is read again** when the menu or the About window opens, if it has changed, so nothing watches it.\n- **A file that fails keeps the bundled default,** and the subheading says what is wrong. The app's log hook gets the same line.\n\n### The About window\n\n- **A window holding WebKit's SwiftUI web view** (`WebPage`), which needs macOS 26.\n- **Markdown becomes HTML through cmark-gfm.** HTML inside Markdown passes through, so `about.html` and `about.md` take one path.\n- **The page's JavaScript is off.** A link opens in the browser, the default stylesheet follows light and dark mode, and `{tokens}` expand in the body.\n- **An app with no Dock icon is brought forward** to show the window.\n\n### The four apps\n\n| App         | Heading             | Subheading                             | Stays the app's own rows                                     |\n| ----------- | ------------------- | -------------------------------------- | ------------------------------------------------------------ |\n| menuz       | `menuz <version>`   | `<commit> · <kind>`                    | none                                                         |\n| Gtools.app  | `gtools <version>`  | `<commit> · <kind>`                    | its CMS status row, which opens the site; its estate flyout  |\n| Intent.app  | `intent <version>`  | `<commit> · <kind>`                    | its intentd status row, which opens the web face             |\n| Conflab.app | `conflab <version>` | the signed-in user, or `not signed in` | its conflabd status row, coloured by state, in Gtools' shape |\n\n- **Gtools.app's and Intent.app's version and commit come from their CLI** (`gtools version`, `intent version`), as today. Until the CLI answers, the heading is the app's name.\n- **The build word is always named:** `release` or `dev`.\n- **Conflab.app's About tab** in its Settings window becomes its `about.md`.\n\n## ArcaLogConsole\n\nIt is reviewed before any code (WP-08), as Masthead was. The review measures how Gtools.app's and Intent.app's consoles differ, and covers:\n\n- the CLI runs whose only output is the console, eg Run Doctor and Rebuild Search Index;\n- a daemon's log, tailed while the window is open;\n- menuz's run log, which must keep being followed when it is truncated or rotated under the tail.\n\n## The work\n\n- **ic builds the package** and adopts it in menuz and Gtools.app.\n- **The Intent and Conflab ICs adopt it from ic's brief,** in their own repos and under their own gates, and ic reviews each adoption against its brief.\n- **Masthead comes first, then LogConsole.**\n",
+      "bytes": 4726,
+      "sha256": "6643230a39637d8b035d528cf234cf2e66c5349efdec933eaaed2ea771fcbd0e"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "01M57C7R21TT60J1HH8SYNCZC1",
+  "ts": "2026-10-18T11:27:02.209Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "st.new",
+  "subject": {
+    "type": "thread",
+    "id": "ST0001"
+  },
+  "payload": {
+    "title": "Shared Swift libraries for the menu bar apps: Masthead, then LogConsole"
+  }
+}

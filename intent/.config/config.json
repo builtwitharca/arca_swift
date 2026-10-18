@@ -1,0 +1,12 @@
+{
+  "intent_version": "3.2.4",
+  "project_name": "arca_swift",
+  "author": "matts",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "created": "2026-10-18T11:23:52.730Z",
+  "intent_dir": "intent",
+  "languages": ["swift"],
+  "backup": {
+    "schedule": "daily"
+  }
+}
