@@ -2,7 +2,7 @@
 wp_id: WP-05
 title: Gtools.app adopts ArcaMasthead
 scope: S
-status: Not Started
+status: Done
 ---
 
 # WP-05: Gtools.app adopts ArcaMasthead

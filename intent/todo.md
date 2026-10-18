@@ -13,7 +13,7 @@ A DOING / TODO / DONE view, projected from steel-thread and work-package status:
   - [x] 02: ArcaMasthead: the file, its values and Markdown
   - [x] 03: ArcaMasthead: the menu row and the About window
   - [ ] 04: menuz adopts ArcaMasthead
-  - [ ] 05: Gtools.app adopts ArcaMasthead
+  - [x] 05: Gtools.app adopts ArcaMasthead
   - [ ] 06: Intent.app adopts ArcaMasthead
   - [ ] 07: Conflab.app adopts ArcaMasthead
   - [x] 08: ArcaLogConsole: review and proposal

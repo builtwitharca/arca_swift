@@ -50,7 +50,7 @@
       "seq": 5,
       "title": "Gtools.app adopts ArcaMasthead",
       "scope": "S",
-      "status": "not-started",
+      "status": "done",
       "objective": "In Gtools, by its IC. The identity row becomes the package's row, with its version and commit from `gtools version` as today. The CMS status row and the estate flyout stay the app's own. The floor moves to macOS 26, under Gtools' gates. Size: S.",
       "body": "",
       "preamble": ""
@@ -251,6 +251,15 @@
       "state": {
         "is": "satisfied",
         "evidence": "04f8589: README.md's section The row and the About window (one MastheadRow, a menu item the menu keeps, made with the app's name, its bundle, the values it names and its log hook, and put at the top of its menu; what the About page allows: its policy, images by file name found user-first, links to the browser; the example app) and CHANGELOG.md's three bullets (MastheadRow, the About window, ArcaMastheadExample). CI run 39148967192 on 04f8589 was green on macos-26 (Xcode 26.6, Swift 6.3.3): Build complete! (67.27s) and Test run with 142 tests in 19 suites passed."
+      }
+    },
+    {
+      "id": "AC-05.1",
+      "text": "Gtools.app's menu row is ArcaMasthead's, from the package pinned up to the next minor from 0.1.0: Gtools and the CLI's version over its commit, kept across rebuilt menus, opening the About window, which replaces Settings' About tab; the CMS status row and the Estate flyout stay the app's own, and the floor is macOS 26, under Gtools' gates.",
+      "kind": "non-test",
+      "state": {
+        "is": "satisfied",
+        "evidence": "Gtools issue 0106, landed as Gtools 1e747c3c (closed in f5f7dd7e) on vc's landing word after hv's \"approved\" in ic's session: gtools app test green twice (83 tests in 14 suites, the Masthead suite 7), one bin/gtools test on the landed bytes (Result: 563 passed, Rust 227), critic-swift's read with its four findings fixed, and vc's read faithful. hv then installed it and looked, in ic's session (18 Oct 2026): \"Yay.\", with screenshots of the menu (Gtools 0.5.0 over 210561e4, with the glyph) and of the About window (the logo, 0.5.0 (build 1725, 210561e4), the source tree and the links)."
       }
     },
     {

@@ -46,7 +46,7 @@ Measured, 18 Oct:
 | WP-02 | ArcaMasthead: the file, its values and Markdown | S    | Done        |
 | WP-03 | ArcaMasthead: the menu row and the About window | M    | Done        |
 | WP-04 | menuz adopts ArcaMasthead                       | S    | Not Started |
-| WP-05 | Gtools.app adopts ArcaMasthead                  | S    | Not Started |
+| WP-05 | Gtools.app adopts ArcaMasthead                  | S    | Done        |
 | WP-06 | Intent.app adopts ArcaMasthead                  | S    | Not Started |
 | WP-07 | Conflab.app adopts ArcaMasthead                 | S    | Not Started |
 | WP-08 | ArcaLogConsole: review and proposal             | S    | Done        |
