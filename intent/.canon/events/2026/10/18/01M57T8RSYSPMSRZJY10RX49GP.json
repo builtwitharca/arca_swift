@@ -1,0 +1,14 @@
+{
+  "id": "01M57T8RSYSPMSRZJY10RX49GP",
+  "ts": "2026-10-18T15:32:15.806Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-02.6"
+  },
+  "payload": {
+    "evidence": "79762d3: README.md's masthead.yaml section (the file's sketch, its keys, and its tokens with the Info.plist key each comes from, ArcaCommit and ArcaKind among them) and CHANGELOG.md's Unreleased entry for masthead.yaml; on GitHub, where CI run 39140780658 is green (88 tests in 12 suites)"
+  }
+}

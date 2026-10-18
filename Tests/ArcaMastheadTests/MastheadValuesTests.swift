@@ -4,6 +4,7 @@ import Testing
 
 /// The values a masthead's tokens take (design.md "The file"): the bundle's,
 /// then those the app names and has.
+/// Acceptance test AT-02.2, in ST0001's acceptance.md.
 @Suite("Masthead values")
 struct MastheadValuesTests {
   static var info: [String: Any] {

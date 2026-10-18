@@ -6,6 +6,7 @@ import Testing
 @testable import ArcaMasthead
 
 /// The About window's body and stylesheet (design.md "The About window").
+/// Acceptance test AT-02.5, in ST0001's acceptance.md.
 @Suite("About content")
 struct AboutContentTests {
   /// What the app has: a user whose name needs escaping. It names a status

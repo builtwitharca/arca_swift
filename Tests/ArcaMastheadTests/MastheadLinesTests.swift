@@ -6,6 +6,7 @@ import Testing
 /// The heading and the subheading as text (design.md "The file"): their
 /// templates with the values in, each line on its own, and a token that
 /// names no value refused.
+/// Acceptance test AT-02.3, in ST0001's acceptance.md.
 @Suite("Masthead lines")
 struct MastheadLinesTests {
   /// The lines a file with `heading` and `subheading` makes, the app naming

@@ -5,6 +5,7 @@ import Testing
 
 /// masthead.yaml checked against its schema (design.md "The file"), each
 /// refusal naming the file, the key and the value.
+/// Acceptance test AT-02.1, in ST0001's acceptance.md.
 @Suite("Masthead file")
 struct MastheadFileTests {
   /// The values every app's bundle gives.

@@ -23,7 +23,7 @@
       "seq": 2,
       "title": "ArcaMasthead: the file, its values and Markdown",
       "scope": "S",
-      "status": "wip",
+      "status": "done",
       "objective": "The pure half of the top line:\n- masthead.yaml's schema and its checks, each refusal naming the file, the key and the value;\n- the bundled default and the user's file;\n- the values from the bundle and from the app's provider;\n- the heading and the subheading as text;\n- the About body as HTML, with Markdown going through cmark-gfm.\n\nIt is tested with Swift Testing. Size: S.",
       "body": "",
       "preamble": ""
@@ -183,7 +183,8 @@
       "text": "README.md says how masthead.yaml is written, which values its tokens take and where each comes from, the ArcaCommit and ArcaKind stamps an app's Info.plist carries among them. CHANGELOG.md says what this work package added.",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "satisfied",
+        "evidence": "79762d3: README.md's masthead.yaml section (the file's sketch, its keys, and its tokens with the Info.plist key each comes from, ArcaCommit and ArcaKind among them) and CHANGELOG.md's Unreleased entry for masthead.yaml; on GitHub, where CI run 39140780658 is green (88 tests in 12 suites)"
       }
     }
   ],

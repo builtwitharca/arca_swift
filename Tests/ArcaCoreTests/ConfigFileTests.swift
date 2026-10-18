@@ -6,6 +6,7 @@ import Testing
 
 /// Finding a config file in the app's config folder or its bundle, and
 /// reading it (design.md "The file").
+/// Acceptance test AT-02.6, in ST0001's acceptance.md.
 @Suite("Config file")
 struct ConfigFileTests {
   static let bundled = "/Applications/Example.app/Contents/Resources/masthead.yaml"

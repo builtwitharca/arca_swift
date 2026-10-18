@@ -8,6 +8,7 @@ import Testing
 /// The user's masthead.yaml or the bundled default (design.md "The file"): a
 /// refused copy leaves the next in use, and the subheading says what was
 /// wrong.
+/// Acceptance test AT-02.4, in ST0001's acceptance.md.
 @Suite("Masthead load")
 struct MastheadLoadTests {
   static let bundled = "heading: \"{name} {version}\"\nsubheading: \"{commit} · {kind}\"\nabout:\n  body: about.md\n"
