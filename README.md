@@ -90,12 +90,12 @@ A link to an `http`, `https` or `mailto` address opens in the browser. Every oth
 ## Building and testing
 
 ```sh
-swift build
-swift test
+ARCA_SWIFT_STRICT=1 swift build
+ARCA_SWIFT_STRICT=1 swift test
 swift format lint --strict --recursive Package.swift Sources Tests
 ```
 
-A warning in the package's own code fails the build. CI runs the same three steps on every push and pull request, on GitHub's macOS 26 runners.
+With `ARCA_SWIFT_STRICT` set, to any value, a warning in the package's own code fails the build. Set it on each command, as above, rather than exporting it: the manifest reads it from the environment of whatever builds the package, and an app built from a shell that exports it could get the setting too. CI runs the same three steps with it set, on every push and pull request, on GitHub's macOS 26 runners. CI also builds an app that depends on the package without it, with xcodebuild and Xcode 26.6, as the apps build it.
 
 ## Design
 

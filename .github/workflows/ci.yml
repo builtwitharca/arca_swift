@@ -24,6 +24,9 @@ jobs:
     # macOS 26 is the package's floor.
     runs-on: macos-26
     timeout-minutes: 20
+    # A warning in the package's own targets fails the build (Package.swift).
+    env:
+      ARCA_SWIFT_STRICT: 1
     steps:
       - uses: actions/checkout@v7
 
@@ -35,9 +38,55 @@ jobs:
       - name: Check formatting
         run: swift format lint --strict --recursive Package.swift Sources Tests
 
-      # A warning in the package's own targets fails the build (Package.swift).
       - name: Build
         run: swift build --build-tests
 
       - name: Test
         run: swift test --skip-build
+
+  adopter:
+    # An app builds arca_swift as a package dependency, through Xcode's build
+    # system, as Gtools.app, menuz, Intent.app and Conflab.app do. The test job
+    # builds the package as the root, so it cannot see a setting that breaks
+    # only a dependency's build (issue 0002).
+    runs-on: macos-26
+    timeout-minutes: 20
+    # Xcode 26.6 by name, the Xcode the job went red and green on. The image's
+    # default moves to newer releases, and on Xcode 27 the job would pass even
+    # on 0.1.0's manifest, since Swift 6.4 drops the setting for a dependency.
+    # On an image without 26.6, Show the toolchain fails.
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # The adopter clones this checkout by URL, which a shallow clone refuses.
+          fetch-depth: 0
+
+      - name: Show the toolchain
+        run: xcodebuild -version
+
+      # A package that names arca_swift by URL and revision, as the apps'
+      # projects name it by URL and version, and imports ArcaMasthead.
+      - name: Write the adopter
+        run: |
+          mkdir -p "$RUNNER_TEMP/adopter/Sources/Adopter"
+          cat > "$RUNNER_TEMP/adopter/Package.swift" <<EOF
+          // swift-tools-version: 6.2
+          import PackageDescription
+
+          let package = Package(
+            name: "Adopter",
+            platforms: [.macOS(.v26)],
+            dependencies: [.package(url: "file://$GITHUB_WORKSPACE", revision: "$GITHUB_SHA")],
+            targets: [
+              .executableTarget(name: "Adopter", dependencies: [.product(name: "ArcaMasthead", package: "arca_swift")])
+            ]
+          )
+          EOF
+          echo 'import ArcaMasthead' > "$RUNNER_TEMP/adopter/Sources/Adopter/main.swift"
+          cat "$RUNNER_TEMP/adopter/Package.swift"
+
+      - name: Build the adopter
+        working-directory: ${{ runner.temp }}/adopter
+        run: xcodebuild -scheme Adopter -destination 'platform=macOS' -derivedDataPath "$RUNNER_TEMP/derived" build

@@ -6,12 +6,20 @@
 // ArcaLogConsole's product joins with its code (WP-09). ArcaTestSupport holds
 // what the test targets share, and no product has it. ArcaMastheadExample is
 // an app that shows the row and the About window, built here and by CI, and
-// in no product. A warning fails the build of this package's own targets;
-// SwiftPM drops the setting when an app builds the package as a dependency
-// (SE-0480).
+// in no product.
+//
+// A warning fails the build of the package's own targets only when
+// ARCA_SWIFT_STRICT is set, to any value. CI's test job and the README's build
+// and test commands set it, and an app that builds the package as a dependency
+// does not. The setting, the compiler's -warnings-as-errors, must not reach an
+// app's build: Xcode 26.6's Swift 6.3.3 passes it beside the
+// -suppress-warnings it gives a dependency, and the compiler refuses the pair
+// (issue 0002). Xcode 27's Swift 6.4 drops the setting for a dependency, as
+// SE-0480 specifies.
 import PackageDescription
 
-let settings: [SwiftSetting] = [.treatAllWarnings(as: .error)]
+let strict = Context.environment["ARCA_SWIFT_STRICT"] != nil
+let settings: [SwiftSetting] = strict ? [.treatAllWarnings(as: .error)] : []
 
 let package = Package(
   name: "arca_swift",
