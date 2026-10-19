@@ -13,8 +13,9 @@
 /// line whatever its text holds.
 struct ConsoleBuffer: Sendable {
   /// One change to the view's text: the ranges to remove, in UTF-16 units of
-  /// the text before the change, in order and merged where they meet; then
-  /// the lines to add at the end, each as `rendered(_:)`.
+  /// the text before the change, merged where they meet, and last first, so
+  /// that the view removing them in turn finds each where it was counted;
+  /// then the lines to add at the end, each as `rendered(_:)`.
   struct Edit: Equatable, Sendable {
     var removed: [Range<Int>] = []
     var added: [ConsoleLine] = []
@@ -74,6 +75,7 @@ struct ConsoleBuffer: Sendable {
       offset += length
       index = leaver + 1
     }
+    edit.removed.reverse()
     let gone = Set(leaving)
     edit.added = (before..<lines.count).filter { !gone.contains($0) && lengths[$0] > 0 }.map {
       lines[$0]

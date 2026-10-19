@@ -65,6 +65,16 @@ struct ConsoleBufferTests {
     #expect(buffer.lines.map(\.text) == ["doctor", "GET /2"])
   }
 
+  @Test("two ranges cut from the view come last first, so each is still where the buffer counted it")
+  func twoRanges() {
+    var buffer = ConsoleBuffer(capacity: 2)
+    _ = buffer.showQuiet(true)
+    _ = buffer.append(Self.lines(["q1", "q2"], kind: .quiet) + Self.lines(["a", "b"]))
+    let next = Self.lines(["q3"], kind: .quiet) + Self.lines(["c"])
+    #expect(buffer.append(next) == ConsoleBuffer.Edit(removed: [6..<8, 0..<3], added: next))
+    #expect(buffer.lines.map(\.text) == ["q2", "b", "q3", "c"])
+  }
+
   @Test("a line whose text holds a newline leaves the view as one line")
   func newlineInside() {
     var buffer = ConsoleBuffer(capacity: 1)

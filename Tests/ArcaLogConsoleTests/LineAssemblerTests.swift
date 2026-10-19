@@ -4,7 +4,8 @@ import Testing
 
 /// Bytes into lines (design.md "ArcaLogConsole", one line assembler for a file
 /// and a command alike): split on 0x0A, a fragment held until its newline,
-/// bad bytes shown as U+FFFD, and the fragment given up as a line at the end.
+/// bad bytes shown as U+FFFD, the fragment given up as a line at the end, and
+/// no line longer than the limit.
 /// Acceptance test AT-09.3, in ST0001's acceptance.md.
 @Suite("The line assembler")
 struct LineAssemblerTests {
@@ -49,5 +50,23 @@ struct LineAssemblerTests {
     #expect(assembler.flush() == "last line, no newline")
     #expect(assembler.flush() == nil)
     #expect(assembler.lines(Self.bytes("next\n")) == ["next"], "the flushed fragment does not start the next line")
+  }
+
+  @Test("bytes with no newline past the limit are given up in pieces of it, so what is held stays bounded")
+  func pieces() {
+    var assembler = LineAssembler(limit: 4)
+    #expect(assembler.lines(Self.bytes("abcdefghij")) == ["abcd", "efgh"])
+    #expect(assembler.flush() == "ij", "only the rest is held")
+    #expect(LineAssembler(limit: 4).lines(Self.bytes("abcdefghij\n")) == ["abcd", "efgh", "ij"], "a whole line too")
+    var bytewise = LineAssembler(limit: 4)
+    let lines = Self.bytes("abcdefghij\n").flatMap { bytewise.lines([$0]) }
+    #expect(lines == ["abcd", "efgh", "ij"], "the same pieces, however the bytes arrive")
+  }
+
+  @Test("a piece ends on a character's boundary, so a character is never split across two lines")
+  func pieceBoundary() {
+    var assembler = LineAssembler(limit: 4)
+    #expect(Self.bytes("abcéd").count == 6)
+    #expect(assembler.lines(Self.bytes("abcéd\n")) == ["abc", "éd"])
   }
 }

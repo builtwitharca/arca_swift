@@ -31,6 +31,12 @@ public struct ConsoleLine: Sendable, Equatable {
   public static func marker(_ text: String, source: ConsoleSource = .app) -> ConsoleLine {
     ConsoleLine(text: markerPrefix + text, kind: .marker, source: source)
   }
+
+  /// `texts` as lines from `source`, each of the kind `classify` gives it: the
+  /// one way a file's or a command's texts become lines.
+  static func lines(_ texts: [String], source: ConsoleSource, classify: ConsoleClassifier) -> [ConsoleLine] {
+    texts.map { ConsoleLine(text: $0, kind: classify($0), source: source) }
+  }
 }
 
 /// The id of one of a console's sources: one for each file or command the app

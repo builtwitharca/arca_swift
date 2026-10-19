@@ -25,14 +25,15 @@ public struct ConsoleTheme {
   }
 
   /// The library's own: the system's monospaced font at 12 points; the text
-  /// colour for a log line, red for an error, orange for a warning, the accent
-  /// colour for a marker, and a dim grey for a quiet line. They are AppKit's
-  /// system colours, so they follow light and dark mode, and an error and a
-  /// marker never share a colour.
+  /// colour for a log line, red for an error, orange for a warning, blue for
+  /// a marker, and a dim grey for a quiet line. They are AppKit's system
+  /// colours, so they follow light and dark mode. A marker's blue is fixed
+  /// rather than the user's accent colour, which can be red or orange, so a
+  /// marker never takes an error's or a warning's colour.
   @MainActor public static var standard: ConsoleTheme {
     ConsoleTheme(
       font: .monospacedSystemFont(ofSize: 12, weight: .regular), background: .textBackgroundColor,
-      log: .textColor, error: .systemRed, warning: .systemOrange, marker: .controlAccentColor,
+      log: .textColor, error: .systemRed, warning: .systemOrange, marker: .systemBlue,
       quiet: .tertiaryLabelColor)
   }
 

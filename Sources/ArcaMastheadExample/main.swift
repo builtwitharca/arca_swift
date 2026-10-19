@@ -15,7 +15,9 @@ import ArcaMasthead
 @MainActor
 final class Example: NSObject, NSApplicationDelegate {
   private var status: NSStatusItem?
-  private let console = LogConsole(title: "arca-example console")
+  // Lazy, so it is made on the main actor at first use rather than in the
+  // initialiser NSObject gives the class.
+  private lazy var console = LogConsole(title: "arca-example console")
   private let log = FileManager.default.temporaryDirectory.appendingPathComponent(
     "arca-example.log"
   ).path
@@ -65,7 +67,10 @@ final class Example: NSObject, NSApplicationDelegate {
   /// quiet request line every second, a warning every fifth and an error
   /// every seventh.
   private func startLogging() {
-    FileManager.default.createFile(atPath: log, contents: nil)
+    guard FileManager.default.createFile(atPath: log, contents: nil) else {
+      console.note("cannot make \(log), so there is no log to follow")
+      return
+    }
     console.follow(file: log, as: ConsoleSource("arca-example.log"), classify: Self.classify)
     console.note("following \(log)")
     ticking = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
@@ -122,7 +127,10 @@ final class Example: NSObject, NSApplicationDelegate {
         try FileManager.default.removeItem(atPath: log + ".1")
       }
       try FileManager.default.moveItem(atPath: log, toPath: log + ".1")
-      FileManager.default.createFile(atPath: log, contents: nil)
+      guard FileManager.default.createFile(atPath: log, contents: nil) else {
+        console.note("rotated \(log) to \(log).1, but cannot make a new \(log)")
+        return
+      }
       console.note("rotated \(log) to \(log).1")
     } catch {
       console.note("cannot rotate \(log): \(error.localizedDescription)")

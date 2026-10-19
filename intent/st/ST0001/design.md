@@ -99,7 +99,7 @@ It was reviewed before any code (WP-08), as Masthead was. The review read Gtools
   - The kinds are log, error, warning, marker and quiet. Quiet lines are dimmed, and hidden when the app asks.
   - A line's source is an id the app gives, one for each file or command it follows, so a window can show several sources and replace one source's lines.
 - **The classifier is the app's,** `(String) -> Kind`, since each daemon's log has its own tokens. The library gives two pieces: a start-of-line matcher for `error:`, `caused by:`, `warning:` and `remedy:`, and a skip of one leading RFC 3339 timestamp.
-- **The ring:** bounded, 5000 lines by default, with clear() and the removal of one source's lines. WP-09 decides whether the capacity is per source or shared, since a shared ring lets a busy source evict a quiet one's lines. The view counts lines, not newline runs.
+- **The ring:** bounded, 5000 lines by default, with clear() and the removal of one source's lines. WP-09 was to decide whether the capacity is per source or shared, since a shared ring lets a busy source evict a quiet one's lines: it keeps one buffer, with the quiet lines and the rest each bounded apart (see "As built"). The view counts lines, not newline runs.
 - **The sources:**
   - **A file the app names, followed in-process.** A dispatch source watches the file and its directory, as menuz's config watcher does, and the file's identity and size are checked at each event.
     - A truncated file is read again from the start.
@@ -122,14 +122,38 @@ It was reviewed before any code (WP-08), as Masthead was. The review read Gtools
   - A "show quiet lines" toggle filters in the view.
 - **Tests:** Swift Testing.
   - The line model, the ring and the classifier helpers.
-  - The file source, against temporary files: an append; a truncation; a truncation then a short append; a rename with the new file a moment later; a log missing at open and created later; a character split across two reads; and a last line with no newline.
-  - The runner, against a stub launcher.
+  - The file source, against temporary files: an append; a truncation; a truncation then a short append; a rename with the new file a moment later; a log missing at open and created later; a character split across two reads; and a last line with no newline. WP-09 added: a truncation that gives up the fragment held; a rename whose new file is there by the event; a log whose folders are missing at open; a replay and a read pass bounded by the window; a failure said once; and the change each event decides, as a pure function.
+  - The runner, against a stub launcher, and the process launcher against real children. WP-09 added: a signal; output a started process holds open; a cancelled run; dropped lines; and a followed command.
   - The window, by eye in an example app.
 - **Its release is 0.2.0,** since it adds a product. An app moves its pin to `.upToNextMinor(from: "0.2.0")` when it adopts it.
 - **The adoptions (WP-10):**
   - Gtools.app follows each site's log as a file source, or `gtools cms logs` as a command source, with its own classifier and its Verbose as quiet lines. Its console keeps following across a `cms start` that renames a log over 1 MB.
   - Intent.app runs `intent daemon logs --follow` as a command source.
   - menuz follows menuz.log as a file source, with no runs.
+
+### As built (WP-09)
+
+- **The buffer:** one buffer for all of a console's sources. Its quiet lines and the rest are each kept to the capacity apart, the oldest of each leaving first, so a console holds up to twice the capacity.
+  - One ring for all lines would let a busy source's hidden request lines push a command's output out of a shared console, as Gtools.app's would be. Keeping the quiet lines apart stops that, at the cost of the second capacity.
+  - The buffer gives the view one edit for each batch: the ranges it removes, last first, then the lines it adds. The order of the view's changes is so the buffer's, under test, rather than left to AppKit. A quiet line that leaves while quiet lines show is cut from inside the text.
+- **The classifier's pieces:** `ConsoleClassify.token` also reads `» ` as a marker, and matches `error:`, `caused by:`, `warning:` and `remedy:` after an indent of spaces or tabs. Both are ported from Intent's console, so a log line that opens with `» ` takes the marker colour. `unstamped` skips one RFC 3339 timestamp, with `Z` or an offset.
+- **The file source:**
+  - The folder's source watches the nearest folder there is on the way to the file, so a log whose folders are not made yet is picked up too. Each source looks again once it is registered, for what changed before it could see it.
+  - Each event's change is decided by one pure function, `FileChange.decide`, from the identity of the file open, the identity of the file at the path, the open file's size, and how far it has been read.
+  - Each read pass is bounded by the read window, 256 KiB, as the replay is. When more lies ahead, as in a large new file, the pass reads the window's end of it alone, from the first line that starts there, and a marker line says how many bytes it passed over. No line is longer than 256 KiB: a longer run with no newline arrives in pieces.
+  - A failure other than a file not there yet, such as a folder that cannot be read, is said as an error line, once while it lasts.
+  - The reads, the replay included, happen on the follower's own queue, and the console takes each batch on the main queue, in order.
+- **The command source:**
+  - A run and a followed command share one frame: `» ` and the label, then the lines, then `» exit N · 1.2s`, or `» killed by signal N · 1.2s` for a child a signal ended, for which `run` gives 128 and the signal, as a shell does.
+  - At most 1024 reads of output wait for a console that has fallen behind. Past them the oldest are dropped and counted, and the console says `» N lines dropped`.
+  - A run always ends. Two seconds after the child ends, output that a process it started still holds open is no longer read, a warning line says so, and the run ends.
+  - A cancelled run stops its child, writes `» cancelled` and throws CancellationError. A console that stops reading a command, or is let go, stops it too.
+- **The window:** a marker is blue, a fixed system colour, since the user's accent colour can be an error's red or a warning's orange. Its keys ignore Caps Lock.
+- **The public surface:** `LogConsole`; the line model, `ConsoleLine` and `ConsoleSource`; and the classifier and its pieces, `ConsoleClassifier` and `ConsoleClassify`, which every app uses. Then, so an app or a test can give its own launcher, as the tests do: `ConsoleCommand`, `CommandEvent`, `LaunchedCommand`, `CommandLauncher` and `CommandLaunch`. `ConsoleError`, for what a run throws. And `ConsoleTheme`, for the app's own theme. The buffer, the file follower, the line assembler, the frame and the window are internal.
+- **The limits:**
+  - A truncation followed by a write that reaches past the old offset before the event is read reads as an append, so the start of the new content is lost.
+  - Lines written to a renamed file after its rename's event are not read, since the old file is drained once and closed. WP-10's Gtools adoption therefore stops the old site before `cms start` renames its log.
+  - While the reader has scrolled up and the console is full, each batch cuts lines from the top of the text, so the lines in view move up.
 
 ## The work
 

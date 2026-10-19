@@ -1,0 +1,14 @@
+{
+  "id": "01M59V8NHJKXZQPHQHR8HYP53Y",
+  "ts": "2026-10-19T10:28:09.907Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-09.2"
+  },
+  "payload": {
+    "text": "A console keeps its lines in one bounded buffer, 5000 by default. The quiet lines and the rest are each kept to the capacity apart, the oldest of each leaving first, so a quiet line never pushes out one that shows. One source's lines can be removed with the rest kept in order, and the buffer cleared. Each batch gives the view one edit, the ranges it removes, last first, and the lines it adds, counting lines rather than newline runs: a line holding a newline leaves as one line, a hidden line takes no text, and a quiet line that leaves while quiet lines show is cut from inside the text."
+  }
+}

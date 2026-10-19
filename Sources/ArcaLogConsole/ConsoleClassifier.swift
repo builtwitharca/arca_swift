@@ -7,13 +7,13 @@ public typealias ConsoleClassifier = @Sendable (String) -> ConsoleLine.Kind
 public enum ConsoleClassify {
   /// The kind the start of `line` names, or nil when it names none. One
   /// leading timestamp is skipped first (`unstamped`). Then `» ` is a marker;
-  /// and, after any indent, `error:` and `caused by:` are errors, and
-  /// `warning:` and `remedy:` are warnings, since a CLI prints an error's
-  /// causes and remedy indented under it.
+  /// and, after any indent of spaces or tabs, `error:` and `caused by:` are
+  /// errors, and `warning:` and `remedy:` are warnings, since a CLI prints an
+  /// error's causes and remedy indented under it.
   public static func token(_ line: String) -> ConsoleLine.Kind? {
     let rest = unstamped(line)
     if rest.hasPrefix(ConsoleLine.markerPrefix) { return .marker }
-    let body = rest.drop(while: { $0 == " " })
+    let body = rest.drop(while: { $0 == " " || $0 == "\t" })
     if body.hasPrefix("error:") || body.hasPrefix("caused by:") { return .error }
     if body.hasPrefix("warning:") || body.hasPrefix("remedy:") { return .warning }
     return nil

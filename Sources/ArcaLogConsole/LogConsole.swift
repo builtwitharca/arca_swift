@@ -22,27 +22,22 @@ public final class LogConsole {
   private var tokens = 0
   private var window: ConsoleWindowController?
 
-  private enum Follow {
-    case file(FileFollower)
-    case command(LaunchedCommand, Task<Void, Never>)
-  }
-
   /// The label of the command running now, or nil.
   public private(set) var running: String?
 
   /// The lines the console keeps, oldest first.
-  public var lines: [ConsoleLine] { buffer.lines }
+  var lines: [ConsoleLine] { buffer.lines }
 
   /// The lines the window shows, oldest first.
   var shownLines: [ConsoleLine] { buffer.shown }
 
   /// Whether the quiet lines show. The window's toggle sets it, and so may
-  /// the app.
+  /// the app, whose setting the toggle then shows.
   public var showsQuietLines: Bool {
     get { buffer.showsQuiet }
     set {
       let shown = buffer.showQuiet(newValue)
-      window?.reload(shown)
+      window?.showQuiet(newValue, shown: shown)
     }
   }
 
@@ -58,62 +53,62 @@ public final class LogConsole {
     self.now = now
   }
 
+  deinit {
+    // A console let go while it follows stops what it follows, or a
+    // command's child would run on.
+    for entry in followed.values { entry.follow.end() }
+  }
+
   // MARK: - Commands
 
   /// Runs `command`, its lines from `source`, or from the command's own source
-  /// when none is named, framed by `» ` and its label and by
-  /// `» exit N · 1.2s`, and gives its exit status.
+  /// when none is named, framed by `» ` and its label and by `» exit N · 1.2s`
+  /// (`CommandFrame`), and gives its exit status, or, for a child a signal
+  /// ended, 128 and the signal, as a shell gives it.
   ///
   /// **A NON-ZERO EXIT IS NOT THROWN:** the command's own lines say what went
   /// wrong. **ONE AT A TIME, REFUSED RATHER THAN QUEUED:** a second run while
   /// one goes throws `busy`, naming the first, before it writes anything. A
   /// command that cannot launch, or whose output ends with no exit status,
-  /// throws too, after its reason and a `» failed` marker.
+  /// throws too, after its reason and a `» failed` marker. **A CANCELLED RUN
+  /// STOPS ITS CHILD,** then writes `» cancelled` and throws
+  /// CancellationError.
   @discardableResult
   public func run(
     _ command: ConsoleCommand, as source: ConsoleSource? = nil,
     classify: @escaping ConsoleClassifier = ConsoleClassify.standard
   ) async throws -> Int32 {
-    let source = source ?? ConsoleSource(command.label)
     if let running { throw ConsoleError.busy(running) }
     running = command.label
     defer { running = nil }
-    append([.marker(command.label, source: source)])
-    let started = now()
+    var frame = CommandFrame(
+      label: command.label, source: source ?? ConsoleSource(command.label), classify: classify, started: now())
+    append([frame.opening])
     let launched: LaunchedCommand
     do {
       launched = try launcher(command)
     } catch {
-      append([
-        ConsoleLine(text: error.localizedDescription, kind: .error, source: source),
-        .marker("failed", source: source),
-      ])
+      append(frame.failed(error))
       throw error
     }
     var status: Int32?
-    for await event in launched.events {
-      switch event {
-      case .lines(let texts):
-        append(texts.map { ConsoleLine(text: $0, kind: classify($0), source: source) })
-      case .exited(let code): status = code
+    await withTaskCancellationHandler {
+      for await event in launched.events {
+        let taken = frame.take(event, dropped: launched.droppedLines(), now: now)
+        append(taken.lines)
+        status = taken.status ?? status
       }
+    } onCancel: {
+      launched.stop()
     }
-    guard let status else {
-      let error = ConsoleError.noExitStatus(command.label)
-      append([
-        ConsoleLine(text: error.localizedDescription, kind: .error, source: source),
-        .marker("failed", source: source),
-      ])
-      throw error
+    if let status { return status }
+    if Task.isCancelled {
+      append(frame.cancelled(dropped: launched.droppedLines()))
+      throw CancellationError()
     }
-    append([.marker(Self.exitMarker(status, after: now() - started), source: source)])
-    return status
-  }
-
-  /// `exit 0 · 1.2s`.
-  nonisolated static func exitMarker(_ status: Int32, after elapsed: Duration) -> String {
-    let seconds = Double(elapsed.components.seconds) + Double(elapsed.components.attoseconds) / 1e18
-    return "exit \(status) · \(String(format: "%.1f", seconds))s"
+    let error = ConsoleError.noExitStatus(command.label)
+    append(frame.failed(error, dropped: launched.droppedLines()))
+    throw error
   }
 
   /// The app's note, as a marker line from the app.
@@ -135,6 +130,8 @@ public final class LogConsole {
     let token = restart(source)
     let follower = FileFollower(path: path, source: source, classify: classify, backlog: backlog) {
       [weak self] batch in
+      // The main queue rather than a Task: it keeps the batches in the order
+      // the follower sent them.
       DispatchQueue.main.async {
         MainActor.assumeIsolated { self?.received(batch, from: source, token: token) }
       }
@@ -144,9 +141,9 @@ public final class LogConsole {
   }
 
   /// Follows a command's output as `source`, eg `intent daemon logs --follow`
-  /// for a log only its CLI can render: its lines as they come, until it
-  /// exits or `stopFollowing` stops it. The source's earlier lines are
-  /// dropped once it has launched.
+  /// for a log only its CLI can render: its lines as they come, framed as a
+  /// run's are, until it ends or `stopFollowing` stops it. The source's
+  /// earlier lines are dropped once it has launched.
   public func follow(
     command: ConsoleCommand, as source: ConsoleSource,
     classify: @escaping ConsoleClassifier = ConsoleClassify.standard
@@ -154,34 +151,31 @@ public final class LogConsole {
     stopFollowing(source)
     let launched = try launcher(command)
     let token = restart(source)
+    let opened = CommandFrame(label: command.label, source: source, classify: classify, started: now())
+    append([opened.opening])
+    let clock = now
     let reader = Task { [weak self] in
+      var frame = opened
       for await event in launched.events {
         guard let self, !Task.isCancelled else { return }
-        switch event {
-        case .lines(let texts):
-          self.received(
-            texts.map { ConsoleLine(text: $0, kind: classify($0), source: source) }, from: source,
-            token: token)
-        case .exited(let status):
-          self.received(
-            [.marker("\(command.label) exited \(status)", source: source)], from: source,
-            token: token)
-          self.followed[source] = nil
+        let taken = frame.take(event, dropped: launched.droppedLines(), now: clock)
+        self.received(taken.lines, from: source, token: token)
+        if taken.status != nil {
+          self.ended(source, token: token)
+          return
         }
       }
+      guard let self, !Task.isCancelled else { return }
+      let failure = frame.failed(ConsoleError.noExitStatus(command.label), dropped: launched.droppedLines())
+      self.received(failure, from: source, token: token)
+      self.ended(source, token: token)
     }
     followed[source] = (.command(launched, reader), token)
   }
 
   /// Stops following `source`. Its lines stay.
   public func stopFollowing(_ source: ConsoleSource) {
-    switch followed.removeValue(forKey: source)?.follow {
-    case .file(let follower): follower.stop()
-    case .command(let launched, let reader):
-      reader.cancel()
-      launched.stop()
-    case nil: break
-    }
+    followed.removeValue(forKey: source)?.follow.end()
   }
 
   /// Stops what `source` was following, drops its lines, and gives the token
@@ -200,6 +194,12 @@ public final class LogConsole {
   private func received(_ batch: [ConsoleLine], from source: ConsoleSource, token: Int) {
     guard followed[source]?.token == token else { return }
     append(batch)
+  }
+
+  /// A followed command ended: its source is no longer followed, unless it
+  /// has been followed again since.
+  private func ended(_ source: ConsoleSource, token: Int) {
+    if followed[source]?.token == token { followed[source] = nil }
   }
 
   // MARK: - The buffer and the window
@@ -221,5 +221,22 @@ public final class LogConsole {
     guard !batch.isEmpty else { return }
     let edit = buffer.append(batch)
     window?.apply(edit)
+  }
+}
+
+/// What a console follows for one of its sources. It is outside the console,
+/// so that the console's deinit, which is not on the main actor, can stop it.
+private enum Follow: Sendable {
+  case file(FileFollower)
+  case command(LaunchedCommand, Task<Void, Never>)
+
+  /// Stops it: the follower, or the command's reader and its child.
+  func end() {
+    switch self {
+    case .file(let follower): follower.stop()
+    case .command(let launched, let reader):
+      reader.cancel()
+      launched.stop()
+    }
   }
 }

@@ -1,0 +1,14 @@
+{
+  "id": "01M59V8NKXEPGNK9NM34ZM96K6",
+  "ts": "2026-10-19T10:28:09.981Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-09.6"
+  },
+  "payload": {
+    "text": "The console window is AppKit, made in code: a read-only text view that follows the end and stops following when scrolled up; Find (⌘F, ⌘G), Clear (⌘K) and Close (⌘W) handled by the window itself, with Caps Lock on or off; the app's theme of colours and font, or the library's default, in which a marker never takes an error's or a warning's colour; brought forward as the About window is; and a show-quiet-lines toggle that filters in the view and follows the app's own setting. An example app shows each, CI builds it, and hv checks it by eye."
+  }
+}

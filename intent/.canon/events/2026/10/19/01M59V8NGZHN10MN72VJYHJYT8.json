@@ -1,0 +1,14 @@
+{
+  "id": "01M59V8NGZHN10MN72VJYHJYT8",
+  "ts": "2026-10-19T10:28:09.887Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-09.1"
+  },
+  "payload": {
+    "text": "A console line is its text, one of five kinds (log, error, warning, marker and quiet) and the id of the source it came from, which the app gives. The kind is the app's classifier's. The library gives it a start-of-line token, read after one leading RFC 3339 timestamp (a token with only a timestamp's shape is not one): `» ` is a marker, and after any indent of spaces or tabs `error:` and `caused by:` are errors and `warning:` and `remedy:` warnings. Its standard classifier is that token, or log."
+  }
+}

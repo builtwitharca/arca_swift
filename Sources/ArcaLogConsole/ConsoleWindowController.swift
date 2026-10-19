@@ -22,7 +22,7 @@ final class ConsoleWindowController: NSWindowController {
   private var following = true
 
   /// How near the bottom, in points, still counts as at it.
-  static let bottomSlack: CGFloat = 8
+  private static let bottomSlack: CGFloat = 8
 
   init(console: LogConsole) {
     self.console = console
@@ -61,16 +61,25 @@ final class ConsoleWindowController: NSWindowController {
   func restyle(_ theme: ConsoleTheme, shown: [ConsoleLine]) {
     self.theme = theme
     textView.backgroundColor = theme.background
+    // Below a short log the scroll view shows its own background.
+    scrollView.backgroundColor = theme.background
     reload(shown)
   }
 
-  /// One batch's edit, made inside one text-storage edit: the removals,
-  /// last first so each range is still where the buffer counted it, then the
-  /// additions at the end.
+  /// Shows the quiet lines or hides them: the toggle follows, whoever set
+  /// it, and `shown` is shown.
+  func showQuiet(_ visible: Bool, shown: [ConsoleLine]) {
+    quietToggle.state = visible ? .on : .off
+    reload(shown)
+  }
+
+  /// One batch's edit, made inside one text-storage edit: the removals in
+  /// the buffer's order, last first, so each range is still where the buffer
+  /// counted it, then the additions at the end.
   func apply(_ edit: ConsoleBuffer.Edit) {
     guard let storage = textView.textStorage else { return }
     storage.beginEditing()
-    for range in edit.removed.reversed() { storage.deleteCharacters(in: NSRange(range)) }
+    for range in edit.removed { storage.deleteCharacters(in: NSRange(range)) }
     storage.append(attributed(edit.added))
     storage.endEditing()
     if following { textView.scrollToEndOfDocument(nil) }
@@ -153,12 +162,13 @@ final class ConsoleWindowController: NSWindowController {
 /// The console's window, which handles the console's keys itself, since a
 /// library cannot count on its app's main menu: ⌘F and ⌘G (⇧⌘G back) for
 /// Find, ⌘K to clear the console, and ⌘W to close.
-final class ConsoleWindow: NSWindow {
+private final class ConsoleWindow: NSWindow {
   weak var console: LogConsole?
   weak var textView: NSTextView?
 
   override func performKeyEquivalent(with event: NSEvent) -> Bool {
-    let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
+    // The modifiers alone, so Caps Lock or a function key changes nothing.
+    let flags = event.modifierFlags.intersection([.command, .shift, .option, .control])
     switch (event.charactersIgnoringModifiers?.lowercased(), flags) {
     case ("f", .command): find(.showFindInterface)
     case ("g", .command): find(.nextMatch)

@@ -1,0 +1,14 @@
+{
+  "id": "01M59V8NKA664HEDXD75TGAB11",
+  "ts": "2026-10-19T10:28:09.962Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-09.5"
+  },
+  "payload": {
+    "text": "A command the app runs has one pipe for stdout and stderr, read off the main actor as it arrives, one batch for each read, and its stdin held, so the child dies with the app. Its lines, from the command's own source unless the app names one, are framed by `» cmd` and `» exit N · 1.2s`, the exit after the last line, or `» killed by signal N · 1.2s` for a child a signal ended, and a followed command is framed the same way. A second run is refused while one goes. A run always ends: output that a process the child started holds open is cut 2 s after the child ends, with a line saying so. A cancelled run stops its child and says so, and lines dropped because the console fell behind are counted and said. Its launcher and clock are injectable, and it is tested against a stub launcher and against real children."
+  }
+}

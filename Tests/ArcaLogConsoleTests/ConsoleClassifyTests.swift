@@ -14,6 +14,7 @@ struct ConsoleClassifyTests {
     #expect(ConsoleClassify.token("  caused by: no such file") == .error)
     #expect(ConsoleClassify.token("warning: the log is over 1 MB") == .warning)
     #expect(ConsoleClassify.token("  remedy: run gtools doctor") == .warning)
+    #expect(ConsoleClassify.token("\tcaused by: no such file") == .error, "a tab is an indent too")
   }
 
   @Test("a marker opens with » , and the app makes one with that prefix")

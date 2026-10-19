@@ -9,7 +9,7 @@ Shared Swift libraries for macOS menu bar apps. Each app imports only the librar
 | Library          | What it gives an app                              | State       |
 | ---------------- | ------------------------------------------------- | ----------- |
 | `ArcaMasthead`   | The menu's top line and the About window it opens | In progress |
-| `ArcaLogConsole` | A log console window                              | Planned     |
+| `ArcaLogConsole` | A log console window                              | In progress |
 
 `ArcaMasthead`'s top line is the app's name and version over a smaller subheading. Choosing it opens an About window that shows Markdown or HTML. Both are set in a `masthead.yaml` in the app's config folder, with a default in the app's bundle.
 
@@ -86,6 +86,34 @@ The page runs no JavaScript and loads nothing from outside. Its policy allows on
 A link to an `http`, `https` or `mailto` address opens in the browser. Every other navigation is cancelled.
 
 `ArcaMastheadExample` is an app that shows both. Run it with `swift run ArcaMastheadExample`, adding `--about` to open the window as it starts.
+
+## The console
+
+`ArcaLogConsole` gives an app a console: a window of lines from the logs it follows and the commands it runs, with its own notes between them.
+
+```swift
+import ArcaLogConsole
+
+let console = LogConsole(title: "Gtools console")
+console.follow(file: logPath, as: ConsoleSource("site"), classify: classify)
+console.note("restarted the site")
+try await console.run(
+  ConsoleCommand(label: "gtools doctor", executable: gtools, arguments: ["doctor"]))
+console.showWindow()
+```
+
+- `follow(file:as:)` follows a file in-process, with no child process. It replays the file's last lines, then shows each line written to it. It goes on following when the file is truncated, or renamed and made again, as a daemon rotating its log does, and it picks up a file, or a folder, that is not there yet when it is made. A file or folder that is there but cannot be read is said as an error line.
+- `follow(command:as:)` follows a command's output instead, for a log only a CLI can render. The command's stdin is held, so a command that reads it ends with the app.
+- `run(_:)` runs one command at a time. Its lines are framed by `» ` and the command, and by how it ended, eg `» exit 0 · 1.2s`. A second run while one goes is refused, naming the first, and a cancelled run stops its command.
+- `note(_:)` adds the app's own line.
+
+Each line has a kind: log, error, warning, marker or quiet. The app gives a classifier, since each log has its own tokens. `ConsoleClassify.standard` reads past one leading RFC 3339 timestamp, then reads `error:` and `caused by:` as errors, `warning:` and `remedy:` as warnings, and `» ` as a marker. Quiet lines, eg request lines, are hidden until the window's "Show quiet lines" is ticked.
+
+A console keeps its last 5000 lines, and its last 5000 quiet ones apart, so a busy log's quiet lines never push out a command's output. A console that falls behind a command's output drops its oldest lines, and says how many.
+
+The window follows the end as lines arrive and stops while it is scrolled up. It handles ⌘F and ⌘G to find, ⌘K to clear and ⌘W to close, so it needs nothing from the app's main menu. Its colours and font are a `ConsoleTheme`, the library's own by default, which follows light and dark mode.
+
+The example app shows a console too: its Console… item, a log it writes each second, a command it runs, and the log rotated.
 
 ## Building and testing
 

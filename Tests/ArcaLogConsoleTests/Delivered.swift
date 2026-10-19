@@ -21,17 +21,18 @@ final class Delivered: @unchecked Sendable {
 
   /// The texts once at least `count` lines have arrived, or what has
   /// arrived when `timeout` runs out first.
-  func texts(atLeast count: Int, timeout: Duration = .seconds(5)) async -> [String] {
+  func texts(atLeast count: Int, timeout: Duration = .seconds(5)) async throws -> [String] {
     let deadline = ContinuousClock.now + timeout
     while texts.count < count, ContinuousClock.now < deadline {
-      try? await Task.sleep(for: .milliseconds(10))
+      try await Task.sleep(for: .milliseconds(10))
     }
     return texts
   }
 
-  /// The texts after `quiet` has passed, for a test that nothing more arrives.
-  func texts(after quiet: Duration) async -> [String] {
-    try? await Task.sleep(for: quiet)
+  /// The texts after `quiet` has passed, for a test that nothing more
+  /// arrives.
+  func texts(after quiet: Duration) async throws -> [String] {
+    try await Task.sleep(for: quiet)
     return texts
   }
 }
