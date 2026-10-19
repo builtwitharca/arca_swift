@@ -10,8 +10,9 @@ import Testing
 /// rename, with the new file a moment later or already there; a log missing
 /// at open, and its folders missing too; a character split across two reads;
 /// a last line with no newline; a replay and a read pass bounded by the read
-/// window; a failure said once while it lasts, and again when it comes back;
-/// the change each event decides; and a console following a file again.
+/// window; a failure said once while it lasts, and again when it comes back
+/// or the follower starts again, and the memory that decides it; the change
+/// each event decides; and a console following a file again.
 /// Acceptance test AT-09.4, in ST0001's acceptance.md.
 @Suite("Following a file")
 struct FileFollowerTests {
@@ -321,6 +322,26 @@ struct FileFollowerTests {
     }
   }
 
+  @Test("a follower stopped and started again says a failure that still holds")
+  func restarted() async throws {
+    try await Scratch.folder { folder in
+      let locked = try Scratch.folders(folder + "/locked")
+      try FileManager.default.setAttributes([.posixPermissions: 0], ofItemAtPath: locked)
+      let delivered = Delivered()
+      let follower = Self.follow(locked + "/site.log", into: delivered)
+      _ = try await delivered.texts(atLeast: 2)
+      follower.stop()
+      follower.start()
+      let texts = try await delivered.texts(atLeast: 4)
+      follower.stop()
+      try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: locked)
+      let failures = [
+        "could not watch \(locked): Permission denied", "could not open \(locked)/site.log: Permission denied",
+      ]
+      #expect(texts == failures + failures, "said again by the second start")
+    }
+  }
+
   @Test("a stopped follower delivers nothing more")
   func stopped() async throws {
     try await Scratch.folder { folder in
@@ -344,6 +365,20 @@ struct FileFollowerTests {
     #expect(FileChange.decide(open: open, atPath: open, size: 4, read: 10) == .truncated)
     #expect(FileChange.decide(open: open, atPath: other, size: 4, read: 10) == .replaced)
     #expect(FileChange.decide(open: open, atPath: nil, size: 10, read: 10) == .removed)
+  }
+
+  @Test("a failure is said when an event meets it and the event before did not")
+  func failureMemory() {
+    var memory = FailureMemory()
+    // Each event's failures, in the order it meets them: two at once, one of
+    // them twice; both again; one alone, so the other goes; that one back;
+    // none; and both again.
+    let events: [[String]] = [["a", "b", "a"], ["a", "b"], ["a"], ["b", "a"], [], ["a", "b"]]
+    let said = events.map { event -> [String] in
+      defer { memory.endEvent() }
+      return event.filter { memory.meet($0) }
+    }
+    #expect(said == [["a", "b"], [], [], ["b"], [], ["a", "b"]])
   }
 
   @MainActor

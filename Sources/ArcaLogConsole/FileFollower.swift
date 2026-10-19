@@ -26,9 +26,10 @@ import Foundation
 /// window, and a marker line says how many bytes it passed over.
 ///
 /// **A FAILURE IS SAID** as an error line, once while it lasts: a file or a
-/// folder that is there but cannot be opened, read or watched. It lasts while
-/// each event meets it, so one that an event goes without is said again when
-/// it comes back. Only a file that is not there yet is waited for in silence.
+/// folder that is there but cannot be opened, read, checked or watched. It
+/// lasts while each event meets it, so one that an event goes without is said
+/// again when it comes back (`FailureMemory`). Only a file that is not there
+/// yet is waited for in silence.
 ///
 /// Everything happens on the follower's own queue, off the main actor, and
 /// each event hands `deliver` at most one batch, its failures included. `stop`
@@ -55,11 +56,8 @@ final class FileFollower: @unchecked Sendable {
   private var running = false
   /// The event's lines, handed on as one batch at its end.
   private var batch: [ConsoleLine] = []
-  /// The failures the last event met, each said when it began, so a failure
-  /// that lasts is said once.
-  private var lasting: Set<String> = []
-  /// The failures this event has met so far.
-  private var met: Set<String> = []
+  /// The failures met, so that each is said once while it lasts.
+  private var failures = FailureMemory()
 
   /// The most one read pass reads, and so the most a replay reads back.
   static let readWindow: off_t = 256 * 1024
@@ -101,12 +99,14 @@ final class FileFollower: @unchecked Sendable {
     }
   }
 
-  /// Stops following. It waits for the queue, so nothing is delivered once
-  /// it returns.
+  /// Stops following, and forgets the failures said, so a follower started
+  /// again says those that still hold. It waits for the queue, so nothing is
+  /// delivered once it returns.
   func stop() {
     queue.sync { [self] in
       running = false
       batch = []
+      failures = FailureMemory()
       close()
       folder?.source.cancel()
       folder = nil
@@ -330,14 +330,12 @@ final class FileFollower: @unchecked Sendable {
     if let fragment = assembler.flush() { take([fragment]) }
   }
 
-  /// Hands the event's batch on, when it has lines, and ends the event: the
-  /// failures it met are the ones that last, so one it did not meet has
-  /// cleared.
+  /// Hands the event's batch on, when it has lines, and ends the event for
+  /// the failures it met.
   private func handOn() {
     defer {
       batch = []
-      lasting = met
-      met = []
+      failures.endEvent()
     }
     guard running, !batch.isEmpty else { return }
     deliver(batch)
@@ -349,12 +347,10 @@ final class FileFollower: @unchecked Sendable {
     fail("could not \(doing) \(subject ?? path): \(String(cString: strerror(code)))")
   }
 
-  /// Says a failure as an error line in the event's batch, unless the event
-  /// before met it too, or this one already has: once while it lasts.
+  /// Says a failure as an error line in the event's batch, once while it
+  /// lasts.
   private func fail(_ text: String) {
-    guard running else { return }
-    let first = met.insert(text).inserted
-    guard first, !lasting.contains(text) else { return }
+    guard running, failures.meet(text) else { return }
     batch.append(ConsoleLine(text: text, kind: .error, source: source))
   }
 }
@@ -394,5 +390,28 @@ enum FileChange: Equatable, Sendable {
     guard let atPath else { return .removed }
     guard atPath == open else { return .replaced }
     return size < offset ? .truncated : .appended
+  }
+}
+
+/// The failures a follower meets (design.md "ArcaLogConsole"), so that it says
+/// each once while it lasts: a failure lasts while each event meets it, so one
+/// that an event goes without is said again when it comes back.
+struct FailureMemory {
+  /// The failures the last event met, each said when it began.
+  private var lasting: Set<String> = []
+  /// The failures this event has met so far.
+  private var met: Set<String> = []
+
+  /// Notes that this event meets `failure`, and gives whether to say it: the
+  /// first time the event meets it, unless the event before met it too.
+  mutating func meet(_ failure: String) -> Bool {
+    met.insert(failure).inserted && !lasting.contains(failure)
+  }
+
+  /// Ends the event: the failures it met are the ones that last, so one it
+  /// did not meet has cleared.
+  mutating func endEvent() {
+    lasting = met
+    met = []
   }
 }
