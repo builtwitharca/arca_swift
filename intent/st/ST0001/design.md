@@ -58,16 +58,38 @@ As agreed with hv, 18 Oct 2026.
 
 ### The four apps
 
-| App         | Heading             | Subheading                             | Stays the app's own rows                                     |
-| ----------- | ------------------- | -------------------------------------- | ------------------------------------------------------------ |
-| menuz       | `menuz <version>`   | `<commit> · <kind>`                    | none                                                         |
-| Gtools.app  | `gtools <version>`  | `<commit> · <kind>`                    | its CMS status row, which opens the site; its estate flyout  |
-| Intent.app  | `intent <version>`  | `<commit> · <kind>`                    | its intentd status row, which opens the web face             |
-| Conflab.app | `conflab <version>` | the signed-in user, or `not signed in` | its conflabd status row, coloured by state, in Gtools' shape |
+| App         | Heading             | Subheading                             | Stays the app's own rows                               |
+| ----------- | ------------------- | -------------------------------------- | ------------------------------------------------------ |
+| menuz       | `menuz <version>`   | `<commit> · <kind>`                    | none                                                   |
+| Gtools.app  | `gtools <version>`  | `<commit> · <kind>`                    | its site row, with the estates as its flyout           |
+| Intent.app  | `intent <version>`  | `<commit> · <kind>`                    | its intentd status row; opening the web face is a verb |
+| Conflab.app | `conflab <version>` | the signed-in user, or `not signed in` | its conflabd status row, coloured by state             |
 
 - **Gtools.app's and Intent.app's version and commit come from their CLI** (`gtools version`, `intent version`), as today. Until the CLI answers, the heading is the app's name.
 - **The build word is always named:** `release` or `dev`.
 - **Conflab.app's About tab** in its Settings window becomes its `about.md`.
+
+## The Arca menu
+
+The shape of an Arca app's menu below the masthead row. It is the layout hv chose for Gtools.app from mockups on 18 Oct 2026 and checked by eye on the installed app the same day, and hv made it the rule that menuz, Intent.app and Conflab.app take in their adoptions.
+
+- **The masthead row is first,** with nothing above it.
+- **The app's status row comes next, if it has one,** with no divider between it and the masthead.
+  - Its title names what it reports on, and its second line gives that thing's state, in the masthead's style: a title over a smaller line.
+  - A choice among like things hangs off it as a flyout, with the current one ticked, as Gtools.app's estates do.
+  - The row is not itself an action. What opens the thing it names is a verb in the first group.
+- **Then a divider, and groups,** one kind of thing to a group, with one divider between each and never two together:
+  - first, the verbs on the thing the status row names, eg Open Site, then Restart Site and Stop Site, or Start Site;
+  - then a group for each other kind of thing, eg search, or the tools such as Console… and Run Doctor;
+  - in an app whose menu the user writes, as menuz's is, the user's entries are a section of their own, as the user's file writes them.
+- **The app's own group is last:** Settings… (⌘,), Help, and Quit with the app's name (⌘Q). An app leaves out what it does not have, and keeps its own items here, eg menuz's Edit…, Log and Reload.
+- **Titles:**
+  - A title is a verb or a name, a single word where one will do, and similar things are grouped (hv, 18 Oct 2026).
+  - A title ends in … when its item opens a window or asks for more.
+  - A state is a row's second line and never part of a title. The one exception is the caption that stands in for a verb while it runs, eg Restarting…. No label such as "CMS" or "Estate:" goes into a title.
+  - A notice, such as a refusal or a status that has not answered yet, is a disabled row of its own.
+- **Images:** no row of the menu below the masthead has one. A flyout's rows may carry the mark that names each, as Gtools.app's estates do.
+- **The adoptions:** Gtools.app has it. menuz, Intent.app and Conflab.app take it in WP-04, WP-06 and WP-07, from ic's briefs, and ic reviews each against this section.
 
 ## ArcaLogConsole
 
