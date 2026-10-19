@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-19
+
 ### Fixed
 
 - An app that depends on the package builds on Xcode 26. 0.1.0's manifest made every target's warnings errors, which Xcode 26.6's Swift 6.3.3 passes as `-warnings-as-errors` beside the `-suppress-warnings` it gives a dependency, and the compiler refused the pair. The setting now applies only when `ARCA_SWIFT_STRICT` is set, as the package's own CI and the README's commands set it.
