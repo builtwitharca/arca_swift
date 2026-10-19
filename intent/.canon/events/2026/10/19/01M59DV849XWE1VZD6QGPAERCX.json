@@ -1,0 +1,15 @@
+{
+  "id": "01M59DV849XWE1VZD6QGPAERCX",
+  "ts": "2026-10-19T06:33:38.697Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0002"
+  },
+  "payload": {
+    "severity": "high",
+    "title": "An app that depends on arca_swift 0.1.0 fails to build on Xcode 26: the manifest's warnings-as-errors meets a dependency's -suppress-warnings"
+  }
+}

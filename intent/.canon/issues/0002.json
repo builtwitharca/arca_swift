@@ -1,0 +1,11 @@
+{
+  "schema": "intent/issue@3.0",
+  "number": 2,
+  "slug": "an-app-that-depends-on-arca-swift-0-1-0-fails-to",
+  "title": "An app that depends on arca_swift 0.1.0 fails to build on Xcode 26: the manifest's warnings-as-errors meets a dependency's -suppress-warnings",
+  "status": "open",
+  "severity": "high",
+  "created": "2026-10-19",
+  "reporter": "Matthew Sinclair",
+  "body": "**What happens:** an app that depends on arca_swift 0.1.0 fails to build on Xcode 26 (Swift 6.3.3), the floor's Xcode. Gtools.app's macOS CI job failed in its build step on the runner's Xcode 26.6:\n\n> Conflicting options '-warnings-as-errors' and '-suppress-warnings' (in target 'ArcaCore' from project 'arca_swift')\n\n**Why:** Package.swift:14 gives every target `.treatAllWarnings(as: .error)`. Its comment says SwiftPM drops the setting when an app builds the package as a dependency (SE-0480). Swift 6.4 (Xcode 27) does. Swift 6.3.3 passes it beside the `-suppress-warnings` it gives a dependency, and the compiler refuses the pair. arca_swift's own CI stays green because it builds the package as the root, which is given no `-suppress-warnings`.\n\n**Who it hits:** every adopter on Xcode 26. That's Gtools.app today, menuz once its adoption lands, and Intent.app and Conflab.app in theirs.\n\n**The fix, measured before it is chosen:**\n- **The shapes:**\n  - the setting only in arca_swift's own builds, eg read from the environment in the manifest, with CI and the local steps setting it;\n  - the setting gated on `#if compiler(>=6.4)`;\n  - the flag moved to CI's command line, which also reaches Yams and swift-cmark, remote dependencies, and may meet the same refusal there.\n- **An adopter job in CI:** a consumer package that depends on arca_swift by URL and revision, built with xcodebuild on the macOS 26 runner. It goes red on 0.1.0's manifest and green on the fix, and it catches this class for all four apps, which the root build cannot.\n- **The manifest's comment:** its SE-0480 claim is corrected either way.\n\n**The release:** 0.1.1, with issue 0001. Each adopter's `.upToNextMinor(from: \"0.1.0\")` allows it.\n\n**Size:** XS for the fix, S with the adopter job.\n"
+}
