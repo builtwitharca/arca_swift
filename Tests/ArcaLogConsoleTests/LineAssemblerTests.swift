@@ -16,14 +16,13 @@ struct LineAssemblerTests {
   func split() {
     var assembler = LineAssembler()
     #expect(assembler.lines(Self.bytes("a\n\nb\n")) == ["a", "", "b"])
-    #expect(!assembler.isHolding)
+    #expect(assembler.flush() == nil, "nothing after the last newline is held")
   }
 
   @Test("a fragment is held until its newline arrives")
   func fragment() {
     var assembler = LineAssembler()
     #expect(assembler.lines(Self.bytes("ab")).isEmpty)
-    #expect(assembler.isHolding)
     #expect(assembler.lines(Self.bytes("c\nd")) == ["abc"])
     #expect(assembler.lines(Self.bytes("\n")) == ["d"])
   }
@@ -49,6 +48,6 @@ struct LineAssemblerTests {
     #expect(assembler.lines(Self.bytes("last line, no newline")).isEmpty)
     #expect(assembler.flush() == "last line, no newline")
     #expect(assembler.flush() == nil)
-    #expect(!assembler.isHolding)
+    #expect(assembler.lines(Self.bytes("next\n")) == ["next"], "the flushed fragment does not start the next line")
   }
 }

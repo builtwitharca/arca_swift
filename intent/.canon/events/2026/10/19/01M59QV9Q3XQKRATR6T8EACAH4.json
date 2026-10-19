@@ -1,0 +1,14 @@
+{
+  "id": "01M59QV9Q3XQKRATR6T8EACAH4",
+  "ts": "2026-10-19T09:28:26.083Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-09.7"
+  },
+  "payload": {
+    "text": "ArcaLogConsole is a product of the package beside ArcaMasthead. README says how an app makes a console, follows a file or a command, runs a command and adds a note. CHANGELOG lists it. design.md records the buffer's bounds: a console holds up to twice the capacity, its quiet lines and the rest each kept to it, so that a busy source's hidden request lines cannot push a command's output out. It also records that the classifier's marker and its tokens after an indent are ported from Intent, so a log line opening with `» ` takes the marker colour. Its release is 0.2.0, tagged on hv's word."
+  }
+}

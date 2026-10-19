@@ -1,0 +1,14 @@
+{
+  "id": "01M59QV9P8T0KTCA5JQZ8FRVV9",
+  "ts": "2026-10-19T09:28:26.056Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-09.4"
+  },
+  "payload": {
+    "text": "A file the app names is followed in-process, with no child process: a dispatch source on the open file and one on its folder, and at each event the open file checked against the one at the path, by identity and size. Its reads happen off the main actor, one batch for each event. Against real files: an append arrives; a truncated file is read again from the start, a short append after the truncation included; a renamed file is drained to its end, the fragment it held given up as a line, and then the path's new file is followed; a log missing at open is picked up when it is created; a character split across two writes stays one character; a last line with no newline is held until its newline arrives; and opening replays a bounded backlog of the file's last lines."
+  }
+}

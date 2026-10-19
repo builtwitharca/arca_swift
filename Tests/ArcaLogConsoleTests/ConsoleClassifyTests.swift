@@ -29,6 +29,8 @@ struct ConsoleClassifyTests {
     #expect(ConsoleClassify.token("errors: 0") == nil)
     #expect(ConsoleClassify.standard("the run said error: none") == .log)
     #expect(ConsoleClassify.standard("") == .log)
+    #expect(ConsoleClassify.standard("error: none") == .error, "the same token at the start is one")
+    #expect(ConsoleClassify.standard("errors: 0\nwarning: x") == .log)
   }
 
   @Test("a stamped line is read as the line under its stamp, in UTC, with fractional seconds or with an offset")
@@ -36,6 +38,7 @@ struct ConsoleClassifyTests {
     #expect(ConsoleClassify.unstamped("2026-10-19T09:04:28Z error: x") == "error: x")
     #expect(ConsoleClassify.token("2026-10-19T09:04:28.123Z error: x") == .error)
     #expect(ConsoleClassify.token("2026-10-19T10:04:28+01:00   remedy: y") == .warning)
+    #expect(ConsoleClassify.token("2026-10-19T04:04:28-05:00 error: x") == .error)
     #expect(ConsoleClassify.token("2026-10-19T09:04:28Z » note") == .marker)
     #expect(ConsoleClassify.standard("2026-10-19T09:04:28Z started") == .log)
   }
@@ -52,6 +55,8 @@ struct ConsoleClassifyTests {
       "2026-10-19T09:04:28 error: x",
       "2026-10-19T09:04:28.Z error: x",
       "2026-10-19T09:04:28+1:00 error: x",
+      "2026-10-19T09:04:28+24:00 error: x",
+      "2026-10-19T09:04:28+05:60 error: x",
       "2026-10-19 09:04:28Z error: x",
     ] {
       #expect(ConsoleClassify.unstamped(line) == line[...], "\(line)")

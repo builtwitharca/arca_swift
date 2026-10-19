@@ -13,16 +13,23 @@ struct LineAssembler: Sendable {
   /// The complete lines that `bytes` finishes, oldest first. What follows
   /// the last newline is held for the next read.
   mutating func lines(_ bytes: some Sequence<UInt8>) -> [String] {
-    []
+    pending.append(contentsOf: bytes)
+    var lines: [String] = []
+    var start = pending.startIndex
+    while let newline = pending[start...].firstIndex(of: 0x0A) {
+      lines.append(String(decoding: pending[start..<newline], as: UTF8.self))
+      start = newline + 1
+    }
+    pending.removeFirst(start)
+    return lines
   }
 
   /// The fragment held, given up as a line, or nil when none is held. It is
   /// asked for at a stream's end, and when a followed file is truncated or
   /// replaced, since nothing more will finish the line then.
   mutating func flush() -> String? {
-    nil
+    guard !pending.isEmpty else { return nil }
+    defer { pending.removeAll() }
+    return String(decoding: pending, as: UTF8.self)
   }
-
-  /// Whether a fragment is held.
-  var isHolding: Bool { !pending.isEmpty }
 }

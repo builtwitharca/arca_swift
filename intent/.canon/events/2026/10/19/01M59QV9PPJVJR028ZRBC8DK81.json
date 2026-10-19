@@ -1,0 +1,14 @@
+{
+  "id": "01M59QV9PPJVJR028ZRBC8DK81",
+  "ts": "2026-10-19T09:28:26.070Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-09.5"
+  },
+  "payload": {
+    "text": "A command the app runs has one pipe for stdout and stderr, read off the main actor as it arrives, one batch for each read, and its stdin held, so the child dies with the app. Its lines, from the command's own source unless the app names one, are framed by `» cmd` and `» exit N · 1.2s`, the exit after the last line, and a second run is refused while one goes. Its launcher and clock are injectable, and it is tested against a stub launcher and against real children."
+  }
+}
