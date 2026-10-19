@@ -86,7 +86,7 @@
       "seq": 9,
       "title": "ArcaLogConsole: build",
       "scope": "M",
-      "status": "not-started",
+      "status": "wip",
       "objective": "LogConsole as hv agreed in WP-08, its pure half tested with Swift Testing. Size: M.",
       "body": "",
       "preamble": ""
@@ -272,6 +272,62 @@
       }
     },
     {
+      "id": "AC-09.1",
+      "text": "A console line is its text, one of five kinds (log, error, warning, marker and quiet) and the id of the source it came from, which the app gives. The kind is the app's classifier's. The library gives it a start-of-line token, read after one leading RFC 3339 timestamp (a token with only a timestamp's shape is not one): `» ` is a marker, and after any indent `error:` and `caused by:` are errors and `warning:` and `remedy:` warnings. Its standard classifier is that token, or log.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-09.2",
+      "text": "A console keeps the last lines of all its sources in one ring, 5000 by default. The oldest leave first, and the ring says how many left. One source's lines can be removed with the rest kept in order, and the ring cleared. The view drops what the ring drops, counting lines rather than newline runs, a hidden quiet line included.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-09.3",
+      "text": "One line assembler serves a file and a command alike. Bytes are split on 0x0A, each complete line is decoded with bad bytes as U+FFFD, and a fragment is held until its newline arrives, so a character split across two reads stays one character. At a stream's end, or when a followed file is truncated or replaced, the fragment held is a line.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-09.4",
+      "text": "A file the app names is followed in-process, with no child process, its reads off the main actor and one batch for each event. An append arrives. A truncated file is read again from the start, a short append after the truncation included. A renamed file is drained to its end, then the path is reopened when the new file appears. A log missing at open is picked up when it is created. Opening replays a bounded backlog of the file's last lines.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-09.5",
+      "text": "A command the app runs has one pipe for stdout and stderr, read as it arrives, and its stdin held, so the child dies with the app. Its lines are framed by `» cmd` and `» exit N · 1.2s`, the exit after the last line, and a second run is refused while one goes. Its launcher and clock are injectable, and it is tested against a stub launcher.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-09.6",
+      "text": "The console window is AppKit, made in code: a read-only text view that follows the end and stops following when scrolled up; Find (⌘F, ⌘G), Clear (⌘K) and Close (⌘W) handled by the window itself; the app's theme of colours and font, or the library's default; brought forward as the About window is; and a show-quiet-lines toggle that filters in the view. An example app shows each, CI builds it, and hv checks it by eye.",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
+      "id": "AC-09.7",
+      "text": "ArcaLogConsole is a product of the package beside ArcaMasthead. README says how an app makes a console, follows a file, runs a command and adds a note. CHANGELOG lists it, design.md records the ring's one capacity for all of a console's sources, and its release is 0.2.0, tagged on hv's word.",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
       "id": "AC-10.1",
       "text": "Gtools.app's console keeps following a site's log across a gtools cms start that renames the log aside because it is over 1 MB: the lines the restarted site writes reach the window, with none of the renamed log's lines shown twice.",
       "kind": "test",
@@ -404,6 +460,36 @@
       ],
       "status": "green",
       "note": "Red in slot 30 (18 Oct 2026, 16:31:35Z to 16:31:54Z), against compiling stubs (bank b3efb780); log test-5.log. About body tokens: all 3 tests failed, 3 issues. The file's WP-02 suites, About content (9 tests) and HTML (2), passed. Green in slot 34 (18 Oct 2026, 17:16:40Z to 17:16:45Z), after both critic-swift reports' fixes and slot 33's (bank 84bbdbc3); log test-7.log. About body tokens: all 4 tests passed. Seen red in slot 30: the 3 first. With the fixes and seen only green: a Markdown link's address holds no token (linkAddress)."
+    },
+    {
+      "id": "AT-09.1",
+      "kind": "test",
+      "file": "Tests/ArcaLogConsoleTests/ConsoleClassifyTests.swift",
+      "covers": [
+        "AC-09.1"
+      ],
+      "status": "to-write",
+      "note": "Written against compiling stubs before the code; its red run is next."
+    },
+    {
+      "id": "AT-09.2",
+      "kind": "test",
+      "file": "Tests/ArcaLogConsoleTests/ConsoleRingTests.swift",
+      "covers": [
+        "AC-09.2"
+      ],
+      "status": "to-write",
+      "note": "Written against compiling stubs before the code; its red run is next."
+    },
+    {
+      "id": "AT-09.3",
+      "kind": "test",
+      "file": "Tests/ArcaLogConsoleTests/LineAssemblerTests.swift",
+      "covers": [
+        "AC-09.3"
+      ],
+      "status": "to-write",
+      "note": "Written against compiling stubs before the code; its red run is next."
     }
   ],
   "attachments": [

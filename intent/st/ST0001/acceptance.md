@@ -48,6 +48,16 @@ title: Shared Swift libraries for the menu bar apps: Masthead, then LogConsole
 
 - AC-08.1 (non-test) ArcaLogConsole's shape is agreed with hv before any code: the line model and the app's classifier, the ring, the sources (a file followed in-process across a truncation or a rename, a command's output, the app's notes, and one line assembler for both), the window, the tests, the release and the adoptions, as design.md's ArcaLogConsole section records them. -- evidence: hv's word in ic's session (18 Oct 2026, 18:41Z): "Ok, go for it. Use your recs.", answering ic's two calls on the review's proposal: 1A, in-process file following, with a command source kept for logs only a CLI can render; and 2A, Gtools.app's tail -f gap fixed in its adoption (WP-10) with a criterion there (AC-10.1), and no Gtools issue now. The review's conditions (a directory watch, the old file drained before a reopen, one line assembler, batched reads off the main actor, source ids, keys in the window, 0.2.0, five more file-source tests) are folded in. design.md's ArcaLogConsole section records the agreed shape. -- satisfied: yes
 
+### WP-09 -- ArcaLogConsole: build (status: WIP)
+
+- AC-09.1 A console line is its text, one of five kinds (log, error, warning, marker and quiet) and the id of the source it came from, which the app gives. The kind is the app's classifier's. The library gives it a start-of-line token, read after one leading RFC 3339 timestamp (a token with only a timestamp's shape is not one): `» ` is a marker, and after any indent `error:` and `caused by:` are errors and `warning:` and `remedy:` warnings. Its standard classifier is that token, or log. -- satisfied: no (computed)
+- AC-09.2 A console keeps the last lines of all its sources in one ring, 5000 by default. The oldest leave first, and the ring says how many left. One source's lines can be removed with the rest kept in order, and the ring cleared. The view drops what the ring drops, counting lines rather than newline runs, a hidden quiet line included. -- satisfied: no (computed)
+- AC-09.3 One line assembler serves a file and a command alike. Bytes are split on 0x0A, each complete line is decoded with bad bytes as U+FFFD, and a fragment is held until its newline arrives, so a character split across two reads stays one character. At a stream's end, or when a followed file is truncated or replaced, the fragment held is a line. -- satisfied: no (computed)
+- AC-09.4 A file the app names is followed in-process, with no child process, its reads off the main actor and one batch for each event. An append arrives. A truncated file is read again from the start, a short append after the truncation included. A renamed file is drained to its end, then the path is reopened when the new file appears. A log missing at open is picked up when it is created. Opening replays a bounded backlog of the file's last lines. -- satisfied: no (computed)
+- AC-09.5 A command the app runs has one pipe for stdout and stderr, read as it arrives, and its stdin held, so the child dies with the app. Its lines are framed by `» cmd` and `» exit N · 1.2s`, the exit after the last line, and a second run is refused while one goes. Its launcher and clock are injectable, and it is tested against a stub launcher. -- satisfied: no (computed)
+- AC-09.6 (non-test) The console window is AppKit, made in code: a read-only text view that follows the end and stops following when scrolled up; Find (⌘F, ⌘G), Clear (⌘K) and Close (⌘W) handled by the window itself; the app's theme of colours and font, or the library's default; brought forward as the About window is; and a show-quiet-lines toggle that filters in the view. An example app shows each, CI builds it, and hv checks it by eye. -- satisfied: no
+- AC-09.7 (non-test) ArcaLogConsole is a product of the package beside ArcaMasthead. README says how an app makes a console, follows a file, runs a command and adds a note. CHANGELOG lists it, design.md records the ring's one capacity for all of a console's sources, and its release is 0.2.0, tagged on hv's word. -- satisfied: no
+
 ### WP-10 -- The apps adopt ArcaLogConsole (status: Not Started)
 
 - AC-10.1 Gtools.app's console keeps following a site's log across a gtools cms start that renames the log aside because it is over 1 MB: the lines the restarted site writes reach the window, with none of the renamed log's lines shown twice. -- satisfied: no (computed)
@@ -83,6 +93,12 @@ _(no tests in this group)_
 ### WP-08 -- ArcaLogConsole: review and proposal (status: Done)
 
 _(no tests in this group)_
+
+### WP-09 -- ArcaLogConsole: build (status: WIP)
+
+- AT-09.1 `Tests/ArcaLogConsoleTests/ConsoleClassifyTests.swift` -- covers AC-09.1 -- status: to-write -- Written against compiling stubs before the code; its red run is next.
+- AT-09.2 `Tests/ArcaLogConsoleTests/ConsoleRingTests.swift` -- covers AC-09.2 -- status: to-write -- Written against compiling stubs before the code; its red run is next.
+- AT-09.3 `Tests/ArcaLogConsoleTests/LineAssemblerTests.swift` -- covers AC-09.3 -- status: to-write -- Written against compiling stubs before the code; its red run is next.
 
 ### WP-10 -- The apps adopt ArcaLogConsole (status: Not Started)
 

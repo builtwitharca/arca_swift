@@ -3,10 +3,10 @@
 // 6.2 is the first tools version that names macOS 26, the floor WebKit's
 // SwiftUI web view sets (design.md "The package"). ArcaCore is internal: the
 // libraries share it, and an app imports only the libraries it uses.
-// ArcaLogConsole's product joins with its code (WP-09). ArcaTestSupport holds
-// what the test targets share, and no product has it. ArcaMastheadExample is
-// an app that shows the row and the About window, built here and by CI, and
-// in no product.
+// ArcaLogConsole (WP-09) needs neither ArcaCore nor another package.
+// ArcaTestSupport holds what the test targets share, and no product has it.
+// ArcaMastheadExample is an app that shows the row and the About window,
+// built here and by CI, and in no product.
 //
 // A warning fails the build of the package's own targets only when
 // ARCA_SWIFT_STRICT is set, to any value. CI's test job and the README's build
@@ -25,7 +25,8 @@ let package = Package(
   name: "arca_swift",
   platforms: [.macOS(.v26)],
   products: [
-    .library(name: "ArcaMasthead", targets: ["ArcaMasthead"])
+    .library(name: "ArcaMasthead", targets: ["ArcaMasthead"]),
+    .library(name: "ArcaLogConsole", targets: ["ArcaLogConsole"]),
   ],
   dependencies: [
     .package(url: "https://github.com/jpsim/Yams", from: "6.0.1"),
@@ -42,6 +43,7 @@ let package = Package(
       ],
       swiftSettings: settings
     ),
+    .target(name: "ArcaLogConsole", swiftSettings: settings),
     .executableTarget(
       name: "ArcaMastheadExample", dependencies: ["ArcaMasthead"], resources: [.process("Resources")],
       swiftSettings: settings
@@ -50,6 +52,9 @@ let package = Package(
     .testTarget(name: "ArcaCoreTests", dependencies: ["ArcaCore", "ArcaTestSupport"], swiftSettings: settings),
     .testTarget(
       name: "ArcaMastheadTests", dependencies: ["ArcaMasthead", "ArcaCore", "ArcaTestSupport"], swiftSettings: settings
+    ),
+    .testTarget(
+      name: "ArcaLogConsoleTests", dependencies: ["ArcaLogConsole", "ArcaTestSupport"], swiftSettings: settings
     ),
   ]
 )
