@@ -57,7 +57,8 @@ struct LineAssemblerTests {
     var assembler = LineAssembler(limit: 4)
     #expect(assembler.lines(Self.bytes("abcdefghij")) == ["abcd", "efgh"])
     #expect(assembler.flush() == "ij", "only the rest is held")
-    #expect(LineAssembler(limit: 4).lines(Self.bytes("abcdefghij\n")) == ["abcd", "efgh", "ij"], "a whole line too")
+    var whole = LineAssembler(limit: 4)
+    #expect(whole.lines(Self.bytes("abcdefghij\n")) == ["abcd", "efgh", "ij"], "a whole line too")
     var bytewise = LineAssembler(limit: 4)
     let lines = Self.bytes("abcdefghij\n").flatMap { bytewise.lines([$0]) }
     #expect(lines == ["abcd", "efgh", "ij"], "the same pieces, however the bytes arrive")

@@ -6,12 +6,12 @@ import Testing
 
 /// A file the app names, followed in-process (design.md "ArcaLogConsole"),
 /// against temporary files: an append; a truncation, with the fragment held
-/// given up, and a short append after one; a rename, with the new file a
-/// moment later or already there; a log missing at open, and its folders
-/// missing too; a character split across two reads; a last line with no
-/// newline; a replay and a read pass bounded by the read window; a failure
-/// said once; the change each event decides; and a console following a file
-/// again.
+/// given up, a short append after one, and one while a pass skips ahead; a
+/// rename, with the new file a moment later or already there; a log missing
+/// at open, and its folders missing too; a character split across two reads;
+/// a last line with no newline; a replay and a read pass bounded by the read
+/// window; a failure said once; the change each event decides; and a console
+/// following a file again.
 /// Acceptance test AT-09.4, in ST0001's acceptance.md.
 @Suite("Following a file")
 struct FileFollowerTests {
@@ -115,6 +115,23 @@ struct FileFollowerTests {
     }
   }
 
+  @Test("a truncation while a pass skips ahead reads the file again from its start")
+  func truncationWhileSkipping() async throws {
+    try await Scratch.folder { folder in
+      let path = folder + "/site.log"
+      // Forty bytes with no newline: the pass skips to a 16-byte window and
+      // finds no line starting in it.
+      try Self.write(String(repeating: "x", count: 40), to: path, appending: false)
+      let delivered = Delivered()
+      let follower = Self.follow(path, window: 16, into: delivered)
+      defer { follower.stop() }
+      #expect(try await delivered.texts(after: .milliseconds(200)).isEmpty)
+      try Self.write("a\n", to: path, appending: false)
+      #expect(try await delivered.texts(atLeast: 1) == ["a"])
+      #expect(try await delivered.texts(after: .milliseconds(200)) == ["a"], "no skip is said for the new content")
+    }
+  }
+
   @Test("a renamed log is drained to its end, then the new file at the path is followed")
   func rename() async throws {
     try await Scratch.folder { folder in
@@ -203,7 +220,8 @@ struct FileFollowerTests {
       let delivered = Delivered()
       let follower = Self.follow(path, into: delivered)
       defer { follower.stop() }
-      #expect(try await delivered.texts(after: .milliseconds(200)) == ["a"])
+      #expect(try await delivered.texts(atLeast: 1) == ["a"])
+      #expect(try await delivered.texts(after: .milliseconds(200)) == ["a"], "the fragment is held")
       try Self.write("al\n", to: path)
       #expect(try await delivered.texts(atLeast: 2) == ["a", "partial"])
     }
@@ -240,7 +258,7 @@ struct FileFollowerTests {
     }
   }
 
-  @Test("a folder that is there but cannot be read is said as an error line, once")
+  @Test("a folder that is there but cannot be read is said as error lines, each failure once")
   func unreadable() async throws {
     try await Scratch.folder { folder in
       let locked = try Scratch.folders(folder + "/locked")
@@ -251,9 +269,13 @@ struct FileFollowerTests {
       let texts = try await delivered.texts(after: .milliseconds(200))
       follower.stop()
       try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: locked)
-      #expect(!texts.isEmpty)
-      #expect(Set(texts).count == texts.count, "each failure is said once")
-      #expect(delivered.lines.allSatisfy { $0.kind == .error && $0.text.hasSuffix(": Permission denied") })
+      // At mode 0 the folder can be opened neither for its events nor on the
+      // way to its file: both fail with EACCES (measured on macOS 27).
+      let expected = [
+        "could not watch \(locked): Permission denied", "could not open \(locked)/site.log: Permission denied",
+      ]
+      #expect(texts == expected, "each failure is said once")
+      #expect(delivered.lines.allSatisfy { $0.kind == .error })
     }
   }
 
@@ -290,24 +312,15 @@ struct FileFollowerTests {
       try Self.write("a\nb\n", to: path, appending: false)
       let console = LogConsole(title: "Console")
       console.follow(file: path, as: Self.source)
-      try await Self.until { console.lines.count >= 2 }
+      try await until { console.lines.count >= 2 }
       console.follow(file: path, as: Self.source)
-      try await Self.until { console.lines.count >= 2 }
+      try await until { console.lines.count >= 2 }
       try await Task.sleep(for: .milliseconds(200))
       #expect(console.lines.map(\.text) == ["a", "b"])
       console.stopFollowing(Self.source)
       try Self.write("c\n", to: path)
       try await Task.sleep(for: .milliseconds(200))
       #expect(console.lines.map(\.text) == ["a", "b"], "a source no longer followed adds nothing")
-    }
-  }
-
-  /// Waits on the main actor until `condition` holds, or 5 s pass.
-  @MainActor
-  static func until(_ condition: () -> Bool) async throws {
-    let deadline = ContinuousClock.now + .seconds(5)
-    while !condition(), ContinuousClock.now < deadline {
-      try await Task.sleep(for: .milliseconds(10))
     }
   }
 }

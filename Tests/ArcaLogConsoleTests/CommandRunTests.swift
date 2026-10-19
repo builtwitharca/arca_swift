@@ -156,10 +156,10 @@ struct CommandRunTests {
     let tail = ConsoleCommand(label: "tail", executable: URL(fileURLWithPath: "/usr/bin/true"))
     let framed = ["» tail", "a", "» exit 0 · 1.2s"]
     try console.follow(command: tail, as: Self.source)
-    try await Self.until { console.lines.count >= 3 }
+    try await until { console.lines.count >= 3 }
     #expect(console.lines.map(\.text) == framed)
     try console.follow(command: tail, as: Self.source)
-    try await Self.until { console.lines.count >= 3 }
+    try await until { console.lines.count >= 3 }
     try await Task.sleep(for: .milliseconds(100))
     #expect(console.lines.map(\.text) == framed, "the first follow's lines were replaced")
   }
@@ -191,7 +191,9 @@ struct CommandRunTests {
 
   @Test("output a process the child started holds open is cut after the drain, with a line saying so")
   func drained() async throws {
-    let launch = CommandLaunch.launcher(drain: .milliseconds(200))
+    // A drain of a second leaves a loaded machine time to read "started", and
+    // ends well inside the 2 s that sleep holds the output open.
+    let launch = CommandLaunch.launcher(drain: .seconds(1))
     let launched = try launch(Self.shell("sleep 2 & echo started"))
     #expect(
       await Self.events(of: launched) == [.lines(["started"]), .lines([CommandLaunch.cutLine]), .exited(0)])
@@ -212,14 +214,6 @@ struct CommandRunTests {
     #expect(!ended.marked, "cat ended with its stdin still held")
     launched.stop()
     #expect(await reader.value == .exited(0))
-  }
-
-  /// Waits until `condition` holds, or 5 s pass.
-  static func until(_ condition: () -> Bool) async throws {
-    let deadline = ContinuousClock.now + .seconds(5)
-    while !condition(), ContinuousClock.now < deadline {
-      try await Task.sleep(for: .milliseconds(10))
-    }
   }
 }
 

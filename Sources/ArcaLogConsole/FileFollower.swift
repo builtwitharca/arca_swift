@@ -182,6 +182,7 @@ final class FileFollower: @unchecked Sendable {
     case .truncated:
       takeFragment()
       offset = 0
+      skipping = nil
       take(readOn())
     case .replaced, .removed:
       take(readOn())

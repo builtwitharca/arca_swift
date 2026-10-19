@@ -67,7 +67,7 @@ jobs:
         run: xcodebuild -version
 
       # A package that names arca_swift by URL and revision, as the apps'
-      # projects name it by URL and version, and imports ArcaMasthead.
+      # projects name it by URL and version, and imports both its libraries.
       - name: Write the adopter
         run: |
           mkdir -p "$RUNNER_TEMP/adopter/Sources/Adopter"
@@ -80,11 +80,17 @@ jobs:
             platforms: [.macOS(.v26)],
             dependencies: [.package(url: "file://$GITHUB_WORKSPACE", revision: "$GITHUB_SHA")],
             targets: [
-              .executableTarget(name: "Adopter", dependencies: [.product(name: "ArcaMasthead", package: "arca_swift")])
+              .executableTarget(
+                name: "Adopter",
+                dependencies: [
+                  .product(name: "ArcaMasthead", package: "arca_swift"),
+                  .product(name: "ArcaLogConsole", package: "arca_swift"),
+                ]
+              )
             ]
           )
           EOF
-          echo 'import ArcaMasthead' > "$RUNNER_TEMP/adopter/Sources/Adopter/main.swift"
+          printf 'import ArcaLogConsole\nimport ArcaMasthead\n' > "$RUNNER_TEMP/adopter/Sources/Adopter/main.swift"
           cat "$RUNNER_TEMP/adopter/Package.swift"
 
       - name: Build the adopter

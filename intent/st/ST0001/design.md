@@ -154,6 +154,7 @@ It was reviewed before any code (WP-08), as Masthead was. The review read Gtools
   - A truncation followed by a write that reaches past the old offset before the event is read reads as an append, so the start of the new content is lost.
   - Lines written to a renamed file after its rename's event are not read, since the old file is drained once and closed. WP-10's Gtools adoption therefore stops the old site before `cms start` renames its log.
   - While the reader has scrolled up and the console is full, each batch cuts lines from the top of the text, so the lines in view move up.
+  - A failure is remembered until the file is opened again, so one that clears and then comes back on the open file, such as a read error, is said only the first time.
 
 ## The work
 
