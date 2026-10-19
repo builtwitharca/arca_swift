@@ -1,0 +1,14 @@
+{
+  "id": "01M5APJHTT7BCJ58Y1ZEY7MA12",
+  "ts": "2026-10-19T18:25:25.338Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-09.4"
+  },
+  "payload": {
+    "text": "A file the app names is followed in-process, with no child process: a dispatch source on the open file and one on the nearest folder there is on the way to it, and at each event the open file checked against the one at the path, by identity and size, in one pure decision. Its reads, the replay's included, happen off the main actor, one batch for each event, a failure included, and each read pass reads at most a 256 KiB window, saying how many bytes it passed over. A file or folder that is there but cannot be read is said as an error line, once while it lasts, and again when it comes back. Against real files: an append arrives; a truncated file gives up the fragment it held as a line and is read again from the start, a short append after the truncation included; a renamed file is drained to its end, the fragment it held given up as a line, and then the path's new file is followed, whether it is made a moment later or is there by the event; a log missing at open, or whose folders are missing too, is picked up when it is created; a character split across two writes stays one character; a last line with no newline is held until its newline arrives; and opening replays a bounded backlog of the file's last lines, from the first whole line in its window."
+  }
+}

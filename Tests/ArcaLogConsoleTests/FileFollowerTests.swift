@@ -10,8 +10,8 @@ import Testing
 /// rename, with the new file a moment later or already there; a log missing
 /// at open, and its folders missing too; a character split across two reads;
 /// a last line with no newline; a replay and a read pass bounded by the read
-/// window; a failure said once; the change each event decides; and a console
-/// following a file again.
+/// window; a failure said once while it lasts, and again when it comes back;
+/// the change each event decides; and a console following a file again.
 /// Acceptance test AT-09.4, in ST0001's acceptance.md.
 @Suite("Following a file")
 struct FileFollowerTests {
@@ -276,6 +276,48 @@ struct FileFollowerTests {
       ]
       #expect(texts == expected, "each failure is said once")
       #expect(delivered.lines.allSatisfy { $0.kind == .error })
+    }
+  }
+
+  @Test("a failure is said once while it lasts, and said again when it comes back")
+  func failureComesBack() async throws {
+    try await Scratch.folder { folder in
+      let logs = try Scratch.folders(folder + "/logs")
+      let path = logs + "/site.log"
+      try Self.write("start\n", to: path, appending: false)
+      // Written to through a handle opened now, since a folder that cannot be
+      // searched refuses a path into it.
+      let handle = try FileHandle(forWritingTo: URL(fileURLWithPath: path))
+      func append(_ text: String) throws {
+        try handle.seekToEnd()
+        try handle.write(contentsOf: Data(text.utf8))
+      }
+      func searchable(_ allowed: Bool) throws {
+        try FileManager.default.setAttributes([.posixPermissions: allowed ? 0o755 : 0o600], ofItemAtPath: logs)
+      }
+      let delivered = Delivered()
+      let follower = Self.follow(path, into: delivered)
+      defer { follower.stop() }
+      #expect(try await delivered.texts(atLeast: 1) == ["start"])
+      // While its folder cannot be searched, the path cannot be checked
+      // against the open file, which is read on: stat fails with EACCES
+      // (measured on macOS 27). Two appends meet the failure, one with the
+      // folder searchable again goes without it, and the next meets it again.
+      try searchable(false)
+      try append("a\n")
+      _ = try await delivered.texts(atLeast: 3)
+      try append("b\n")
+      _ = try await delivered.texts(atLeast: 4)
+      try searchable(true)
+      try append("c\n")
+      _ = try await delivered.texts(atLeast: 5)
+      try searchable(false)
+      try append("d\n")
+      let texts = try await delivered.texts(atLeast: 7)
+      try searchable(true)
+      try handle.close()
+      let failure = "could not check \(path): Permission denied"
+      #expect(texts == ["start", failure, "a", "b", "c", failure, "d"], "said, gone, and said again")
     }
   }
 

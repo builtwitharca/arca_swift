@@ -26,8 +26,9 @@ import Foundation
 /// window, and a marker line says how many bytes it passed over.
 ///
 /// **A FAILURE IS SAID** as an error line, once while it lasts: a file or a
-/// folder that is there but cannot be opened, read or watched. Only a file
-/// that is not there yet is waited for in silence.
+/// folder that is there but cannot be opened, read or watched. It lasts while
+/// each event meets it, so one that an event goes without is said again when
+/// it comes back. Only a file that is not there yet is waited for in silence.
 ///
 /// Everything happens on the follower's own queue, off the main actor, and
 /// each event hands `deliver` at most one batch, its failures included. `stop`
@@ -54,8 +55,11 @@ final class FileFollower: @unchecked Sendable {
   private var running = false
   /// The event's lines, handed on as one batch at its end.
   private var batch: [ConsoleLine] = []
-  /// The last failure said, so a failure that lasts is said once.
-  private var failure: String?
+  /// The failures the last event met, each said when it began, so a failure
+  /// that lasts is said once.
+  private var lasting: Set<String> = []
+  /// The failures this event has met so far.
+  private var met: Set<String> = []
 
   /// The most one read pass reads, and so the most a replay reads back.
   static let readWindow: off_t = 256 * 1024
@@ -132,7 +136,6 @@ final class FileFollower: @unchecked Sendable {
     watch.setCancelHandler { Darwin.close(descriptor) }
     watch.resume()
     file = (watch, descriptor, FileIdentity(info))
-    failure = nil
     offset = 0
     skipping = nil
     assembler = LineAssembler()
@@ -327,9 +330,15 @@ final class FileFollower: @unchecked Sendable {
     if let fragment = assembler.flush() { take([fragment]) }
   }
 
-  /// Hands the event's batch on, when it has lines.
+  /// Hands the event's batch on, when it has lines, and ends the event: the
+  /// failures it met are the ones that last, so one it did not meet has
+  /// cleared.
   private func handOn() {
-    defer { batch = [] }
+    defer {
+      batch = []
+      lasting = met
+      met = []
+    }
     guard running, !batch.isEmpty else { return }
     deliver(batch)
   }
@@ -340,11 +349,12 @@ final class FileFollower: @unchecked Sendable {
     fail("could not \(doing) \(subject ?? path): \(String(cString: strerror(code)))")
   }
 
-  /// Says a failure as an error line in the event's batch, once while it
-  /// lasts.
+  /// Says a failure as an error line in the event's batch, unless the event
+  /// before met it too, or this one already has: once while it lasts.
   private func fail(_ text: String) {
-    guard running, text != failure else { return }
-    failure = text
+    guard running else { return }
+    let first = met.insert(text).inserted
+    guard first, !lasting.contains(text) else { return }
     batch.append(ConsoleLine(text: text, kind: .error, source: source))
   }
 }

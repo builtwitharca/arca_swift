@@ -122,7 +122,7 @@ It was reviewed before any code (WP-08), as Masthead was. The review read Gtools
   - A "show quiet lines" toggle filters in the view.
 - **Tests:** Swift Testing.
   - The line model, the ring and the classifier helpers.
-  - The file source, against temporary files: an append; a truncation; a truncation then a short append; a rename with the new file a moment later; a log missing at open and created later; a character split across two reads; and a last line with no newline. WP-09 added: a truncation that gives up the fragment held; a rename whose new file is there by the event; a log whose folders are missing at open; a replay and a read pass bounded by the window; a failure said once; and the change each event decides, as a pure function.
+  - The file source, against temporary files: an append; a truncation; a truncation then a short append; a rename with the new file a moment later; a log missing at open and created later; a character split across two reads; and a last line with no newline. WP-09 added: a truncation that gives up the fragment held; a rename whose new file is there by the event; a log whose folders are missing at open; a replay and a read pass bounded by the window; a failure said once while it lasts, and again when it comes back; and the change each event decides, as a pure function.
   - The runner, against a stub launcher, and the process launcher against real children. WP-09 added: a signal; output a started process holds open; a cancelled run; dropped lines; and a followed command.
   - The window, by eye in an example app.
 - **Its release is 0.2.0,** since it adds a product. An app moves its pin to `.upToNextMinor(from: "0.2.0")` when it adopts it.
@@ -141,7 +141,7 @@ It was reviewed before any code (WP-08), as Masthead was. The review read Gtools
   - The folder's source watches the nearest folder there is on the way to the file, so a log whose folders are not made yet is picked up too. Each source looks again once it is registered, for what changed before it could see it.
   - Each event's change is decided by one pure function, `FileChange.decide`, from the identity of the file open, the identity of the file at the path, the open file's size, and how far it has been read.
   - Each read pass is bounded by the read window, 256 KiB, as the replay is. When more lies ahead, as in a large new file, the pass reads the window's end of it alone, from the first line that starts there, and a marker line says how many bytes it passed over. No line is longer than 256 KiB: a longer run with no newline arrives in pieces.
-  - A failure other than a file not there yet, such as a folder that cannot be read, is said as an error line, once while it lasts.
+  - A failure other than a file not there yet, such as a folder that cannot be read, is said as an error line, once while it lasts. It lasts while each event meets it, so one that an event goes without is said again when it comes back.
   - The reads, the replay included, happen on the follower's own queue, and the console takes each batch on the main queue, in order.
 - **The command source:**
   - A run and a followed command share one frame: `» ` and the label, then the lines, then `» exit N · 1.2s`, or `» killed by signal N · 1.2s` for a child a signal ended, for which `run` gives 128 and the signal, as a shell does.
@@ -154,7 +154,7 @@ It was reviewed before any code (WP-08), as Masthead was. The review read Gtools
   - A truncation followed by a write that reaches past the old offset before the event is read reads as an append, so the start of the new content is lost.
   - Lines written to a renamed file after its rename's event are not read, since the old file is drained once and closed. WP-10's Gtools adoption therefore stops the old site before `cms start` renames its log.
   - While the reader has scrolled up and the console is full, each batch cuts lines from the top of the text, so the lines in view move up.
-  - A failure is remembered until the file is opened again, so one that clears and then comes back on the open file, such as a read error, is said only the first time.
+  - A folder that cannot be watched leaves the follower only the open file's own source: none at all when the file cannot be opened, or once it is renamed or removed with no new file at its path. Each failure is said once and nothing looks again, so permissions put right later pick nothing up. Following the file again recovers it.
 
 ## The work
 
