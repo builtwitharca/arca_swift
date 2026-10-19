@@ -5,8 +5,8 @@
 // libraries share it, and an app imports only the libraries it uses.
 // ArcaLogConsole (WP-09) needs neither ArcaCore nor another package.
 // ArcaTestSupport holds what the test targets share, and no product has it.
-// ArcaMastheadExample is an app that shows the row and the About window,
-// built here and by CI, and in no product.
+// ArcaMastheadExample is an app that shows the row, the About window and a
+// console, built here and by CI, and in no product.
 //
 // A warning fails the build of the package's own targets only when
 // ARCA_SWIFT_STRICT is set, to any value. CI's test job and the README's build
@@ -45,7 +45,7 @@ let package = Package(
     ),
     .target(name: "ArcaLogConsole", swiftSettings: settings),
     .executableTarget(
-      name: "ArcaMastheadExample", dependencies: ["ArcaMasthead"], resources: [.process("Resources")],
+      name: "ArcaMastheadExample", dependencies: ["ArcaMasthead", "ArcaLogConsole"], resources: [.process("Resources")],
       swiftSettings: settings
     ),
     .target(name: "ArcaTestSupport", path: "Tests/ArcaTestSupport", swiftSettings: settings),

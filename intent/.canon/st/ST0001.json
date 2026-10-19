@@ -468,8 +468,8 @@
       "covers": [
         "AC-09.1"
       ],
-      "status": "red",
-      "note": "Written against compiling stubs before the code; its red run is next. Red in slot 106 (19 Oct 2026, 09:23:16Z to 09:23:36Z) against compiling stubs (bank 36f8f11): 4 of 6 failed; line and notAtStart passed, and notAtStart has since gained positive twins (sc's review)."
+      "status": "green",
+      "note": "Written against compiling stubs before the code; its red run is next. Red in slot 106 (19 Oct 2026, 09:23:16Z to 09:23:36Z) against compiling stubs (bank 36f8f11): 4 of 6 failed; line and notAtStart passed, and notAtStart has since gained positive twins (sc's review). Green in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1, on its code: all 6 passed."
     },
     {
       "id": "AT-09.2",
@@ -478,8 +478,8 @@
       "covers": [
         "AC-09.2"
       ],
-      "status": "to-write",
-      "note": "The ring's and the view text's tests were red in slot 106 (bank 36f8f11, all 8 failed). After sc's review the two became one ConsoleBuffer, whose edit is tested here; its red is the next run."
+      "status": "red",
+      "note": "The ring's and the view text's tests were red in slot 106 (bank 36f8f11, all 8 failed). After sc's review the two became one ConsoleBuffer, whose edit is tested here; its red is the next run. Red in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1 against the buffer's compiling stub: all 8 failed."
     },
     {
       "id": "AT-09.3",
@@ -488,8 +488,8 @@
       "covers": [
         "AC-09.3"
       ],
-      "status": "red",
-      "note": "Written against compiling stubs before the code; its red run is next. Red in slot 106 (19 Oct 2026, 09:23:16Z to 09:23:36Z) against compiling stubs (bank 36f8f11): all 5 failed. Its tests now read the assembler through flush() rather than isHolding (sc's review)."
+      "status": "green",
+      "note": "Written against compiling stubs before the code; its red run is next. Red in slot 106 (19 Oct 2026, 09:23:16Z to 09:23:36Z) against compiling stubs (bank 36f8f11): all 5 failed. Its tests now read the assembler through flush() rather than isHolding (sc's review). Green in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1, on its code: all 5 passed."
     },
     {
       "id": "AT-09.4",
@@ -498,8 +498,8 @@
       "covers": [
         "AC-09.4"
       ],
-      "status": "to-write",
-      "note": "Written against a compiling stub before the code; its red is the next run."
+      "status": "red",
+      "note": "Written against a compiling stub before the code; its red is the next run. Red in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1 against the follower's compiling stub: all 9 failed, each wait running out at 5 s."
     },
     {
       "id": "AT-09.5",
@@ -508,8 +508,8 @@
       "covers": [
         "AC-09.5"
       ],
-      "status": "to-write",
-      "note": "Written against compiling stubs before the code; its red is the next run."
+      "status": "red",
+      "note": "Written against compiling stubs before the code; its red is the next run. Red in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1 against the console's and the launcher's compiling stubs: all 8 failed."
     }
   ],
   "attachments": [
