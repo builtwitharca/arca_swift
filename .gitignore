@@ -14,3 +14,20 @@ DerivedData/
 .swiftpm/configuration/registries.json
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
+
+# Backups that intent upgrade writes (.backup/backup-<timestamp>/), never committed.
+.backup/backup*
+
+# AGENTS.md regeneration safety net (intent agents sync writes this; transient).
+/AGENTS.md.bak
+
+# Per-developer Claude Code settings (paths and tool allowlists vary).
+.claude/settings.local.json
+
+# Treeindex cache (derived, machine-local; regenerate with 'intent treeindex <dir>').
+intent/.treeindex/
+
+# Secrets, at any depth; an example file may be committed.
+.env
+.env.*
+!.env.example
