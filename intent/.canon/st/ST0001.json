@@ -469,7 +469,7 @@
         "AC-09.1"
       ],
       "status": "green",
-      "note": "Written against compiling stubs before the code; its red run is next. Red in slot 106 (19 Oct 2026, 09:23:16Z to 09:23:36Z) against compiling stubs (bank 36f8f11): 4 of 6 failed; line and notAtStart passed, and notAtStart has since gained positive twins (sc's review). Green in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1, on its code: all 6 passed."
+      "note": "Written against compiling stubs before the code; its red run is next. Red in slot 106 (19 Oct 2026, 09:23:16Z to 09:23:36Z) against compiling stubs (bank 36f8f11): 4 of 6 failed; line and notAtStart passed, and notAtStart has since gained positive twins (sc's review). Green in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1, on its code: all 6 passed. Its tab-indent token was added at bank 27ff5fe. Green again in slot 150 (19 Oct 2026, 15:58:32Z to 15:58:44Z) at bank 7cfcfa8, on the whole console's code: all 6 passed."
     },
     {
       "id": "AT-09.2",
@@ -478,8 +478,8 @@
       "covers": [
         "AC-09.2"
       ],
-      "status": "red",
-      "note": "The ring's and the view text's tests were red in slot 106 (bank 36f8f11, all 8 failed). After sc's review the two became one ConsoleBuffer, whose edit is tested here; its red is the next run. Red in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1 against the buffer's compiling stub: all 8 failed."
+      "status": "green",
+      "note": "The ring's and the view text's tests were red in slot 106 (bank 36f8f11, all 8 failed). After sc's review the two became one ConsoleBuffer, whose edit is tested here; its red is the next run. Red in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1 against the buffer's compiling stub: all 8 failed. Slot 129 (bank 27ff5fe) stopped at the test target's build, on one line in LineAssemblerTests, so no test ran. Green in slot 150 (19 Oct 2026, 15:58:32Z to 15:58:44Z) at bank 7cfcfa8, on its code: all 9 passed."
     },
     {
       "id": "AT-09.3",
@@ -489,7 +489,7 @@
         "AC-09.3"
       ],
       "status": "green",
-      "note": "Written against compiling stubs before the code; its red run is next. Red in slot 106 (19 Oct 2026, 09:23:16Z to 09:23:36Z) against compiling stubs (bank 36f8f11): all 5 failed. Its tests now read the assembler through flush() rather than isHolding (sc's review). Green in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1, on its code: all 5 passed."
+      "note": "Written against compiling stubs before the code; its red run is next. Red in slot 106 (19 Oct 2026, 09:23:16Z to 09:23:36Z) against compiling stubs (bank 36f8f11): all 5 failed. Its tests now read the assembler through flush() rather than isHolding (sc's review). Green in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1, on its code: all 5 passed. Its two piece tests were added at bank 27ff5fe, where one of their lines failed to compile in slot 129 (a mutating call on a temporary), so no test ran; bank 7cfcfa8 fixes it. Green again in slot 150 (19 Oct 2026, 15:58:32Z to 15:58:44Z) at bank 7cfcfa8: all 7 passed."
     },
     {
       "id": "AT-09.4",
@@ -498,8 +498,8 @@
       "covers": [
         "AC-09.4"
       ],
-      "status": "red",
-      "note": "Written against a compiling stub before the code; its red is the next run. Red in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1 against the follower's compiling stub: all 9 failed, each wait running out at 5 s."
+      "status": "green",
+      "note": "Written against a compiling stub before the code; its red is the next run. Red in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1 against the follower's compiling stub: all 9 failed, each wait running out at 5 s. Slot 129 (bank 27ff5fe) stopped at the test target's build, on one line in LineAssemblerTests, so no test ran. Green in slot 150 (19 Oct 2026, 15:58:32Z to 15:58:44Z) at bank 7cfcfa8, on its code: all 18 passed."
     },
     {
       "id": "AT-09.5",
@@ -508,8 +508,8 @@
       "covers": [
         "AC-09.5"
       ],
-      "status": "red",
-      "note": "Written against compiling stubs before the code; its red is the next run. Red in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1 against the console's and the launcher's compiling stubs: all 8 failed."
+      "status": "green",
+      "note": "Written against compiling stubs before the code; its red is the next run. Red in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1 against the console's and the launcher's compiling stubs: all 8 failed. Slot 129 (bank 27ff5fe) stopped at the test target's build, on one line in LineAssemblerTests, so no test ran. Green in slot 150 (19 Oct 2026, 15:58:32Z to 15:58:44Z) at bank 7cfcfa8, on its code: all 14 passed."
     }
   ],
   "attachments": [
