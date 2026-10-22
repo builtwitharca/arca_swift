@@ -1,0 +1,14 @@
+{
+  "id": "01M5J35SSZD45AX3ECX68050CV",
+  "ts": "2026-10-22T15:20:20.031Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-09.7"
+  },
+  "payload": {
+    "evidence": "Tag 0.2.0 (9f3b863 on f7742b1, hv's word in gtools-ic's session, 22 Oct 2026), CI run 39803565309 green on f7742b1 (test and adopter); ArcaLogConsole is a product in Package.swift; README's ArcaLogConsole section and the 0.2.0 pin; CHANGELOG's 0.2.0 section; design.md's buffer, classifier, public surface and file-source limits"
+  }
+}
