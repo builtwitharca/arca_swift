@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-22
+
 ### Added
 
 - `ArcaLogConsole`, a console for an app's logs and the commands it runs. A `LogConsole` follows a file in-process, across a truncation or a rotation, or a command's output; runs one command at a time, framed by `» cmd` and `» exit N · 1.2s`; and takes the app's notes. A cancelled run stops its command, and a run always ends, even when a process it started holds its output open. Its window follows the end, finds with ⌘F, clears with ⌘K and closes with ⌘W. Lines are classified by the app, with the library's start-of-line tokens and timestamp skip to build on, and quiet lines are hidden until shown. A console keeps 5000 lines and 5000 quiet ones apart.
