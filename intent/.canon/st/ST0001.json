@@ -86,7 +86,7 @@
       "seq": 9,
       "title": "ArcaLogConsole: build",
       "scope": "M",
-      "status": "wip",
+      "status": "done",
       "objective": "LogConsole as hv agreed in WP-08, its pure half tested with Swift Testing. Size: M.",
       "body": "",
       "preamble": ""
@@ -316,7 +316,8 @@
       "text": "The console window is AppKit, made in code: a read-only text view that follows the end and stops following when scrolled up; Find (⌘F, ⌘G), Clear (⌘K) and Close (⌘W) handled by the window itself, with Caps Lock on or off; the app's theme of colours and font, or the library's default, in which a marker never takes an error's or a warning's colour; brought forward as the About window is; and a show-quiet-lines toggle that filters in the view and follows the app's own setting. An example app shows each, CI builds it, and hv checks it by eye.",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "satisfied",
+        "evidence": "hv's look by eye in gtools-ic's session, 22 Oct 2026, at the example built from main 607bf4f (0.2.0's code), launched under env -i: the masthead row and its menu (Console..., Run a Command, Rotate the Log), the console window (followed log, quiet lines shown with the toggle, a run framed by the marker and its exit line, warning and error colours, the marker in its own colour), and the About window; hv: LGTM"
       }
     },
     {

@@ -2,7 +2,7 @@
 wp_id: WP-09
 title: ArcaLogConsole: build
 scope: M
-status: WIP
+status: Done
 ---
 
 # WP-09: ArcaLogConsole: build
