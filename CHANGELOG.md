@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- CI builds and tests with Xcode 27.1 on GitHub's `xcode-27` image (macOS 27), the test job and the adopter alike. The adopter no longer builds with Xcode 26.6, so CI no longer checks the Xcode 26 dependency build that 0.1.1 fixed. The package still supports macOS 26 and Swift 6.2 or later.
+
 ## [0.2.0] - 2026-10-22
 
 ### Added

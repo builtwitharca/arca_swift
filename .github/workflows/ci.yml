@@ -21,12 +21,15 @@ concurrency:
 
 jobs:
   test:
-    # macOS 26 is the package's floor.
-    runs-on: macos-26
+    # macOS 26 is the package's floor. The job builds with Xcode 27.1 by name
+    # on GitHub's xcode-27 image (macOS 27), so a newer default Xcode on the
+    # image changes nothing here.
+    runs-on: xcode-27
     timeout-minutes: 20
     # A warning in the package's own targets fails the build (Package.swift).
     env:
       ARCA_SWIFT_STRICT: 1
+      DEVELOPER_DIR: /Applications/Xcode_27.1.app/Contents/Developer
     steps:
       - uses: actions/checkout@v7
 
@@ -49,14 +52,13 @@ jobs:
     # system, as Gtools.app, menuz, Intent.app and Conflab.app do. The test job
     # builds the package as the root, so it cannot see a setting that breaks
     # only a dependency's build (issue 0002).
-    runs-on: macos-26
+    # Xcode 27.1 by name, as the test job. On Xcode 27 this job no longer
+    # measures issue 0002, which only Xcode 26 shows. On an image without
+    # 27.1, Show the toolchain fails.
+    runs-on: xcode-27
     timeout-minutes: 20
-    # Xcode 26.6 by name, the Xcode the job went red and green on. The image's
-    # default moves to newer releases, and on Xcode 27 the job would pass even
-    # on 0.1.0's manifest, since Swift 6.4 drops the setting for a dependency.
-    # On an image without 26.6, Show the toolchain fails.
     env:
-      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_27.1.app/Contents/Developer
     steps:
       - uses: actions/checkout@v7
         with:
