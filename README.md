@@ -107,7 +107,7 @@ console.showWindow()
 - `run(_:)` runs one command at a time. Its lines are framed by `» ` and the command, and by how it ended, eg `» exit 0 · 1.2s`. A second run while one goes is refused, naming the first, and a cancelled run stops its command.
 - `note(_:)` adds the app's own line.
 - `note(command:lines:status:)` shows a command the app ran itself, eg one whose output it reads, framed as a run is.
-- `onWindowClose` tells the app when the window closes, so that it can follow a command only while the window shows.
+- `onWindowClose` tells the app when the window closes, so that it can follow a command only while the window shows. `isFollowing(_:)` says whether a source is still followed, so such an app keeps a tail that runs and starts one that ended afresh.
 - `CommandLaunch.launcher(grace: nil)` makes a launcher that terminates a stopped command at once, for a command that does not end when its stdin closes.
 
 The window's footer names what the console follows, then the command running, eg `following ~/Library/Logs/menuz.log · running gtools doctor`. A file is named by its path. A command is named by its label, or by a name its own output gives through the `naming:` function the app passes to `follow(command:as:)`, eg the file a `tailing <path>` line names. The footer's Copy All copies the lines the window shows.

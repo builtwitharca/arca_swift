@@ -1,0 +1,14 @@
+{
+  "id": "01M5S3KJ3CHCW35Z92W8SEB6JY",
+  "ts": "2026-10-25T08:42:31.917Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-11.4"
+  },
+  "payload": {
+    "text": "The console tells the app when its window closes, so that an app can follow a command only while the window shows: an app that stops following a command when told has that command's child gone. The app can ask whether a source is still followed, from its follow until it is stopped or its command ends."
+  }
+}

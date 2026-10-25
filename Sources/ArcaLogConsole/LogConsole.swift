@@ -242,6 +242,14 @@ public final class LogConsole {
     window?.showFooter(footer)
   }
 
+  /// Whether the console follows `source` now: from `follow` until it is
+  /// stopped or, for a command, until the command ends (WP-11). An app that
+  /// follows a command only while the window shows asks it before following
+  /// again, so a tail that runs is kept and one that ended starts afresh.
+  public func isFollowing(_ source: ConsoleSource) -> Bool {
+    followed[source] != nil
+  }
+
   /// Stops what `source` was following, drops its lines, and gives the token
   /// its new batches carry.
   private func restart(_ source: ConsoleSource) -> Int {

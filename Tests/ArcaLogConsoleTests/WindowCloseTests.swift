@@ -1,4 +1,5 @@
 import AppKit
+import ArcaTestSupport
 import Foundation
 import Testing
 
@@ -6,7 +7,8 @@ import Testing
 
 /// The window's close, told to the app (WP-11), so that an app can follow a
 /// command only while the window shows: an app that stops following a command
-/// when told has that command's child gone.
+/// when told has that command's child gone, and can ask whether a source is
+/// still followed before following it again.
 /// Acceptance test AT-11.4, in ST0001's acceptance.md.
 @MainActor
 @Suite("The window's close, told to the app")
@@ -38,6 +40,27 @@ struct WindowCloseTests {
     console.windowDidClose()
     try await until { !Self.sleeping(seconds) }
     #expect(!Self.sleeping(seconds), "the child is gone once the app has stopped following it")
+  }
+
+  @Test("the app can ask whether a source is followed: yes until it is stopped or its command ends")
+  func following() async throws {
+    try await Scratch.folder { folder in
+      let (events, continuation) = AsyncStream<CommandEvent>.makeStream()
+      let console = LogConsole(title: "Console", launcher: { _ in LaunchedCommand(events: events, stop: {}) })
+      let tail = ConsoleSource("tail")
+      let file = ConsoleSource("file")
+      #expect(!console.isFollowing(tail))
+      try console.follow(
+        command: ConsoleCommand(label: "tail", executable: URL(fileURLWithPath: "/usr/bin/true")), as: tail)
+      console.follow(file: folder + "/site.log", as: file)
+      #expect(console.isFollowing(tail) && console.isFollowing(file))
+      console.stopFollowing(file)
+      #expect(!console.isFollowing(file), "a stopped source is not followed")
+      continuation.yield(.exited(0))
+      continuation.finish()
+      try await until { !console.isFollowing(tail) }
+      #expect(!console.isFollowing(tail), "a command that ended is not followed")
+    }
   }
 
   /// A length for a test's `sleep` that no other sleep on the machine has, so
