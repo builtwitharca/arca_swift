@@ -6,13 +6,13 @@ import ArcaMasthead
 /// (WP-09): the row at the top of its menu, and the About window the row
 /// opens; and a console that follows a log the app writes each second, runs a
 /// command, and keeps following when the log is rotated. The console remembers
-/// whether its quiet lines show, and notes when its window closes (WP-11). Its bundle's
-/// masthead.yaml, about.md, about.css and arca.svg are its defaults, and a
-/// copy of any of them in its config folder, arca-example, is used first. An
-/// executable that SwiftPM builds has no Info.plist or icon of its own, so
-/// the app names its own values, and takes the Arca box as its icon in the
-/// row and in the menu bar. With --about it opens the About window as it
-/// starts.
+/// whether its quiet lines show, and notes when its window closes (WP-11).
+/// Its bundle's masthead.yaml, about.md, about.css and arca.svg are its
+/// defaults, and a copy of any of them in its config folder, arca-example, is
+/// used first. An executable that SwiftPM builds has no Info.plist or icon of
+/// its own, so the app names its own values, and takes the Arca box as its
+/// icon in the row and in the menu bar. With --about it opens the About window
+/// as it starts, and with --console its console.
 @MainActor
 final class Example: NSObject, NSApplicationDelegate {
   private var status: NSStatusItem?
@@ -55,6 +55,9 @@ final class Example: NSObject, NSApplicationDelegate {
     }
     console.onWindowClose = { [weak self] in self?.console.note("the console's window closed") }
     startLogging()
+    if CommandLine.arguments.contains("--console") {
+      console.showWindow()
+    }
   }
 
   // MARK: - The console

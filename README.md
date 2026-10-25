@@ -85,7 +85,7 @@ The page runs no JavaScript and loads nothing from outside. Its policy allows on
 
 A link to an `http`, `https` or `mailto` address opens in the browser. Every other navigation is cancelled.
 
-`ArcaMastheadExample` is an app that shows both. Run it with `swift run ArcaMastheadExample`, adding `--about` to open the window as it starts.
+`ArcaMastheadExample` is an app that shows both. Run it with `swift run ArcaMastheadExample`, adding `--about` to open the About window as it starts, or `--console` to open its console.
 
 ## The console
 
