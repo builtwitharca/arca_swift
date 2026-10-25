@@ -106,6 +106,7 @@ console.showWindow()
 - `follow(command:as:)` follows a command's output instead, for a log only a CLI can render. The command's stdin is held, so a command that reads it ends with the app.
 - `run(_:)` runs one command at a time. Its lines are framed by `» ` and the command, and by how it ended, eg `» exit 0 · 1.2s`. A second run while one goes is refused, naming the first, and a cancelled run stops its command.
 - `note(_:)` adds the app's own line.
+- `note(command:lines:status:)` shows a command the app ran itself, eg one whose output it reads, framed as a run is.
 - `onWindowClose` tells the app when the window closes, so that it can follow a command only while the window shows.
 
 The window's footer names what the console follows, then the command running, eg `following ~/Library/Logs/menuz.log · running gtools doctor`. A file is named by its path. A command is named by its label, or by a name its own output gives through the `naming:` function the app passes to `follow(command:as:)`, eg the file a `tailing <path>` line names. The footer's Copy All copies the lines the window shows.
@@ -114,7 +115,7 @@ Each line has a kind: log, error, warning, marker or quiet. The app gives a clas
 
 A console keeps its last 5000 lines, and its last 5000 quiet ones apart, so a busy log's quiet lines never push out a command's output. A console that falls behind a command's output drops its oldest lines, and says how many.
 
-The window follows the end as lines arrive and stops while it is scrolled up. It handles ⌘F and ⌘G to find, ⌘K to clear and ⌘W to close, so it needs nothing from the app's main menu. Its colours and font are a `ConsoleTheme`, the library's own by default, which follows light and dark mode.
+The window follows the end as lines arrive and stops while it is scrolled up. It opens where it was last left. It handles ⌘F and ⌘G to find, ⌘K to clear and ⌘W to close, so it needs nothing from the app's main menu. Its colours and font are a `ConsoleTheme`, the library's own by default, which follows light and dark mode.
 
 The example app shows a console too: its Console… item, a log it writes each second, a command it runs, and the log rotated. It remembers its quiet lines, and notes when its window closes.
 

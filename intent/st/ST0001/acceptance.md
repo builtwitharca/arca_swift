@@ -68,7 +68,8 @@ title: Shared Swift libraries for the menu bar apps: Masthead, then LogConsole
 - AC-11.2 The window's footer names what the console follows, in the order it began following each: a file by its path, with the home folder written ~, and a command by the last name its own lines gave through the app's namer, or by its label until one does. The command running follows them, as running and its label. A source stopped, or a followed command that ended, leaves the footer. -- satisfied: no (computed)
 - AC-11.3 Made with a key, a console reads whether its quiet lines show from the app's defaults under that key, and writes it there each time it changes, from the window's toggle or from the app. Made with none, its quiet lines start hidden and it writes nothing. -- satisfied: no (computed)
 - AC-11.4 The console tells the app when its window closes, so that an app can follow a command only while the window shows: an app that stops following a command when told has that command's child gone. -- satisfied: no (computed)
-- AC-11.5 (non-test) By eye in the example app: the footer holds the quiet-lines toggle, the label naming the example's log and the command running, and Copy All; the toggle is as it was left after a relaunch; and closing the window adds the example's note. README, CHANGELOG and design.md say what was added. -- satisfied: no
+- AC-11.5 (non-test) By eye in the example app: the footer holds the quiet-lines toggle, the label naming the example's log and the command running, and Copy All; after a relaunch the toggle is as it was left and the window opens where it was left; and closing the window adds the example's note. README, CHANGELOG and design.md say what was added. -- satisfied: no
+- AC-11.6 A command the app ran without the console is shown as a run is: » and its label, its lines as the app's classifier reads them, then » exit and its status, all from the command's own source. -- satisfied: no (computed)
 
 ## Acceptance Tests
 
@@ -120,6 +121,7 @@ _(no tests in this group)_
 - AT-11.2 `Tests/ArcaLogConsoleTests/FollowedNameTests.swift` -- covers AC-11.2 -- status: to-write -- Written against compiling stubs before the code; its red is the next run.
 - AT-11.3 `Tests/ArcaLogConsoleTests/RememberedQuietTests.swift` -- covers AC-11.3 -- status: to-write -- Written against compiling stubs before the code; its red is the next run.
 - AT-11.4 `Tests/ArcaLogConsoleTests/WindowCloseTests.swift` -- covers AC-11.4 -- status: to-write -- Written against compiling stubs before the code; its red is the next run.
+- AT-11.5 `Tests/ArcaLogConsoleTests/NotedCommandTests.swift` -- covers AC-11.6 -- status: to-write -- Written with the code; its red is a mutant run, the noted lines left out, before the green.
 
 ---
 

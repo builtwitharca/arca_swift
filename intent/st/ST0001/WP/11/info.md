@@ -14,7 +14,9 @@ ArcaLogConsole gains what Gtools.app's console has and the package's lacks, so t
 - a Copy All button, which copies the lines the window shows;
 - a label in the window's footer naming what the console follows: a file by its path, and a command by its label or by the name its own output gives, with the command running beside them;
 - the quiet-lines toggle, remembered under a key the app gives;
-- the app told when the window closes, so that it can follow a command only while the window shows, as Gtools.app follows `gtools cms logs`.
+- the app told when the window closes, so that it can follow a command only while the window shows, as Gtools.app follows `gtools cms logs`;
+- a command the app ran itself, shown as a run is, as Gtools.app shows the `gtools url open` clicks whose output it reads;
+- the window opening where it was last left.
 
 All of it is additive, for arca_swift's next release, whose number and tag are hv's. Size: S.
 

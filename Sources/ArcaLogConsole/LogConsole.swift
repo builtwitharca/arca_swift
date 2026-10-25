@@ -160,6 +160,20 @@ public final class LogConsole {
     append([.marker(text)])
   }
 
+  /// A command the app ran without the console, eg one whose output it reads
+  /// itself, shown as a run is (WP-11): `» ` and `label`, then `lines`, each of
+  /// the kind `classify` gives it, then `» exit` and `status`, all from the
+  /// command's own source.
+  public func note(
+    command label: String, lines: [String], status: Int32,
+    classify: @escaping ConsoleClassifier = ConsoleClassify.standard
+  ) {
+    let source = ConsoleSource(label)
+    append(
+      [.marker(label, source: source)] + ConsoleLine.lines(lines, source: source, classify: classify)
+        + [.marker("exit \(status)", source: source)])
+  }
+
   // MARK: - Following
 
   /// Follows the file at `path` as `source`: its last `backlog` lines, then

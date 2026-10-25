@@ -1,0 +1,14 @@
+{
+  "id": "01M5RZWH2STP1G40TH9NQ1T8WK",
+  "ts": "2026-10-25T07:37:31.482Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-11.5"
+  },
+  "payload": {
+    "text": "By eye in the example app: the footer holds the quiet-lines toggle, the label naming the example's log and the command running, and Copy All; after a relaunch the toggle is as it was left and the window opens where it was left; and closing the window adds the example's note. README, CHANGELOG and design.md say what was added."
+  }
+}

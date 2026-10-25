@@ -37,7 +37,12 @@ final class ConsoleWindowController: NSWindowController, NSWindowDelegate {
       backing: .buffered, defer: false)
     window.title = console.title
     window.isReleasedWhenClosed = false
-    window.center()
+    // The window opens where it was last left, under a name its title gives,
+    // and in the middle of the screen the first time (WP-11).
+    window.setFrameAutosaveName("ArcaLogConsole \(console.title)")
+    if !window.setFrameUsingName(window.frameAutosaveName) {
+      window.center()
+    }
     let scrollView = NSScrollView()
     self.scrollView = scrollView
     textView = NSTextView(frame: NSRect(origin: .zero, size: scrollView.contentSize))

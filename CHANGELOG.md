@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - The footer's Copy All copies the lines the window shows.
 - `LogConsole(quietLinesKey:)` remembers in the app's defaults whether the quiet lines show, and starts as they were left.
 - `onWindowClose` tells the app when the console's window closes, so that it can follow a command only while the window shows.
+- `note(command:lines:status:)` shows a command the app ran without the console, framed as a run is.
+- A console's window opens where it was last left.
 - The example app's console remembers its quiet lines, and notes when its window closes.
 
 ### Changed

@@ -167,7 +167,9 @@ What Gtools.app's console had and the package's lacked, added so that Gtools.app
 - **Copy All** copies the text the window shows: each line it shows, as its text and a newline, so the quiet lines go only while they show. A pasteboard that refuses it gets a note in the console.
 - **The quiet lines remembered:** a console made with `quietLinesKey` reads whether its quiet lines show from the app's defaults, and writes each change there, from the toggle or the app. Made with none, it writes nothing.
 - **The window's close:** `onWindowClose` tells the app, so that it can stop a command it follows only while the window shows, as Gtools.app does with `gtools cms logs`, whose child would otherwise run for as long as the app.
-- **The public surface** gains `ConsoleNamer`, `follow(command:as:classify:naming:)`, `quietLinesKey` and `defaults` on the initialiser, and `onWindowClose`.
+- **A command the app ran itself:** `note(command:lines:status:)` frames its lines as a run's are, `» label` to `» exit N`, with no time, since the console did not time it. Gtools.app shows its `gtools url open` clicks that way, since it reads their output itself, for its url.log and its alert.
+- **The window's frame** is saved under `ArcaLogConsole` and the console's title, so the window opens where it was last left, and in the middle of the screen the first time.
+- **The public surface** gains `ConsoleNamer`, `follow(command:as:classify:naming:)`, `quietLinesKey` and `defaults` on the initialiser, `onWindowClose`, and `note(command:lines:status:classify:)`.
 
 ## The work
 
