@@ -16,7 +16,9 @@ ArcaLogConsole gains what Gtools.app's console has and the package's lacks, so t
 - the quiet-lines toggle, remembered under a key the app gives;
 - the app told when the window closes, so that it can follow a command only while the window shows, as Gtools.app follows `gtools cms logs`;
 - a command the app ran itself, shown as a run is, as Gtools.app shows the `gtools url open` clicks whose output it reads;
-- the window opening where it was last left.
+- the window opening where it was last left;
+- a launcher that terminates a stopped child at once, for a command that does not end when its stdin closes, as `gtools cms logs` does not;
+- a theme that sets the window's appearance, as Gtools.app's console is dark whatever the system's mode.
 
 All of it is additive, for arca_swift's next release, whose number and tag are hv's. Size: S.
 

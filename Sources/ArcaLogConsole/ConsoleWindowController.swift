@@ -71,6 +71,7 @@ final class ConsoleWindowController: NSWindowController, NSWindowDelegate {
   /// Takes `theme`, and shows `shown` in it.
   func restyle(_ theme: ConsoleTheme, shown: [ConsoleLine]) {
     self.theme = theme
+    window?.appearance = theme.appearance.flatMap { NSAppearance(named: $0) }
     textView.backgroundColor = theme.background
     // Below a short log the scroll view shows its own background.
     scrollView.backgroundColor = theme.background

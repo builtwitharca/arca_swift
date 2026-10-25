@@ -1,7 +1,7 @@
 import AppKit
 
-/// A console window's font and colours: the app's, or the library's own
-/// (design.md "ArcaLogConsole").
+/// A console window's font and colours, and its appearance: the app's, or the
+/// library's own (design.md "ArcaLogConsole").
 public struct ConsoleTheme {
   public var font: NSFont
   public var background: NSColor
@@ -10,10 +10,14 @@ public struct ConsoleTheme {
   public var warning: NSColor
   public var marker: NSColor
   public var quiet: NSColor
+  /// The window's appearance, eg `.darkAqua` for colours that are dark
+  /// whatever the system's mode, so the footer matches the text; or nil, to
+  /// follow the system (WP-11).
+  public var appearance: NSAppearance.Name?
 
   public init(
     font: NSFont, background: NSColor, log: NSColor, error: NSColor, warning: NSColor,
-    marker: NSColor, quiet: NSColor
+    marker: NSColor, quiet: NSColor, appearance: NSAppearance.Name? = nil
   ) {
     self.font = font
     self.background = background
@@ -22,6 +26,7 @@ public struct ConsoleTheme {
     self.warning = warning
     self.marker = marker
     self.quiet = quiet
+    self.appearance = appearance
   }
 
   /// The library's own: the system's monospaced font at 12 points; the text

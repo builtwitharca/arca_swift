@@ -169,7 +169,9 @@ What Gtools.app's console had and the package's lacked, added so that Gtools.app
 - **The window's close:** `onWindowClose` tells the app, so that it can stop a command it follows only while the window shows, as Gtools.app does with `gtools cms logs`, whose child would otherwise run for as long as the app.
 - **A command the app ran itself:** `note(command:lines:status:)` frames its lines as a run's are, `» label` to `» exit N`, with no time, since the console did not time it. Gtools.app shows its `gtools url open` clicks that way, since it reads their output itself, for its url.log and its alert.
 - **The window's frame** is saved under `ArcaLogConsole` and the console's title, so the window opens where it was last left, and in the middle of the screen the first time.
-- **The public surface** gains `ConsoleNamer`, `follow(command:as:classify:naming:)`, `quietLinesKey` and `defaults` on the initialiser, `onWindowClose`, and `note(command:lines:status:classify:)`.
+- **The grace:** a stopped child is given a moment to end on its own once its stdin closes, then terminated. `CommandLaunch.launcher(grace: nil)` terminates it at once, for a command that does not end when its stdin closes: Gtools.app's `gtools cms logs` runs its tail as a port of its own and ends only on a signal, so a stop, or the app quitting before the grace ran out, would leave it running.
+- **The theme's appearance:** a theme can name the window's appearance, as Gtools.app's dark console does, so the footer matches the text whatever the system's mode.
+- **The public surface** gains `ConsoleNamer`, `follow(command:as:classify:naming:)`, `quietLinesKey` and `defaults` on the initialiser, `onWindowClose`, `note(command:lines:status:classify:)`, `CommandLaunch.launcher(drain:grace:)` made public, and `ConsoleTheme.appearance`.
 
 ## The work
 

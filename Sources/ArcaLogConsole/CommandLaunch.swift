@@ -36,7 +36,8 @@ public enum CommandEvent: Sendable, Equatable {
 public struct LaunchedCommand: Sendable {
   public let events: AsyncStream<CommandEvent>
   /// Closes the child's stdin, which ends a child that reads it, and
-  /// terminates the child if it is still running a moment later.
+  /// terminates the child if it is still running a moment later, or at once
+  /// for a launcher with no grace.
   public let stop: @Sendable () -> Void
   /// How many of the command's lines were dropped, the oldest first, because
   /// its console fell behind its output. It is final once `events` has ended.
@@ -71,7 +72,7 @@ public enum CommandLaunch {
   /// **A RUN ALWAYS ENDS.** A process the child started can hold the output
   /// open after the child has ended. Two seconds after the end, the output is
   /// no longer read, a line says so, and the events end.
-  public static let process: CommandLauncher = CommandLaunch.launcher(drain: .seconds(2))
+  public static let process: CommandLauncher = CommandLaunch.launcher()
 
   /// The most reads of a command's output that wait for its console.
   static let heldBatches = 1024
@@ -80,8 +81,15 @@ public enum CommandLaunch {
   static let cutLine =
     "warning: the output was still open after the command ended, held by a process it started, so it is no longer read"
 
-  /// `process`, with the output read for `drain` after the child ends.
-  static func launcher(drain: DispatchTimeInterval) -> CommandLauncher {
+  /// `process`, with the output read for `drain` after the child ends, and a
+  /// stopped child given `grace` to end on its own before it is terminated.
+  /// With no grace it is terminated at once (WP-11): for a command that does
+  /// not end when its stdin closes, as a log follower that runs a pipeline of
+  /// its own may not, so that stopping it, or quitting the app, cannot leave it
+  /// running.
+  public static func launcher(
+    drain: DispatchTimeInterval = .seconds(2), grace: DispatchTimeInterval? = .seconds(1)
+  ) -> CommandLauncher {
     { command in
       let child = Process()
       child.executableURL = command.executable
@@ -114,7 +122,7 @@ public enum CommandLaunch {
         output.fileHandleForReading.readabilityHandler = nil
         throw error
       }
-      let running = Running(child, input: input.fileHandleForWriting)
+      let running = Running(child, input: input.fileHandleForWriting, grace: grace)
       // A console that stops reading, as a cancelled run does, stops the child.
       continuation.onTermination = { termination in
         if case .cancelled = termination { running.stop() }
@@ -228,18 +236,19 @@ private final class CommandOutput: Sendable {
 private final class Running: Sendable {
   private let child: Process
   private let input: FileHandle
+  /// How long a stopped child has to end on its own before it is terminated,
+  /// or nil to terminate it at once.
+  private let grace: DispatchTimeInterval?
   private let stopped = Mutex(false)
 
-  /// How long a stopped child has to end on its own before it is terminated.
-  private static let grace: DispatchTimeInterval = .seconds(1)
-
-  init(_ child: Process, input: FileHandle) {
+  init(_ child: Process, input: FileHandle, grace: DispatchTimeInterval?) {
     self.child = child
     self.input = input
+    self.grace = grace
   }
 
   /// Closes the child's stdin, then terminates it if it is still running
-  /// after the grace. A second stop does nothing.
+  /// after the grace, or at once with none. A second stop does nothing.
   @Sendable func stop() {
     let first = stopped.withLock { stopped in
       defer { stopped = true }
@@ -249,10 +258,16 @@ private final class Running: Sendable {
     do {
       try input.close()
     } catch {
-      // The child then sees no EOF, and the terminate after the grace ends it.
+      // The child then sees no EOF, and the terminate ends it.
     }
-    DispatchQueue.global().asyncAfter(deadline: .now() + Self.grace) { [self] in
-      if child.isRunning { child.terminate() }
+    guard let grace else {
+      terminate()
+      return
     }
+    DispatchQueue.global().asyncAfter(deadline: .now() + grace) { [self] in terminate() }
+  }
+
+  private func terminate() {
+    if child.isRunning { child.terminate() }
   }
 }

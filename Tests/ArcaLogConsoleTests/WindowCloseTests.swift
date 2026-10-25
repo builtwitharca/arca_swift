@@ -21,9 +21,7 @@ struct WindowCloseTests {
 
   @Test("an app that stops following a command when told has the command's child gone")
   func childGone() async throws {
-    // A length no other sleep on the machine has, so that pgrep finds this
-    // child alone.
-    let seconds = "\(Int.random(in: 100_000...999_999)).25"
+    let seconds = Self.sleepLength()
     let source = ConsoleSource("sleep")
     let console = LogConsole(title: "Console")
     try console.follow(
@@ -35,6 +33,13 @@ struct WindowCloseTests {
     console.windowDidClose()
     try await until { !Self.sleeping(seconds) }
     #expect(!Self.sleeping(seconds), "the child is gone once the app has stopped following it")
+  }
+
+  /// A length for a test's `sleep` that no other sleep on the machine has, so
+  /// that pgrep finds that child alone. Every one ends in `.25`, so that a run
+  /// can find any left behind.
+  static func sleepLength() -> String {
+    "\(Int.random(in: 100_000...999_999)).25"
   }
 
   /// Whether a `sleep` of `seconds` runs, as pgrep finds it.
