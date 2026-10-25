@@ -156,6 +156,19 @@ It was reviewed before any code (WP-08), as Masthead was. The review read Gtools
   - While the reader has scrolled up and the console is full, each batch cuts lines from the top of the text, so the lines in view move up.
   - A folder that cannot be watched leaves the follower only the open file's own source: none at all when the file cannot be opened, or once it is renamed or removed with no new file at its path. Each failure is said once and nothing looks again, so permissions put right later pick nothing up. Following the file again recovers it.
 
+### As built (WP-11)
+
+What Gtools.app's console had and the package's lacked, added so that Gtools.app loses nothing when it adopts the package (Gtools' ST0018 WP-07). All of it is additive.
+
+- **The footer:** the quiet lines' toggle, a label, and Copy All, under the text.
+  - The label names what the console follows, in the order it began following each, then the command running: `following ~/Library/Logs/menuz.log · running gtools doctor`.
+  - A file is named by its path, with the home folder written `~`. A command is named by its label until a line of its output gives a name through the app's `ConsoleNamer`, eg the file a `tailing <path>` line names, and then by the last name given.
+  - A source stopped, or a followed command that ended, leaves the label.
+- **Copy All** copies the text the window shows: each line it shows, as its text and a newline, so the quiet lines go only while they show. A pasteboard that refuses it gets a note in the console.
+- **The quiet lines remembered:** a console made with `quietLinesKey` reads whether its quiet lines show from the app's defaults, and writes each change there, from the toggle or the app. Made with none, it writes nothing.
+- **The window's close:** `onWindowClose` tells the app, so that it can stop a command it follows only while the window shows, as Gtools.app does with `gtools cms logs`, whose child would otherwise run for as long as the app.
+- **The public surface** gains `ConsoleNamer`, `follow(command:as:classify:naming:)`, `quietLinesKey` and `defaults` on the initialiser, and `onWindowClose`.
+
 ## The work
 
 - **ic builds the package:** WP-01 to WP-03, then WP-08 and WP-09.

@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- A console window's footer names what the console follows, then the command running. A file is named by its path, and a command by its label or by a name its own output gives through the app's `naming:` function.
+- The footer's Copy All copies the lines the window shows.
+- `LogConsole(quietLinesKey:)` remembers in the app's defaults whether the quiet lines show, and starts as they were left.
+- `onWindowClose` tells the app when the console's window closes, so that it can follow a command only while the window shows.
+- The example app's console remembers its quiet lines, and notes when its window closes.
+
 ### Changed
 
 - CI builds and tests with Xcode 27.1 on GitHub's `xcode-27` image (macOS 27), the test job and the adopter alike. The adopter no longer builds with Xcode 26.6, so CI no longer checks the Xcode 26 dependency build that 0.1.1 fixed. The package still supports macOS 26 and Swift 6.2 or later.

@@ -1,8 +1,9 @@
 import AppKit
 
 /// A console's window (design.md "ArcaLogConsole"), AppKit and made in code: a
-/// read-only text view of the console's lines, and a toggle for its quiet
-/// ones.
+/// read-only text view of the console's lines, over a footer that holds a
+/// toggle for its quiet ones, what it follows, and Copy All (WP-11). It tells
+/// the console when it closes.
 ///
 /// **THE VIEW FOLLOWS THE END** as lines arrive, stops following while the
 /// reader has scrolled up, and follows again once they are back at the
@@ -12,12 +13,15 @@ import AppKit
 /// ring dropped is cut from the top, inside one text-storage edit, and the cut
 /// counts lines, not newline runs (`ConsoleBuffer`).
 @MainActor
-final class ConsoleWindowController: NSWindowController {
+final class ConsoleWindowController: NSWindowController, NSWindowDelegate {
   private weak var console: LogConsole?
   private let scrollView: NSScrollView
   private let textView: NSTextView
   private let quietToggle = NSButton(
     checkboxWithTitle: "Show quiet lines", target: nil, action: nil)
+  /// What the console follows and the command running (WP-11).
+  private let followingLabel = NSTextField(labelWithString: "")
+  private let copyButton = NSButton(title: "Copy All", target: nil, action: nil)
   private var theme: ConsoleTheme
   private var following = true
 
@@ -40,8 +44,10 @@ final class ConsoleWindowController: NSWindowController {
     super.init(window: window)
     window.console = console
     window.textView = textView
+    window.delegate = self
     layOut(in: window)
     quietToggle.state = console.showsQuietLines ? .on : .off
+    showFooter(console.footer)
     restyle(theme, shown: console.shownLines)
   }
 
@@ -71,6 +77,18 @@ final class ConsoleWindowController: NSWindowController {
   func showQuiet(_ visible: Bool, shown: [ConsoleLine]) {
     quietToggle.state = visible ? .on : .off
     reload(shown)
+  }
+
+  /// Shows `text` in the footer, and whole in its tooltip, since a long path
+  /// is cut in the middle.
+  func showFooter(_ text: String) {
+    followingLabel.stringValue = text
+    followingLabel.toolTip = text.isEmpty ? nil : text
+  }
+
+  /// Tells the console, which tells the app.
+  func windowWillClose(_ notification: Notification) {
+    console?.windowDidClose()
   }
 
   /// One batch's edit, made inside one text-storage edit: the removals in
@@ -129,9 +147,25 @@ final class ConsoleWindowController: NSWindowController {
 
     quietToggle.target = self
     quietToggle.action = #selector(toggleQuiet(_:))
+    followingLabel.font = .monospacedSystemFont(ofSize: 11, weight: .regular)
+    followingLabel.textColor = .secondaryLabelColor
+    followingLabel.lineBreakMode = .byTruncatingMiddle
+    // The label gives way first, so that the toggle and the button keep
+    // their size in a narrow window, and fills the space between them.
+    followingLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    followingLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    copyButton.target = self
+    copyButton.action = #selector(copyAll(_:))
+    copyButton.toolTip = "Copy every line the console shows"
+
+    let footer = NSStackView(views: [quietToggle, followingLabel, copyButton])
+    footer.orientation = .horizontal
+    footer.alignment = .centerY
+    footer.spacing = 12
+    footer.edgeInsets = NSEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
 
     let content = NSView()
-    for view in [scrollView, quietToggle] as [NSView] {
+    for view in [scrollView, footer] as [NSView] {
       view.translatesAutoresizingMaskIntoConstraints = false
       content.addSubview(view)
     }
@@ -139,9 +173,10 @@ final class ConsoleWindowController: NSWindowController {
       scrollView.topAnchor.constraint(equalTo: content.topAnchor),
       scrollView.leadingAnchor.constraint(equalTo: content.leadingAnchor),
       scrollView.trailingAnchor.constraint(equalTo: content.trailingAnchor),
-      quietToggle.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 8),
-      quietToggle.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: 12),
-      quietToggle.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: -8),
+      footer.topAnchor.constraint(equalTo: scrollView.bottomAnchor),
+      footer.leadingAnchor.constraint(equalTo: content.leadingAnchor),
+      footer.trailingAnchor.constraint(equalTo: content.trailingAnchor),
+      footer.bottomAnchor.constraint(equalTo: content.bottomAnchor),
     ])
     window.contentView = content
   }
@@ -156,6 +191,10 @@ final class ConsoleWindowController: NSWindowController {
 
   @objc private func toggleQuiet(_ sender: NSButton) {
     console?.showsQuietLines = sender.state == .on
+  }
+
+  @objc private func copyAll(_ sender: NSButton) {
+    console?.copyAll()
   }
 }
 

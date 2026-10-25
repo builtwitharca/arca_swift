@@ -5,7 +5,8 @@ import ArcaMasthead
 /// An example menu bar app for ArcaMasthead (ST0001 WP-03) and ArcaLogConsole
 /// (WP-09): the row at the top of its menu, and the About window the row
 /// opens; and a console that follows a log the app writes each second, runs a
-/// command, and keeps following when the log is rotated. Its bundle's
+/// command, and keeps following when the log is rotated. The console remembers
+/// whether its quiet lines show, and notes when its window closes (WP-11). Its bundle's
 /// masthead.yaml, about.md, about.css and arca.svg are its defaults, and a
 /// copy of any of them in its config folder, arca-example, is used first. An
 /// executable that SwiftPM builds has no Info.plist or icon of its own, so
@@ -17,7 +18,7 @@ final class Example: NSObject, NSApplicationDelegate {
   private var status: NSStatusItem?
   // Lazy, so it is made on the main actor at first use rather than in the
   // initialiser NSObject gives the class.
-  private lazy var console = LogConsole(title: "arca-example console")
+  private lazy var console = LogConsole(title: "arca-example console", quietLinesKey: "ShowsQuietLines")
   private let log = FileManager.default.temporaryDirectory.appendingPathComponent(
     "arca-example.log"
   ).path
@@ -52,6 +53,7 @@ final class Example: NSObject, NSApplicationDelegate {
     if CommandLine.arguments.contains("--about"), let action = row.action {
       NSApp.sendAction(action, to: row.target, from: row)
     }
+    console.onWindowClose = { [weak self] in self?.console.note("the console's window closed") }
     startLogging()
   }
 
