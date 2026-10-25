@@ -1,0 +1,15 @@
+{
+  "id": "01M5T4H3F7MEMZ7CJB96XZYFM9",
+  "ts": "2026-10-25T18:17:54.407Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0004"
+  },
+  "payload": {
+    "severity": "low",
+    "title": "LogConsole: let an adopter observe what runs, and note raw output through the LineAssembler"
+  }
+}
