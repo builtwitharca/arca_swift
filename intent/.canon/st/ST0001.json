@@ -585,8 +585,8 @@
       "covers": [
         "AC-11.1"
       ],
-      "status": "to-write",
-      "note": "Written against compiling stubs before the code; its red is the next run."
+      "status": "green",
+      "note": "Written against compiling stubs before the code; its red is the next run. Red in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 1 (8fccea0), against the stubs: its two tests of the text failed, and the empty console's passed, as its stub holds. At bank 8 (ed9c56d) two mutants each failed the pasteboard test: Copy All writing another type, and Copy All not clearing first. Green in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 8 (ed9c56d), CI's steps under ARCA_SWIFT_STRICT: lint clean, build clean, 220 passed and 0 failed."
     },
     {
       "id": "AT-11.2",
@@ -595,8 +595,8 @@
       "covers": [
         "AC-11.2"
       ],
-      "status": "to-write",
-      "note": "Written against compiling stubs before the code; its red is the next run."
+      "status": "green",
+      "note": "Written against compiling stubs before the code; its red is the next run. Red in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 1 (8fccea0), against the stubs: all six of its tests failed. Green in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 8 (ed9c56d), CI's steps under ARCA_SWIFT_STRICT: lint clean, build clean, 220 passed and 0 failed."
     },
     {
       "id": "AT-11.3",
@@ -605,8 +605,8 @@
       "covers": [
         "AC-11.3"
       ],
-      "status": "to-write",
-      "note": "Written against compiling stubs before the code; its red is the next run."
+      "status": "green",
+      "note": "Written against compiling stubs before the code; its red is the next run. Red in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 1 (8fccea0), against the stubs: three of its tests failed, and 'made with no key' passed, as its stub holds. Green in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 8 (ed9c56d), CI's steps under ARCA_SWIFT_STRICT: lint clean, build clean, 220 passed and 0 failed."
     },
     {
       "id": "AT-11.4",
@@ -615,8 +615,8 @@
       "covers": [
         "AC-11.4"
       ],
-      "status": "to-write",
-      "note": "Written against compiling stubs before the code; its red is the next run."
+      "status": "green",
+      "note": "Written against compiling stubs before the code; its red is the next run. Red in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 1 (8fccea0), against the stubs: both its tests then failed. At bank 8 (ed9c56d) the window's delegate taken out failed the close test, and isFollowing made always true failed the following test. Green in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 8 (ed9c56d), CI's steps under ARCA_SWIFT_STRICT: lint clean, build clean, 220 passed and 0 failed."
     },
     {
       "id": "AT-11.5",
@@ -625,8 +625,8 @@
       "covers": [
         "AC-11.6"
       ],
-      "status": "to-write",
-      "note": "Written with the code; its red is a mutant run, the noted lines left out, before the green."
+      "status": "green",
+      "note": "Written with the code; its red is a mutant run, the noted lines left out, before the green. Red in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 8 (ed9c56d): with the lines left out of CommandFrame's noted frame, the framed test failed. Green in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 8 (ed9c56d), CI's steps under ARCA_SWIFT_STRICT: lint clean, build clean, 220 passed and 0 failed."
     },
     {
       "id": "AT-11.6",
@@ -635,8 +635,8 @@
       "covers": [
         "AC-11.7"
       ],
-      "status": "to-write",
-      "note": "Written with the code; its red is a mutant run, the immediate terminate taken out, before the green."
+      "status": "green",
+      "note": "Written with the code; its red is a mutant run, the immediate terminate taken out, before the green. Red in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 8 (ed9c56d): with the immediate terminate taken out, the no-grace test failed, its child still running. Green in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 8 (ed9c56d), CI's steps under ARCA_SWIFT_STRICT: lint clean, build clean, 220 passed and 0 failed."
     }
   ],
   "attachments": [
