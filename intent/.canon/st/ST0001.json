@@ -104,7 +104,7 @@
       "seq": 11,
       "title": "ArcaLogConsole: Copy All, what it follows, the remembered quiet lines, the window's close",
       "scope": "S",
-      "status": "wip",
+      "status": "done",
       "objective": "ArcaLogConsole gains what Gtools.app's console has and the package's lacks, so that Gtools.app can adopt it and lose nothing (Gtools' ST0018 WP-07, on hv's ruling of 25 Oct that Gtools comes up to the estate's spec):\n\n- a Copy All button, which copies the lines the window shows;\n- a label in the window's footer naming what the console follows: a file by its path, and a command by its label or by the name its own output gives, with the command running beside them;\n- the quiet-lines toggle, remembered under a key the app gives;\n- the app told when the window closes, so that it can follow a command only while the window shows, as Gtools.app follows `gtools cms logs`;\n- a command the app ran itself, shown as a run is, as Gtools.app shows the `gtools url open` clicks whose output it reads;\n- the window opening where it was last left;\n- a launcher that terminates a stopped child at once, for a command that does not end when its stdin closes, as `gtools cms logs` does not;\n- a theme that sets the window's appearance, as Gtools.app's console is dark whatever the system's mode.\n\nAll of it is additive, for arca_swift's next release, whose number and tag are hv's. Size: S.",
       "body": "",
       "preamble": ""
@@ -383,7 +383,8 @@
       "text": "By eye in the example app: the footer holds the quiet-lines toggle, the label naming the example's log and the command running, and Copy All; after a relaunch the toggle is as it was left and the window opens where it was left; and closing the window adds the example's note. A theme's appearance is the window's, as Gtools.app's console shows, dark whatever the system's mode. README, CHANGELOG and design.md say what was added.",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "satisfied",
+        "evidence": "hv's look at ArcaMastheadExample --console, 25 Oct 2026, quit by hv at 18:27Z: 'What I saw is enough: record AC-11.5 as satisfied on my look' (in gtools-ic's session)"
       }
     },
     {

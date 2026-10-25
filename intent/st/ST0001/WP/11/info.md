@@ -2,7 +2,7 @@
 wp_id: WP-11
 title: ArcaLogConsole: Copy All, what it follows, the remembered quiet lines, the window's close
 scope: S
-status: WIP
+status: Done
 ---
 
 # WP-11: ArcaLogConsole: Copy All, what it follows, the remembered quiet lines, the window's close

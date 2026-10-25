@@ -52,7 +52,7 @@ Measured, 18 Oct:
 | WP-08 | ArcaLogConsole: review and proposal                                                       | S    | Done        |
 | WP-09 | ArcaLogConsole: build                                                                     | M    | Done        |
 | WP-10 | The apps adopt ArcaLogConsole                                                             | M    | Not Started |
-| WP-11 | ArcaLogConsole: Copy All, what it follows, the remembered quiet lines, the window's close | S    | WIP         |
+| WP-11 | ArcaLogConsole: Copy All, what it follows, the remembered quiet lines, the window's close | S    | Done        |
 
 ## Acceptance
 

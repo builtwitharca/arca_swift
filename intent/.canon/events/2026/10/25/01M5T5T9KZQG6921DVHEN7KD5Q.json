@@ -1,0 +1,14 @@
+{
+  "id": "01M5T5T9KZQG6921DVHEN7KD5Q",
+  "ts": "2026-10-25T18:40:24.192Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-11.5"
+  },
+  "payload": {
+    "evidence": "hv's look at ArcaMastheadExample --console, 25 Oct 2026, quit by hv at 18:27Z: 'What I saw is enough: record AC-11.5 as satisfied on my look' (in gtools-ic's session)"
+  }
+}
