@@ -1,0 +1,15 @@
+{
+  "id": "01M5SQ0Y1Y1YEJQY50Q2BAKN47",
+  "ts": "2026-10-25T14:21:53.086Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0003"
+  },
+  "payload": {
+    "severity": "medium",
+    "title": "Menubar apps each copy what arca_swift could carry: the masthead's two macOS 27 workarounds, the XCTest-host check, and a single-instance guard"
+  }
+}
