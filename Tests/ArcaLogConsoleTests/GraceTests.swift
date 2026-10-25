@@ -21,6 +21,7 @@ struct GraceTests {
     let seconds = WindowCloseTests.sleepLength()
     let launched = try CommandLaunch.launcher(grace: nil)(Self.sleeper(seconds))
     try await until { WindowCloseTests.sleeping(seconds) }
+    #expect(WindowCloseTests.sleeping(seconds), "the child runs before its stop")
     launched.stop()
     // Well inside the default grace, which would leave it running.
     try await Task.sleep(for: .milliseconds(300))

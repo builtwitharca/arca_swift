@@ -46,8 +46,11 @@ struct CopyAllTests {
     defer { pasteboard.releaseGlobally() }
     pasteboard.clearContents()
     pasteboard.setString("copied before", forType: .string)
+    // A type Copy All never writes, which only its clearing removes.
+    pasteboard.setString("<b>copied before</b>", forType: .html)
     console.copyAll(to: pasteboard)
     #expect(pasteboard.string(forType: .string) == "» gtools doctor\nstarted\nerror: gone\n» exit 1 · 1.5s\n")
+    #expect(pasteboard.data(forType: .html) == nil, "what was there before is gone, not left beside it")
   }
 
   @Test("an empty console, or a cleared one, copies nothing")

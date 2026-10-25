@@ -36,11 +36,25 @@ struct CommandFrame: Sendable {
     case .lines(let texts):
       return (before + ConsoleLine.lines(texts, source: source, classify: classify), nil)
     case .exited(let status):
-      return (before + [ending("exit \(status)", at: now())], status)
+      return (before + [ending(Self.exited(status), at: now())], status)
     case .signalled(let signal):
-      return (before + [ending("killed by signal \(signal)", at: now())], 128 + signal)
+      return (before + [ending(Self.signalled(signal), at: now())], 128 + signal)
     }
   }
+
+  /// A command the app ran without the console (WP-11), framed as a run is:
+  /// the opening, `texts` as lines, then how it ended, untimed, since the
+  /// console did not see it run.
+  func noted(_ texts: [String], exited status: Int32) -> [ConsoleLine] {
+    [opening] + ConsoleLine.lines(texts, source: source, classify: classify)
+      + [.marker(Self.exited(status), source: source)]
+  }
+
+  /// How a run, a followed command or a noted one says it exited.
+  static func exited(_ status: Int32) -> String { "exit \(status)" }
+
+  /// How a run or a followed command says a signal ended it.
+  static func signalled(_ signal: Int32) -> String { "killed by signal \(signal)" }
 
   /// The lines a command that failed adds: a line for any lines dropped,
   /// then its reason and `» failed`.

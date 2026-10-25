@@ -24,6 +24,7 @@ struct NotedCommandTests {
   func classified() {
     let console = LogConsole(title: "Console")
     console.note(command: Self.label, lines: ["GET / 200"], status: 0, classify: { _ in .quiet })
+    #expect(console.lines.map(\.text) == ["» gtools url open gtools://x", "GET / 200", "» exit 0"])
     #expect(console.lines.map(\.kind) == [.marker, .quiet, .marker])
   }
 }

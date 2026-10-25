@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `onWindowClose` tells the app when the console's window closes, so that it can follow a command only while the window shows.
 - `note(command:lines:status:)` shows a command the app ran without the console, framed as a run is.
 - A console's window opens where it was last left.
-- `CommandLaunch.launcher(drain:grace:)` is public. With no grace, a stopped command's child is terminated at once, for one that does not end when its stdin closes.
+- `CommandLaunch.launcher(grace:)` makes a launcher whose stopped child is given a `Duration` to end on its own; with `nil` it is terminated at once, for a command that does not end when its stdin closes.
 - A `ConsoleTheme` can set the window's appearance, eg dark whatever the system's mode.
 - The example app's console remembers its quiet lines, and notes when its window closes.
 

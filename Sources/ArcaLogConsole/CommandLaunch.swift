@@ -72,7 +72,21 @@ public enum CommandLaunch {
   /// **A RUN ALWAYS ENDS.** A process the child started can hold the output
   /// open after the child has ended. Two seconds after the end, the output is
   /// no longer read, a line says so, and the events end.
-  public static let process: CommandLauncher = CommandLaunch.launcher()
+  public static let process: CommandLauncher = CommandLaunch.launcher(drain: drain)
+
+  /// `process`, with a stopped child given `grace` to end on its own before it
+  /// is terminated, or none (WP-11): with nil it is terminated at once, for a
+  /// command that does not end when its stdin closes, as a log follower that
+  /// runs a pipeline of its own may not. The library stops nothing when the
+  /// app quits: an app that stops such a command as it quits leaves nothing
+  /// running.
+  public static func launcher(grace: Duration?) -> CommandLauncher {
+    launcher(drain: drain, grace: grace.map(interval))
+  }
+
+  /// How long a run's output is read after the child ends, for a process it
+  /// started that holds the output open.
+  static let drain: DispatchTimeInterval = .seconds(2)
 
   /// The most reads of a command's output that wait for its console.
   static let heldBatches = 1024
@@ -81,14 +95,17 @@ public enum CommandLaunch {
   static let cutLine =
     "warning: the output was still open after the command ended, held by a process it started, so it is no longer read"
 
+  /// `duration` as the dispatch queues count time.
+  private static func interval(_ duration: Duration) -> DispatchTimeInterval {
+    let (seconds, attoseconds) = duration.components
+    return .nanoseconds(Int(seconds) * 1_000_000_000 + Int(attoseconds / 1_000_000_000))
+  }
+
   /// `process`, with the output read for `drain` after the child ends, and a
-  /// stopped child given `grace` to end on its own before it is terminated.
-  /// With no grace it is terminated at once (WP-11): for a command that does
-  /// not end when its stdin closes, as a log follower that runs a pipeline of
-  /// its own may not, so that stopping it, or quitting the app, cannot leave it
-  /// running.
-  public static func launcher(
-    drain: DispatchTimeInterval = .seconds(2), grace: DispatchTimeInterval? = .seconds(1)
+  /// stopped child given `grace` to end on its own before it is terminated,
+  /// or terminated at once with none.
+  static func launcher(
+    drain: DispatchTimeInterval, grace: DispatchTimeInterval? = .seconds(1)
   ) -> CommandLauncher {
     { command in
       let child = Process()

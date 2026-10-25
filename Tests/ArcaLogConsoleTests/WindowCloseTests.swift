@@ -17,8 +17,10 @@ struct WindowCloseTests {
     let console = LogConsole(title: "Console")
     let closed = Readings([])
     console.onWindowClose = { closed.mark() }
-    // A window made and closed, never shown.
-    ConsoleWindowController(console: console).window?.close()
+    // A window made and closed, never shown. The window holds its controller,
+    // its delegate, weakly, so the controller is kept until the close is done.
+    let controller = ConsoleWindowController(console: console)
+    withExtendedLifetime(controller) { controller.window?.close() }
     #expect(closed.marked)
   }
 
