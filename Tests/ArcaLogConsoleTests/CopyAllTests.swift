@@ -1,3 +1,4 @@
+import AppKit
 import Foundation
 import Testing
 
@@ -36,6 +37,17 @@ struct CopyAllTests {
     #expect(console.copyText == "» gtools doctor\nstarted\nGET / 200\nerror: gone\n» exit 1 · 1.5s\n")
     console.showsQuietLines = false
     #expect(console.copyText == "» gtools doctor\nstarted\nerror: gone\n» exit 1 · 1.5s\n")
+  }
+
+  @Test("Copy All puts that text on the pasteboard, as its string, in place of what was there")
+  func pasteboard() async throws {
+    let console = try await Self.console()
+    let pasteboard = NSPasteboard.withUniqueName()
+    defer { pasteboard.releaseGlobally() }
+    pasteboard.clearContents()
+    pasteboard.setString("copied before", forType: .string)
+    console.copyAll(to: pasteboard)
+    #expect(pasteboard.string(forType: .string) == "» gtools doctor\nstarted\nerror: gone\n» exit 1 · 1.5s\n")
   }
 
   @Test("an empty console, or a cleared one, copies nothing")

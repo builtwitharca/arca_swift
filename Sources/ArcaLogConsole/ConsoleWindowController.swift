@@ -157,9 +157,11 @@ final class ConsoleWindowController: NSWindowController, NSWindowDelegate {
     followingLabel.textColor = .secondaryLabelColor
     followingLabel.lineBreakMode = .byTruncatingMiddle
     // The label gives way first, so that the toggle and the button keep
-    // their size in a narrow window, and fills the space between them.
+    // their size in a narrow window.
     followingLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-    followingLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    // It hugs less than the stack, whose own hugging is low too, so that it
+    // fills the space between them and Copy All keeps to the trailing edge.
+    followingLabel.setContentHuggingPriority(NSLayoutConstraint.Priority(249), for: .horizontal)
     copyButton.target = self
     copyButton.action = #selector(copyAll(_:))
     copyButton.toolTip = "Copy every line the console shows"

@@ -1,3 +1,4 @@
+import AppKit
 import Foundation
 import Testing
 
@@ -12,10 +13,12 @@ import Testing
 struct WindowCloseTests {
   @Test("the app is told when the console's window closes")
   func told() {
+    _ = NSApplication.shared
     let console = LogConsole(title: "Console")
     let closed = Readings([])
     console.onWindowClose = { closed.mark() }
-    console.windowDidClose()
+    // A window made and closed, never shown.
+    ConsoleWindowController(console: console).window?.close()
     #expect(closed.marked)
   }
 
@@ -36,10 +39,10 @@ struct WindowCloseTests {
   }
 
   /// A length for a test's `sleep` that no other sleep on the machine has, so
-  /// that pgrep finds that child alone. Every one ends in `.25`, so that a run
-  /// can find any left behind.
+  /// that pgrep finds that child alone: 30 s and a random fraction, so that a
+  /// child a dead test left behind ends on its own half a minute later.
   static func sleepLength() -> String {
-    "\(Int.random(in: 100_000...999_999)).25"
+    "30.\(Int.random(in: 100_000...999_999))"
   }
 
   /// Whether a `sleep` of `seconds` runs, as pgrep finds it.
