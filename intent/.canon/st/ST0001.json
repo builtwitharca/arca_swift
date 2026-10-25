@@ -99,6 +99,15 @@
       "objective": "Gtools.app and Intent.app replace their own consoles with the package's, and menuz gains one: Utilz issue 0072, re-shaped from a copy. Each is done by its own project's IC, under its own gates. Size: M.",
       "body": "",
       "preamble": ""
+    },
+    {
+      "seq": 11,
+      "title": "ArcaLogConsole: Copy All, what it follows, the remembered quiet lines, the window's close",
+      "scope": "S",
+      "status": "wip",
+      "objective": "ArcaLogConsole gains what Gtools.app's console has and the package's lacks, so that Gtools.app can adopt it and lose nothing (Gtools' ST0018 WP-07, on hv's ruling of 25 Oct that Gtools comes up to the estate's spec):\n\n- a Copy All button, which copies the lines the window shows;\n- a label in the window's footer naming what the console follows: a file by its path, and a command by its label or by the name its own output gives, with the command running beside them;\n- the quiet-lines toggle, remembered under a key the app gives;\n- the app told when the window closes, so that it can follow a command only while the window shows, as Gtools.app follows `gtools cms logs`.\n\nAll of it is additive, for arca_swift's next release, whose number and tag are hv's. Size: S.",
+      "body": "",
+      "preamble": ""
     }
   ],
   "criteria": [
@@ -336,6 +345,46 @@
       "state": {
         "is": "computed"
       }
+    },
+    {
+      "id": "AC-11.1",
+      "text": "Copy All, a button in the console window's footer, puts the text the window shows on the pasteboard: each line it shows, oldest first, as its text and a newline, so that a quiet line goes only while the quiet lines show.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-11.2",
+      "text": "The window's footer names what the console follows, in the order it began following each: a file by its path, with the home folder written ~, and a command by the last name its own lines gave through the app's namer, or by its label until one does. The command running follows them, as running and its label. A source stopped, or a followed command that ended, leaves the footer.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-11.3",
+      "text": "Made with a key, a console reads whether its quiet lines show from the app's defaults under that key, and writes it there each time it changes, from the window's toggle or from the app. Made with none, its quiet lines start hidden and it writes nothing.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-11.4",
+      "text": "The console tells the app when its window closes, so that an app can follow a command only while the window shows: an app that stops following a command when told has that command's child gone.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-11.5",
+      "text": "By eye in the example app: the footer holds the quiet-lines toggle, the label naming the example's log and the command running, and Copy All; the toggle is as it was left after a relaunch; and closing the window adds the example's note. README, CHANGELOG and design.md say what was added.",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
     }
   ],
   "tests": [
@@ -512,6 +561,46 @@
       ],
       "status": "green",
       "note": "Written against compiling stubs before the code; its red is the next run. Red in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1 against the console's and the launcher's compiling stubs: all 8 failed. Slot 129 (bank 27ff5fe) stopped at the test target's build, on one line in LineAssemblerTests, so no test ran. Green in slot 150 (19 Oct 2026, 15:58:32Z to 15:58:44Z) at bank 7cfcfa8, on its code: all 14 passed. Green again in run F (22 Oct 2026, 15:11:05Z to 15:11:12Z) at bank f5534e0, after banks 7 and 8: all passed, with no warning under ARCA_SWIFT_STRICT."
+    },
+    {
+      "id": "AT-11.1",
+      "kind": "test",
+      "file": "Tests/ArcaLogConsoleTests/CopyAllTests.swift",
+      "covers": [
+        "AC-11.1"
+      ],
+      "status": "to-write",
+      "note": "Written against compiling stubs before the code; its red is the next run."
+    },
+    {
+      "id": "AT-11.2",
+      "kind": "test",
+      "file": "Tests/ArcaLogConsoleTests/FollowedNameTests.swift",
+      "covers": [
+        "AC-11.2"
+      ],
+      "status": "to-write",
+      "note": "Written against compiling stubs before the code; its red is the next run."
+    },
+    {
+      "id": "AT-11.3",
+      "kind": "test",
+      "file": "Tests/ArcaLogConsoleTests/RememberedQuietTests.swift",
+      "covers": [
+        "AC-11.3"
+      ],
+      "status": "to-write",
+      "note": "Written against compiling stubs before the code; its red is the next run."
+    },
+    {
+      "id": "AT-11.4",
+      "kind": "test",
+      "file": "Tests/ArcaLogConsoleTests/WindowCloseTests.swift",
+      "covers": [
+        "AC-11.4"
+      ],
+      "status": "to-write",
+      "note": "Written against compiling stubs before the code; its red is the next run."
     }
   ],
   "attachments": [

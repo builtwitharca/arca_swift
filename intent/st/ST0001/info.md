@@ -40,18 +40,19 @@ Measured, 18 Oct:
 
 ## Work Packages
 
-| WP    | Title                                           | Size | Status      |
-| ----- | ----------------------------------------------- | ---- | ----------- |
-| WP-01 | Package skeleton, core and CI                   | S    | Done        |
-| WP-02 | ArcaMasthead: the file, its values and Markdown | S    | Done        |
-| WP-03 | ArcaMasthead: the menu row and the About window | M    | Done        |
-| WP-04 | menuz adopts ArcaMasthead                       | S    | Not Started |
-| WP-05 | Gtools.app adopts ArcaMasthead                  | S    | Done        |
-| WP-06 | Intent.app adopts ArcaMasthead                  | S    | Not Started |
-| WP-07 | Conflab.app adopts ArcaMasthead                 | S    | Not Started |
-| WP-08 | ArcaLogConsole: review and proposal             | S    | Done        |
-| WP-09 | ArcaLogConsole: build                           | M    | Done        |
-| WP-10 | The apps adopt ArcaLogConsole                   | M    | Not Started |
+| WP    | Title                                                                                     | Size | Status      |
+| ----- | ----------------------------------------------------------------------------------------- | ---- | ----------- |
+| WP-01 | Package skeleton, core and CI                                                             | S    | Done        |
+| WP-02 | ArcaMasthead: the file, its values and Markdown                                           | S    | Done        |
+| WP-03 | ArcaMasthead: the menu row and the About window                                           | M    | Done        |
+| WP-04 | menuz adopts ArcaMasthead                                                                 | S    | Not Started |
+| WP-05 | Gtools.app adopts ArcaMasthead                                                            | S    | Done        |
+| WP-06 | Intent.app adopts ArcaMasthead                                                            | S    | Not Started |
+| WP-07 | Conflab.app adopts ArcaMasthead                                                           | S    | Not Started |
+| WP-08 | ArcaLogConsole: review and proposal                                                       | S    | Done        |
+| WP-09 | ArcaLogConsole: build                                                                     | M    | Done        |
+| WP-10 | The apps adopt ArcaLogConsole                                                             | M    | Not Started |
+| WP-11 | ArcaLogConsole: Copy All, what it follows, the remembered quiet lines, the window's close | S    | WIP         |
 
 ## Acceptance
 

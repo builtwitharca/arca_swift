@@ -19,6 +19,7 @@ A DOING / TODO / DONE view, projected from steel-thread and work-package status:
   - [x] 08: ArcaLogConsole: review and proposal
   - [x] 09: ArcaLogConsole: build
   - [ ] 10: The apps adopt ArcaLogConsole
+  - [-] 11: ArcaLogConsole: Copy All, what it follows, the remembered quiet lines, the window's close
 
 ## TODO
 

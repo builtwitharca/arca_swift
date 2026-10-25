@@ -46,6 +46,9 @@ struct ConsoleBuffer: Sendable {
     lines.filter { shows($0) }
   }
 
+  // WP-11's compiling stub, which its red run reads.
+  var shownText: String { "" }
+
   /// Adds `batch`, drops the oldest lines of each kind past the capacity, and
   /// gives the view's edit. A batch longer than the capacity loses its own
   /// first lines, which never reach the view.

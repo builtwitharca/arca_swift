@@ -62,6 +62,14 @@ title: Shared Swift libraries for the menu bar apps: Masthead, then LogConsole
 
 - AC-10.1 Gtools.app's console keeps following a site's log across a gtools cms start that renames the log aside because it is over 1 MB: the lines the restarted site writes reach the window, with none of the renamed log's lines shown twice. -- satisfied: no (computed)
 
+### WP-11 -- ArcaLogConsole: Copy All, what it follows, the remembered quiet lines, the window's close (status: WIP)
+
+- AC-11.1 Copy All, a button in the console window's footer, puts the text the window shows on the pasteboard: each line it shows, oldest first, as its text and a newline, so that a quiet line goes only while the quiet lines show. -- satisfied: no (computed)
+- AC-11.2 The window's footer names what the console follows, in the order it began following each: a file by its path, with the home folder written ~, and a command by the last name its own lines gave through the app's namer, or by its label until one does. The command running follows them, as running and its label. A source stopped, or a followed command that ended, leaves the footer. -- satisfied: no (computed)
+- AC-11.3 Made with a key, a console reads whether its quiet lines show from the app's defaults under that key, and writes it there each time it changes, from the window's toggle or from the app. Made with none, its quiet lines start hidden and it writes nothing. -- satisfied: no (computed)
+- AC-11.4 The console tells the app when its window closes, so that an app can follow a command only while the window shows: an app that stops following a command when told has that command's child gone. -- satisfied: no (computed)
+- AC-11.5 (non-test) By eye in the example app: the footer holds the quiet-lines toggle, the label naming the example's log and the command running, and Copy All; the toggle is as it was left after a relaunch; and closing the window adds the example's note. README, CHANGELOG and design.md say what was added. -- satisfied: no
+
 ## Acceptance Tests
 
 ### WP-01 -- Package skeleton, core and CI (status: Done)
@@ -105,6 +113,13 @@ _(no tests in this group)_
 ### WP-10 -- The apps adopt ArcaLogConsole (status: Not Started)
 
 _(no tests in this group)_
+
+### WP-11 -- ArcaLogConsole: Copy All, what it follows, the remembered quiet lines, the window's close (status: WIP)
+
+- AT-11.1 `Tests/ArcaLogConsoleTests/CopyAllTests.swift` -- covers AC-11.1 -- status: to-write -- Written against compiling stubs before the code; its red is the next run.
+- AT-11.2 `Tests/ArcaLogConsoleTests/FollowedNameTests.swift` -- covers AC-11.2 -- status: to-write -- Written against compiling stubs before the code; its red is the next run.
+- AT-11.3 `Tests/ArcaLogConsoleTests/RememberedQuietTests.swift` -- covers AC-11.3 -- status: to-write -- Written against compiling stubs before the code; its red is the next run.
+- AT-11.4 `Tests/ArcaLogConsoleTests/WindowCloseTests.swift` -- covers AC-11.4 -- status: to-write -- Written against compiling stubs before the code; its red is the next run.
 
 ---
 

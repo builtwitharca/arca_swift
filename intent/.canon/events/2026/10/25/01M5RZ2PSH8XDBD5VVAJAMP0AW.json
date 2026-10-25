@@ -1,0 +1,15 @@
+{
+  "id": "01M5RZ2PSH8XDBD5VVAJAMP0AW",
+  "ts": "2026-10-25T07:23:25.361Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "wp.set",
+  "subject": {
+    "type": "wp",
+    "id": "ST0001/11"
+  },
+  "payload": {
+    "field": "objective",
+    "via": "address"
+  }
+}

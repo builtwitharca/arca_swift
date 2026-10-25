@@ -41,8 +41,17 @@ public final class LogConsole {
     }
   }
 
+  // WP-11's compiling stubs, which its red run reads.
+  public var onWindowClose: (@MainActor () -> Void)?
+  func windowDidClose() {}
+  var copyText: String { buffer.shownText }
+  var footer: String { "" }
+  static func footer(following names: [String], running: String?) -> String { "" }
+  static func name(ofFile path: String, home: String = NSHomeDirectory()) -> String { path }
+
   public init(
     title: String, capacity: Int = LogConsole.defaultCapacity, theme: ConsoleTheme = .standard,
+    quietLinesKey: String? = nil, defaults: UserDefaults = .standard,
     launcher: @escaping CommandLauncher = CommandLaunch.process,
     now: @escaping @Sendable () -> ContinuousClock.Instant = { ContinuousClock.now }
   ) {
@@ -146,7 +155,8 @@ public final class LogConsole {
   /// earlier lines are dropped once it has launched.
   public func follow(
     command: ConsoleCommand, as source: ConsoleSource,
-    classify: @escaping ConsoleClassifier = ConsoleClassify.standard
+    classify: @escaping ConsoleClassifier = ConsoleClassify.standard,
+    naming: ConsoleNamer? = nil
   ) throws {
     stopFollowing(source)
     let launched = try launcher(command)
