@@ -1,6 +1,6 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 1,
+  "schema": "intent/issue@4.0",
+  "id": "0001",
   "slug": "the-about-window-is-not-brought-to-the-front-whe",
   "title": "The About window is not brought to the front when the masthead row is chosen while it is already open",
   "status": "closed",

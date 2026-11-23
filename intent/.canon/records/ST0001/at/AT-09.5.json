@@ -1,0 +1,10 @@
+{
+  "id": "AT-09.5",
+  "kind": "test",
+  "file": "Tests/ArcaLogConsoleTests/CommandRunTests.swift",
+  "covers": [
+    "AC-09.5"
+  ],
+  "status": "green",
+  "note": "Written against compiling stubs before the code; its red is the next run. Red in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1 against the console's and the launcher's compiling stubs: all 8 failed. Slot 129 (bank 27ff5fe) stopped at the test target's build, on one line in LineAssemblerTests, so no test ran. Green in slot 150 (19 Oct 2026, 15:58:32Z to 15:58:44Z) at bank 7cfcfa8, on its code: all 14 passed. Green again in run F (22 Oct 2026, 15:11:05Z to 15:11:12Z) at bank f5534e0, after banks 7 and 8: all passed, with no warning under ARCA_SWIFT_STRICT."
+}

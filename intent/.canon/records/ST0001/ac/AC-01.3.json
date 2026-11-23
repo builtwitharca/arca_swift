@@ -1,0 +1,9 @@
+{
+  "id": "AC-01.3",
+  "text": "ArcaCore finds an app's config file in its config folder or its bundle, reads it as YAML with every scalar as written, refuses what it cannot read in one line naming the file, the key and the value, and expands {token} templates, naming any token left without a value. ArcaMasthead turns Markdown into HTML through cmark-gfm with GitHub's tables, strikethrough, autolinks and task lists, passing HTML through.",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "Tests/ArcaCoreTests (32 tests in 5 suites) and Tests/ArcaMastheadTests (4 in 1) at 107e74c, green locally in slot 16 and in CI run 39127260563. They follow two critic-swift passes on 18 Oct: the review found 0 critical and 3 warnings, and the test check 0 critical and 1 warning. Each warning was fixed before 107e74c and is pinned by a test: the not-YAML problem with its line and column; a key given twice, whatever its tag; and a broken link or unsearchable folder refused rather than passed over."
+  }
+}

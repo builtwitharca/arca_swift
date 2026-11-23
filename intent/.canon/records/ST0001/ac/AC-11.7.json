@@ -1,0 +1,8 @@
+{
+  "id": "AC-11.7",
+  "text": "A launcher made with no grace terminates a stopped command's child at once, for a command that does not end when its stdin closes; the default launcher still gives such a child a moment to end before it terminates it.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

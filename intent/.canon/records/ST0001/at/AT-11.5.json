@@ -1,0 +1,10 @@
+{
+  "id": "AT-11.5",
+  "kind": "test",
+  "file": "Tests/ArcaLogConsoleTests/NotedCommandTests.swift",
+  "covers": [
+    "AC-11.6"
+  ],
+  "status": "green",
+  "note": "Written with the code; its red is a mutant run, the noted lines left out, before the green. Red in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 8 (ed9c56d): with the lines left out of CommandFrame's noted frame, the framed test failed. Green in run A (25 Oct 2026, 09:01:40Z to 09:02:55Z, on molt-vc's GO) at bank 8 (ed9c56d), CI's steps under ARCA_SWIFT_STRICT: lint clean, build clean, 220 passed and 0 failed."
+}

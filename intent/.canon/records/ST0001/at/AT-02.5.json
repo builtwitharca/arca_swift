@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.5",
+  "kind": "test",
+  "file": "Tests/ArcaMastheadTests/AboutContentTests.swift",
+  "covers": [
+    "AC-02.5"
+  ],
+  "status": "green",
+  "note": "Red in slot 22 (18 Oct 2026, 14:30:41Z to 14:31:05Z), against compiling stubs; log test-3.log. About content: all 9 tests failed, 11 issues; HTML: both tests failed, 2 issues. Green in slot 27 (18 Oct 2026, 15:26:54Z to 15:27:00Z), after both critic-swift reports' fixes (bank 2c5f3cfb); log test-4.log. About content: all 9 tests passed; HTML: both passed. html's new body came with the fixes, with a second expectation showing that the Markdown path changes that body, so the first can pass only if an about.html skips cmark-gfm. It, refusedCopies' refused stylesheet and found's user stylesheet were seen only green."
+}

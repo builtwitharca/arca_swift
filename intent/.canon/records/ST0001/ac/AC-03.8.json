@@ -1,0 +1,9 @@
+{
+  "id": "AC-03.8",
+  "text": "README.md says how an app adds the row and the About window: the one type it makes, with its config folder, its bundle, the values it names and its log hook; where it puts the row; and what the About page allows. CHANGELOG.md says what this work package added.",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "04f8589: README.md's section The row and the About window (one MastheadRow, a menu item the menu keeps, made with the app's name, its bundle, the values it names and its log hook, and put at the top of its menu; what the About page allows: its policy, images by file name found user-first, links to the browser; the example app) and CHANGELOG.md's three bullets (MastheadRow, the About window, ArcaMastheadExample). CI run 39148967192 on 04f8589 was green on macos-26 (Xcode 26.6, Swift 6.3.3): Build complete! (67.27s) and Test run with 142 tests in 19 suites passed."
+  }
+}

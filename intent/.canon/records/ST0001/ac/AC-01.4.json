@@ -1,0 +1,9 @@
+{
+  "id": "AC-01.4",
+  "text": "The repo carries README.md with the icon, CHANGELOG.md, and the MIT LICENSE (hv, 18 Oct 2026: \"MIT: Yep\").",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "107e74c. README.md has the icon from design/icons/arca_swift-icon.svg, the libraries, requirements, adding it, building and testing, design, and licence. CHANGELOG.md follows Keep a Changelog, under Unreleased. LICENSE is arca_notionex's MIT text, byte for byte. hv, in ic's session at 12:06:55Z: \"2: MIT: Yep\"."
+  }
+}

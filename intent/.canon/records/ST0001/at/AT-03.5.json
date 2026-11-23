@@ -1,0 +1,12 @@
+{
+  "id": "AT-03.5",
+  "kind": "test",
+  "file": "Tests/ArcaMastheadTests/AboutPageTests.swift",
+  "covers": [
+    "AC-03.4",
+    "AC-03.5",
+    "AC-03.6"
+  ],
+  "status": "green",
+  "note": "Red in slot 30 (18 Oct 2026, 16:31:35Z to 16:31:54Z), against compiling stubs (bank b3efb780); log test-5.log. About page in WebKit: the 5 tests of the window's settings failed, 7 issues, and the 4 controls passed, so WebKit loads a page inside swift test, makes its image, stylesheet and frame requests and its refresh, runs its script, and reports a script's click as linkActivated. The expectations of no request in noLoads and noRefresh passed against the stub's empty page. Green in slot 34 (18 Oct 2026, 17:16:40Z to 17:16:45Z), after both critic-swift reports' fixes and slot 33's (bank 84bbdbc3); log test-7.log. About page in WebKit: all 14 tests passed. Seen red in slot 30: the 5 first window tests, most against the document's stub rather than the window's settings (the test-check's finding): only noScript's first arm failed for its own reason. With the fixes and seen only green: noDocument (under the window's settings with no document an image and a stylesheet are asked and a frame is cancelled), colourScheme (\"light dark\"), noReload, newWindow (a target=_blank link is browsed), watched (a load that fails or stops early is logged, by streams), link's cancel of the mailto address and noLoads' element count. Slot 33 measured that a cancelled own load leaves WebKit's sequence open, so watched replaced a WebKit test of it."
+}

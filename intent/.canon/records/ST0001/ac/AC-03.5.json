@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.5",
+  "text": "An image the body names by a file name is found as masthead.yaml is, the config folder's copy first and then the bundle's, and served to the page with its type. A name with a folder in it, or one that is not a .png, .jpg, .jpeg, .gif, .webp or .svg file in any case, is refused, and so is a copy that cannot be read, which leaves the next in use. Each refusal goes to the app's log.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

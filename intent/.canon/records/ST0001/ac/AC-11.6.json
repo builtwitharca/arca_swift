@@ -1,0 +1,8 @@
+{
+  "id": "AC-11.6",
+  "text": "A command the app ran without the console is shown as a run is: » and its label, its lines as the app's classifier reads them, then » exit and its status, all from the command's own source.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

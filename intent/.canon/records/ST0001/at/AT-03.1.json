@@ -1,0 +1,11 @@
+{
+  "id": "AT-03.1",
+  "kind": "test",
+  "file": "Tests/ArcaMastheadTests/MastheadRowTests.swift",
+  "covers": [
+    "AC-03.1",
+    "AC-03.2"
+  ],
+  "status": "green",
+  "note": "Red in slot 30 (18 Oct 2026, 16:31:35Z to 16:31:54Z), against compiling stubs (bank b3efb780); log test-5.log. Masthead row: all 7 tests failed, 20 issues; two expectations passed against the stub's empty item, made's isEnabled (a new item is enabled) and readOnOpen's nil subtitle. Refusal log: all 3 tests failed, 7 issues; the expectations of an empty answer passed against the stub's. Green in slot 34 (18 Oct 2026, 17:16:40Z to 17:16:45Z), after both critic-swift reports' fixes and slot 33's (bank 84bbdbc3); log test-7.log. Masthead row: all 11 tests passed; Refusal log: all 4 passed. Seen red in slot 30: Masthead row's 7 first tests and Refusal log's 3. With the fixes, after both critic-swift reports, and seen only green: the row as a menu item kept by its menu (kept), the Info.plist and config-folder path (appsOwn), choosing the row three times through its target and action (chosen), an image refusal logged once an open (imageLogged), and the log's order (order); made no longer checks the action, which chosen performs. Never seen red: the checks a #require stopped in slot 30 (lines' bold, image's size, copy and icon none) and made's isEnabled, which the stub's new item already had."
+}

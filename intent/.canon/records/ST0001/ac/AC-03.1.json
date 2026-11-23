@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.1",
+  "text": "The row is one menu item, made from the masthead, which the menu that holds it keeps: its title is the heading in bold, its subtitle the subheading, with none when the subheading is hidden, and its image the app's icon at the row's size, or none when the icon is none, the app's own icon left as it is. It is enabled, and choosing it opens the About window.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

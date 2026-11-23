@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.3",
+  "kind": "test",
+  "file": "Tests/ArcaMastheadTests/MastheadLinesTests.swift",
+  "covers": [
+    "AC-02.3"
+  ],
+  "status": "green",
+  "note": "Red in slot 22 (18 Oct 2026, 14:30:41Z to 14:31:05Z), against compiling stubs; log test-3.log. Masthead lines: all 6 tests failed, 8 issues. Green in slot 27 (18 Oct 2026, 15:26:54Z to 15:27:00Z), after both critic-swift reports' fixes (bank 2c5f3cfb); log test-4.log. Masthead lines: all 9 tests passed. eachLine, blankHeading and noName came with the fixes and were seen only green, as were subheadingHidden's nil expectations, which held against the stubs too: that test went red on its positive control."
+}

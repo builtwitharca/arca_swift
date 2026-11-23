@@ -1,0 +1,8 @@
+{
+  "id": "AC-02.1",
+  "text": "masthead.yaml is checked against its schema. heading is required text that is not blank; subheading is text; icon is app or none, and app when it is absent; about is required, with body, the name of a .md or .html file, and css, the name of an optional .css file, each a file name with no folder in it. A key the file does not have, a value of the wrong kind, a value the key does not take and a required key that is missing are each refused in one line naming the file, the key and the value.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

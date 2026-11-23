@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.2",
+  "kind": "test",
+  "file": "Tests/ArcaMastheadTests/AboutDocumentTests.swift",
+  "covers": [
+    "AC-03.3"
+  ],
+  "status": "green",
+  "note": "Red in slot 30 (18 Oct 2026, 16:31:35Z to 16:31:54Z), against compiling stubs (bank b3efb780); log test-5.log. About document: all 7 tests failed, 12 issues; the expectations of what the page does not hold passed against the stub's empty page. Green in slot 34 (18 Oct 2026, 17:16:40Z to 17:16:45Z), after both critic-swift reports' fixes and slot 33's (bank 84bbdbc3); log test-7.log. About document: all 9 tests passed. Seen red in slot 30: the 7 first tests. With the fixes and seen only green: page and pageAlone, what the page holds. parts' first expectation changed after the red, from the word \"refusals\", which the window's stylesheet also holds, to the list element."
+}

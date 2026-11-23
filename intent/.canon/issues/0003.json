@@ -1,6 +1,7 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 3,
+  "schema": "intent/issue@4.0",
+  "id": "0003",
+  "realised": true,
   "slug": "menubar-apps-each-copy-what-arca-swift-could-car",
   "title": "Menubar apps each copy what arca_swift could carry: the masthead's two macOS 27 workarounds, the XCTest-host check, and a single-instance guard",
   "status": "open",

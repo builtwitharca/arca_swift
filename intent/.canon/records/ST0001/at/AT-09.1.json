@@ -1,0 +1,10 @@
+{
+  "id": "AT-09.1",
+  "kind": "test",
+  "file": "Tests/ArcaLogConsoleTests/ConsoleClassifyTests.swift",
+  "covers": [
+    "AC-09.1"
+  ],
+  "status": "green",
+  "note": "Written against compiling stubs before the code; its red run is next. Red in slot 106 (19 Oct 2026, 09:23:16Z to 09:23:36Z) against compiling stubs (bank 36f8f11): 4 of 6 failed; line and notAtStart passed, and notAtStart has since gained positive twins (sc's review). Green in slot 115 (19 Oct 2026, 09:33:25Z to 09:33:40Z) at bank 744bbd1, on its code: all 6 passed. Its tab-indent token was added at bank 27ff5fe. Green again in slot 150 (19 Oct 2026, 15:58:32Z to 15:58:44Z) at bank 7cfcfa8, on the whole console's code: all 6 passed. Green again in run F (22 Oct 2026, 15:11:05Z to 15:11:12Z) at bank f5534e0, after banks 7 and 8: all passed, with no warning under ARCA_SWIFT_STRICT."
+}

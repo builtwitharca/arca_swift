@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.4",
+  "text": "In the About window the page's own load, at its own address, is followed, and so is a link to a place in the page. A link the user follows to an http, https or mailto address opens in the browser, not in the window, and so does one that would open a window. Every other navigation is cancelled, among them a form, a reload, a refresh, a frame, and a link to a file or to another of the page's addresses. The page's JavaScript is off, and a load that fails is told to the app's log.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

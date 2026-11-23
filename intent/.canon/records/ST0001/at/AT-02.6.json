@@ -1,0 +1,11 @@
+{
+  "id": "AT-02.6",
+  "kind": "test",
+  "file": "Tests/ArcaCoreTests/ConfigFileTests.swift",
+  "covers": [
+    "AC-02.4",
+    "AC-02.5"
+  ],
+  "status": "green",
+  "note": "Red in slot 22 (18 Oct 2026, 14:30:41Z to 14:31:05Z), against compiling stubs; log test-3.log. Config file: the 4 new tests failed, 9 issues; its 8 WP-01 tests passed. Green in slot 27 (18 Oct 2026, 15:26:54Z to 15:27:00Z), after both critic-swift reports' fixes (bank 2c5f3cfb); log test-4.log. Config file: all 13 tests passed, WP-01's 8 and 5 new. refusedAlone came with the fixes and was seen only green. Of the 4 seen red in slot 22, the three value == nil expectations cannot fail and the three refusals.isEmpty ones held against the stub; each test went red through another."
+}

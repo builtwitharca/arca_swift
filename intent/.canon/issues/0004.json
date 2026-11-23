@@ -1,6 +1,7 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 4,
+  "schema": "intent/issue@4.0",
+  "id": "0004",
+  "realised": true,
   "slug": "logconsole-let-an-adopter-observe-what-runs-and",
   "title": "LogConsole: let an adopter observe what runs, and note raw output through the LineAssembler",
   "status": "open",

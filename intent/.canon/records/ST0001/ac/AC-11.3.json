@@ -1,0 +1,8 @@
+{
+  "id": "AC-11.3",
+  "text": "Made with a key, a console reads whether its quiet lines show from the app's defaults under that key, and writes it there each time it changes, from the window's toggle or from the app. Made with none, its quiet lines start hidden and it writes nothing.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

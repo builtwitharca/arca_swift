@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.2",
+  "text": "The row reads masthead.yaml again each time its menu opens, and the About window reads it and its files again each time the window opens, asking the app for its values each time. A refusal goes to the app's log once, when it first appears, and again only after it has gone and come back.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

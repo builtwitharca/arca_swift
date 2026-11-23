@@ -1,0 +1,9 @@
+{
+  "id": "08",
+  "title": "ArcaLogConsole: review and proposal",
+  "scope": "S",
+  "status": "done",
+  "objective": "A review before any code. It measures how Gtools.app's and Intent.app's consoles differ, and what menuz needs. It then proposes LogConsole's shape to hv:\n- its line model and classifier;\n- its ring;\n- its tail runner, which keeps following a file truncated or rotated under it;\n- its window.\n\nSize: S.",
+  "body": "",
+  "preamble": ""
+}

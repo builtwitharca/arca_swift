@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.6",
+  "text": "WebKit holds the page to these rules. Under the window's own settings, an image, a stylesheet, a frame and a refresh that name another address make no request, the page's script does not run, and an image the body names is shown. The same page without those settings makes each request and runs its script.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

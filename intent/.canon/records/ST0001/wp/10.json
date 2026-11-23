@@ -1,0 +1,9 @@
+{
+  "id": "10",
+  "title": "The apps adopt ArcaLogConsole",
+  "scope": "M",
+  "status": "not-started",
+  "objective": "Gtools.app and Intent.app replace their own consoles with the package's, and menuz gains one: Utilz issue 0072, re-shaped from a copy. Each is done by its own project's IC, under its own gates. Size: M.",
+  "body": "",
+  "preamble": ""
+}

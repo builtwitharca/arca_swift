@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.4",
+  "kind": "test",
+  "file": "Tests/ArcaMastheadTests/AboutImagesTests.swift",
+  "covers": [
+    "AC-03.5"
+  ],
+  "status": "green",
+  "note": "Red in slot 30 (18 Oct 2026, 16:31:35Z to 16:31:54Z), against compiling stubs (bank b3efb780); log test-5.log. About images: all 7 tests (17 cases) failed, 19 issues; the expectations of no image passed against the stub's nil, and each image and refusal expectation failed. Green in slot 34 (18 Oct 2026, 17:16:40Z to 17:16:45Z), after both critic-swift reports' fixes and slot 33's (bank 84bbdbc3); log test-7.log. About images: all 8 tests (21 cases) passed. Seen red in slot 30: the 7 first tests. With the fixes and seen only green: the one file-name rule, a folder or a control character (fileNameRule, 4 cases)."
+}

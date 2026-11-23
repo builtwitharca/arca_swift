@@ -1,0 +1,8 @@
+{
+  "id": "AC-02.4",
+  "text": "The user's masthead.yaml is used when the app's config folder holds one that is read and checked without a refusal. One that is refused leaves the bundled default in use, and the subheading says what was wrong. With no copy that can be used, the heading is the app's name and the subheading the first refusal. Every refusal is kept, in order, for the app's log.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

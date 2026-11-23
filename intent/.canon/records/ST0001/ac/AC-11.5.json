@@ -1,0 +1,9 @@
+{
+  "id": "AC-11.5",
+  "text": "By eye in the example app: the footer holds the quiet-lines toggle, the label naming the example's log and the command running, and Copy All; after a relaunch the toggle is as it was left and the window opens where it was left; and closing the window adds the example's note. A theme's appearance is the window's, as Gtools.app's console shows, dark whatever the system's mode. README, CHANGELOG and design.md say what was added.",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "hv's look at ArcaMastheadExample --console, 25 Oct 2026, quit by hv at 18:27Z: 'What I saw is enough: record AC-11.5 as satisfied on my look' (in gtools-ic's session)"
+  }
+}

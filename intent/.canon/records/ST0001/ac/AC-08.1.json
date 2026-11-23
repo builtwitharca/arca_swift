@@ -1,0 +1,9 @@
+{
+  "id": "AC-08.1",
+  "text": "ArcaLogConsole's shape is agreed with hv before any code: the line model and the app's classifier, the ring, the sources (a file followed in-process across a truncation or a rename, a command's output, the app's notes, and one line assembler for both), the window, the tests, the release and the adoptions, as design.md's ArcaLogConsole section records them.",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "hv's word in ic's session (18 Oct 2026, 18:41Z): \"Ok, go for it. Use your recs.\", answering ic's two calls on the review's proposal: 1A, in-process file following, with a command source kept for logs only a CLI can render; and 2A, Gtools.app's tail -f gap fixed in its adoption (WP-10) with a criterion there (AC-10.1), and no Gtools issue now. The review's conditions (a directory watch, the old file drained before a reopen, one line assembler, batched reads off the main actor, source ids, keys in the window, 0.2.0, five more file-source tests) are folded in. design.md's ArcaLogConsole section records the agreed shape."
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "id": "AC-10.1",
+  "text": "Gtools.app's console keeps following a site's log across a gtools cms start that renames the log aside because it is over 1 MB: the lines the restarted site writes reach the window, with none of the renamed log's lines shown twice.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

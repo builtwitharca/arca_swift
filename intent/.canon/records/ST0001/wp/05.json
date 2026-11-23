@@ -1,0 +1,9 @@
+{
+  "id": "05",
+  "title": "Gtools.app adopts ArcaMasthead",
+  "scope": "S",
+  "status": "done",
+  "objective": "In Gtools, by its IC. The identity row becomes the package's row, with its version and commit from `gtools version` as today. The CMS status row and the estate flyout stay the app's own. The floor moves to macOS 26, under Gtools' gates. Size: S.",
+  "body": "",
+  "preamble": ""
+}

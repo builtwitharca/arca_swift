@@ -1,0 +1,8 @@
+{
+  "id": "AC-02.3",
+  "text": "The heading and the subheading are their templates with the values in, each line on its own. A heading with a value missing, or that comes out blank, is the app's name alone, which is its {name} value or nothing; a subheading with a value missing, or that comes out blank, is hidden. A token that names no value the app gives is refused, naming the token and the values there are.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

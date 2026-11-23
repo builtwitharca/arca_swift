@@ -1,6 +1,6 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 2,
+  "schema": "intent/issue@4.0",
+  "id": "0002",
   "slug": "an-app-that-depends-on-arca-swift-0-1-0-fails-to",
   "title": "An app that depends on arca_swift 0.1.0 fails to build on Xcode 26: the manifest's warnings-as-errors meets a dependency's -suppress-warnings",
   "status": "closed",

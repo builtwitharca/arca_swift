@@ -1,0 +1,9 @@
+{
+  "id": "01",
+  "title": "Package skeleton, core and CI",
+  "scope": "S",
+  "status": "done",
+  "objective": "The package builds and tests on macOS 26 with the current toolchain. Its Package.swift has the ArcaMasthead product and the internal ArcaCore target; ArcaLogConsole's product arrives with its code in WP-09. The dependencies are Yams and swift-cmark. The tests use Swift Testing, the README carries the icon, and a GitHub Actions workflow builds and tests every push. ArcaCore reads a config file from the app's config folder or its bundle, and expands `{token}` templates. ArcaMasthead turns Markdown into HTML through cmark-gfm, brought forward from WP-02 so that this WP builds swift-cmark. Size: S.",
+  "body": "",
+  "preamble": ""
+}

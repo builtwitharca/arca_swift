@@ -40,23 +40,11 @@ Measured, 18 Oct:
 
 ## Work Packages
 
-| WP    | Title                                                                                     | Size | Status      |
-| ----- | ----------------------------------------------------------------------------------------- | ---- | ----------- |
-| WP-01 | Package skeleton, core and CI                                                             | S    | Done        |
-| WP-02 | ArcaMasthead: the file, its values and Markdown                                           | S    | Done        |
-| WP-03 | ArcaMasthead: the menu row and the About window                                           | M    | Done        |
-| WP-04 | menuz adopts ArcaMasthead                                                                 | S    | Not Started |
-| WP-05 | Gtools.app adopts ArcaMasthead                                                            | S    | Done        |
-| WP-06 | Intent.app adopts ArcaMasthead                                                            | S    | Not Started |
-| WP-07 | Conflab.app adopts ArcaMasthead                                                           | S    | Not Started |
-| WP-08 | ArcaLogConsole: review and proposal                                                       | S    | Done        |
-| WP-09 | ArcaLogConsole: build                                                                     | M    | Done        |
-| WP-10 | The apps adopt ArcaLogConsole                                                             | M    | Not Started |
-| WP-11 | ArcaLogConsole: Copy All, what it follows, the remembered quiet lines, the window's close | S    | Done        |
+Each work package is a record of its own: `intent wp list ST0001` lists them, and `intent wp show ST0001/<id>` shows one. A realised package's cover is `WP/<id>/info.md` beside this file. This cover carries the thread's own fields only.
 
 ## Acceptance
 
-Acceptance Criteria and Acceptance Tests are RENDERED into `acceptance.md`, which is a GENERATED VIEW -- a row authored there is discarded by the next sync. The contract is canon in this thread's model, and the verbs write it: `intent ac new` and `intent at new` mint a row, `intent ac edit` and `intent at edit` reword or re-cite one, and `intent ac satisfy|unsatisfy|descope|rescope|withdraw|reinstate` and `intent at green|red|na` move its state. This cover never restates them.
+Acceptance criteria and tests are records of their own: `intent ac list ST0001` and `intent at list ST0001` list them, and `intent ac gate ST0001` says whether the contract passes. `acceptance.md` beside this file is a GENERATED VIEW of them, and a row authored there is discarded by the next sync. The verbs write the contract: `intent ac new` and `intent at new` mint a row, `intent ac edit` and `intent at edit` reword or re-cite one, and `intent ac satisfy|unsatisfy|descope|rescope|withdraw|reinstate` and `intent at green|red|na` move its state. This cover never restates them.
 
 ---
 

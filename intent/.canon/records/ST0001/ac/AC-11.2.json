@@ -1,0 +1,8 @@
+{
+  "id": "AC-11.2",
+  "text": "The window's footer names what the console follows, in the order it began following each: a file by its path, with the home folder written ~, and a command by the last name its own lines gave through the app's namer, or by its label until one does. The command running follows them, as running and its label. A source stopped, or a followed command that ended, leaves the footer.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

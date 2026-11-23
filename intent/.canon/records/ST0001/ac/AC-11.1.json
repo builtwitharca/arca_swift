@@ -1,0 +1,8 @@
+{
+  "id": "AC-11.1",
+  "text": "Copy All, a button in the console window's footer, puts the text the window shows on the pasteboard: each line it shows, oldest first, as its text and a newline, so that a quiet line goes only while the quiet lines show.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}
