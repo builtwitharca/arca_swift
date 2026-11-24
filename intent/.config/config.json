@@ -5,7 +5,7 @@
   },
   "created": "2026-10-18T11:23:52.730Z",
   "intent_dir": "intent",
-  "intent_version": "3.5.1",
+  "intent_version": "3.5.3",
   "languages": [
     "swift"
   ],
