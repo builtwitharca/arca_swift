@@ -1,6 +1,6 @@
 # arca_swift carries the menu bar apps' copies (its issue 0003), and menuz uses them (Utilz issue 0114)
 
-ic's design, 25 Nov 2026, for vc's read before any code. hv's word, relayed by vc: 0114 is "Fix now, in 2.15.0". Facts are in `~/Devel/scratch/utilz-ic/arca0003/facts.md` (read at arca_swift c005f28 and Utilz fa4ce418). Sizes: 0003 S, 0114 S to M.
+ic's design, 25 Nov 2026. r1 is approved as vc decision 118. r2 rewrites Runs from dc's read of the CI leg. hv's word, relayed by vc: 0114 is "Fix now, in 2.15.0". Facts are in `~/Devel/scratch/utilz-ic/arca0003/facts.md` (read at arca_swift c005f28 and Utilz fa4ce418). Sizes: 0003 S, 0114 S to M.
 
 ## What it is for
 
@@ -71,7 +71,7 @@ Tests: Conflab's LaunchDecisionTests and TestHostTests, on a scratch lock file:
 - CHANGELOG gains `[0.3.0]`.
 - CI's adopter job lists its products by hand. It gains ArcaLaunch and its import, so CI proves that an adopter app builds with it.
 - 0.3.0, not 0.2.2, because it adds a product (ST0001 design.md:128).
-- The tag is annotated, "ArcaLaunch 0.3.0", on the commit that lands it. The tag and the push are hv's, through vc.
+- The tag is annotated, "ArcaLaunch 0.3.0", on the commit that lands it. The push and the tag are hv's, through devbin-vc: main first, then the tag once CI is green on that commit (Runs, step 2).
 
 ## menuz (Utilz issue 0114)
 
@@ -100,22 +100,39 @@ Tests: Conflab's LaunchDecisionTests and TestHostTests, on a scratch lock file:
 - **Utilz:** a new thread for 0114, with this design attached. It has one WP: the pin, the row, the launch, the tests and help. 0114 closes when the thread lands.
 - ic writes both, each in a worktree of its own repo, and commits by path, ending each message with the (C) line.
 
-## Runs (each booked at the Desk, with its driver's path)
+## Runs, in order, each with what it waits on and who reads it
 
-1. **R1, heavy, arca_swift's worktree.**
-   - The red leg: the new tests over the base sources. Each must fail at its own assertion.
+r2 takes dc's read r1 of the CI leg (`~/Devel/scratch/utilz-dc/arca0003-read/r1.md`, b8d373bd) and vc's ruling on it.
+
+1. **R1, heavy, at the Desk, in arca_swift's worktree.**
+   - Waits on: vc's read of r2 and of the red-leg list.
+   - The red leg: each test arm as the list sorts it. An arm is red at the base by its own assertion, green at the base with a reason, or moved unchanged, with its origin file and proving commit.
    - Then green, with `ARCA_SWIFT_STRICT=1`: `swift format lint --strict`, `swift build --build-tests` and `swift test --skip-build`.
-2. vc lands arca_swift. hv pushes main and tags 0.3.0 in one step. arca_swift's CI runs its test and adopter jobs on that push.
-3. **R2, heavy, Utilz's worktree at the new pin.**
-   - `bin/utilz menuz build --unsigned`, then `bin/utilz menuz test --unsigned`.
-   - menuz's bats run too, if help/menuz.md's change reaches them.
-4. **CI:** a menuz-app dispatch on the pushed main. It is the only proof of a pin under Xcode 27.1.
-5. **hv's hands, once,** on the installed build:
+   - Reader: vc reads R1's END, then lands arca_swift by the change's hash.
+2. **arca_swift's CI, before the tag.**
+   - Waits on: vc's landing. hv pushes arca_swift's main alone, through devbin-vc.
+   - The push starts CI's test job and its adopter job (ci.yml:5-13). The adopter job is the first build of ArcaLaunch as an app's dependency through Xcode, which no local run makes.
+   - Reader: vc reads both jobs green on that commit (`gh run list -R builtwitharca/arca_swift --commit <sha>`, then the jobs). dc reads the CI leg.
+   - Then hv tags 0.3.0 on that commit and pushes the tag. A red here costs a fix on main, not 0.3.1 and a second pin. 0.2.1 went this way, and it is Utilz's own rule (tests.yml:6-9).
+3. **R2, heavy, at the Desk, in a Utilz worktree at the new pin.**
+   - Waits on: the pushed tag, since the resolve fetches it from GitHub.
+   - The resolve writes `Package.resolved`. It names 0.3.0's commit (`git rev-parse '0.3.0^{commit}'`), not the annotated tag's own object. The commit takes the file from what the resolve wrote.
+   - Every file under `native/macos/Menuz` is hashed after the resolve and again after the build and test, so the pin is the one change.
+   - `bin/utilz menuz build --unsigned`, then `bin/utilz menuz test --unsigned`. menuz's bats run too, if help/menuz.md's change reaches them.
+   - This Mac's one Xcode is 27.2, the Xcode the 2.15.0 asset is built with, so R2 proves the build that ships.
+   - Reader: vc reads R2's END, then lands 0114 by the change's hash.
+4. **CI: the menuz-app dispatch, on Utilz's pushed main.**
+   - Waits on: vc's landing of 0114, and hv's push of Utilz main.
+   - vc sends `gh workflow run tests.yml --ref main` on devbin-vc's go (hv decision 20). If vc's session refuses it, hv runs it.
+   - It proves the floor, Xcode 27.1 (project.yml's xcodeVersion), from a clean clone, and that the 0.3.0 pin resolves there. arca_swift's adopter job pins a revision (ci.yml:83), so only R2 and this run prove the pin.
+   - Reader: vc reads menuz-app's conclusion from the jobs API, with its run_attempt. Baseline: menuz-app was green on dispatch 45403210925 (24 Nov 2026, Xcode 27.1), so a red here is this change's.
+5. **hv's hands, once, on the build R2 proved.**
+   - Waits on: R2's END. hv runs it, and tells vc what hv saw.
    - The masthead row shows its image and menuz's icon.
    - A second copy, opened with `open -n`, says that menuz already runs, and quits.
 
-## For vc
+## vc's answers (vc decision 118)
 
-- **(a) The icon: opt in (recommended), or a default.** Opt in changes no other adopter. A default of `.bundleFile` saves menuz one argument, but it can change the row in Gtools and the example.
-- **(b) One run for both repos, or two.** Two runs (recommended): R2 needs the tag. A single run would need a local-path pin of arca_swift in a scratch `project.yml`, and an Xcode build with a local package rewrites a tracked `Package.resolved` (Utilz memory, 19 Oct 2026).
-- **(c) Who lands in arca_swift.** It has no whiteboard. ic proposes that vc lands it, as for Utilz, by the change's hash. The tag and the push are hv's.
+- **(a) The icon is opt in.** It changes no other adopter.
+- **(b) Two runs.** R2 needs the tag. A single run would need a local-path pin of arca_swift in a scratch `project.yml`, and an Xcode build with a local package rewrites a tracked `Package.resolved` (Utilz memory, 19 Oct 2026).
+- **(c) vc lands arca_swift by the change's hash.** The push and the tag are hv's, through devbin-vc.
