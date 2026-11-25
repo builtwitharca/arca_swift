@@ -1,0 +1,14 @@
+{
+  "id": "01M8935R05F2FCXP80D3S54EP7",
+  "ts": "2026-11-25T10:14:13.765Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "st.new",
+  "subject": {
+    "type": "thread",
+    "id": "STc203646d7444f4f1"
+  },
+  "payload": {
+    "title": "The menu bar apps' copies in arca_swift: the row's image and icon, and ArcaLaunch (issue 0003)"
+  }
+}

@@ -6,10 +6,11 @@ Shared Swift libraries for macOS menu bar apps. Each app imports only the librar
 
 ## Libraries
 
-| Library          | What it gives an app                              | State       |
-| ---------------- | ------------------------------------------------- | ----------- |
-| `ArcaMasthead`   | The menu's top line and the About window it opens | In progress |
-| `ArcaLogConsole` | A log console window                              | In progress |
+| Library          | What it gives an app                                          | State       |
+| ---------------- | ------------------------------------------------------------- | ----------- |
+| `ArcaMasthead`   | The menu's top line and the About window it opens             | In progress |
+| `ArcaLogConsole` | A log console window                                          | In progress |
+| `ArcaLaunch`     | What the app's launch does first: one copy at a time, no host | In progress |
 
 `ArcaMasthead`'s top line is the app's name and version over a smaller subheading. Choosing it opens an About window that shows Markdown or HTML. Both are set in a `masthead.yaml` in the app's config folder, with a default in the app's bundle.
 
@@ -23,7 +24,7 @@ Shared Swift libraries for macOS menu bar apps. Each app imports only the librar
 ## Adding it to an app
 
 ```swift
-.package(url: "https://github.com/builtwitharca/arca_swift", .upToNextMinor(from: "0.2.1")),
+.package(url: "https://github.com/builtwitharca/arca_swift", .upToNextMinor(from: "0.3.0")),
 ```
 
 Then depend on the library the app uses, eg `.product(name: "ArcaMasthead", package: "arca_swift")`. Until 1.0 a minor release may change the API, so pin the minor version, as above.
@@ -78,6 +79,9 @@ menu.insertItem(row, at: 0)
 - `bundle` holds the defaults, `masthead.yaml` and the About files. It is the app's own bundle unless the app passes another.
 - `owned` names the values the app gives, and `value` is asked for each of them at every open. nil means the app has not got that value yet.
 - `log` gets each refusal once, when it first appears, and again only after a read without it.
+- `appIcon` says where the row's icon comes from. `.application`, the default, is the app's icon as AppKit gives it. `.bundleFile` reads the icon file that the bundle's `CFBundleIconFile` names, by URL, for an app whose AppKit icon draws nothing, as Menuz's did on macOS 27. When the bundle names no file, or the file is missing or is not an image, the row shows the app's icon, and `log` gets why, once.
+
+The row asks macOS to draw its image. macOS 27 draws a menu item's image only when the item asks for it, so an app sets nothing for it.
 
 The About page is the body, under the window's own stylesheet and the app's. The window's follows light and dark mode, and the app's is laid over it. What was refused is listed above the body.
 
@@ -120,6 +124,25 @@ The window follows the end as lines arrive and stops while it is scrolled up. It
 
 The example app shows a console too: its Console… item, a log it writes each second, a command it runs, and the log rotated. It remembers its quiet lines, and notes when its window closes.
 
+## The launch
+
+`ArcaLaunch` is what an app's launch does first, before any side effect. The first line of the app's `applicationDidFinishLaunching` is:
+
+```swift
+import ArcaLaunch
+
+guard ArcaLaunch.begin(app: "Menuz", log: { logger.notice("\($0)") }) else { return }
+```
+
+- When XCTest hosts the process, as xcodebuild does for an app's tests, `begin` returns false and the app runs none of its launch path. It reads `XCTestConfigurationFilePath`'s presence, never its value, since Xcode 27.1 sets it empty.
+- Otherwise `begin` takes an instance lock, so one copy of the app runs at a time, Debug and Release builds alike. A second copy says "Menuz already runs as pid 812, so this copy quits. To run this one, quit that copy first." on stderr and to `log`, and quits.
+- When the lock cannot be taken for another reason, `begin` says why to `log`, and the app runs.
+- `applicationWillTerminate` starts with `guard ArcaLaunch.launched else { return }`, so a copy that ran no launch path tears nothing down.
+
+The running copy wins. So to replace a running build, quit it, wait for it to exit, then open the new one.
+
+The lock is `~/Library/Application Support/<app>/instance.lock`, where `<app>` is `begin`'s `app`. Its holder opens it close-on-exec, takes an exclusive `flock`, and writes its pid as decimal digits and one newline. The file is never removed, and the kernel drops the lock when its holder exits, however it exits. A program outside the app that wants to know whether the app runs opens the file read-only and close-on-exec, never creates it, and tries a shared `flock` without waiting: refused means a copy runs. This is Conflab's contract, which ArcaLaunch keeps.
+
 ## Building and testing
 
 ```sh
@@ -128,11 +151,11 @@ ARCA_SWIFT_STRICT=1 swift test
 swift format lint --strict --recursive Package.swift Sources Tests
 ```
 
-With `ARCA_SWIFT_STRICT` set, to any value, a warning in the package's own code fails the build. Set it on each command, as above, rather than exporting it: the manifest reads it from the environment of whatever builds the package, and an app built from a shell that exports it could get the setting too. CI runs the same three steps with it set, on every push and pull request, on GitHub's macOS 26 runners. CI also builds an app that depends on the package without it, with xcodebuild and Xcode 26.6, as the apps build it.
+With `ARCA_SWIFT_STRICT` set, to any value, a warning in the package's own code fails the build. Set it on each command, as above, rather than exporting it: the manifest reads it from the environment of whatever builds the package, and an app built from a shell that exports it could get the setting too. CI runs the same three steps with it set, on every push and pull request, with Xcode 27.1 on GitHub's `xcode-27` image. CI also builds an app that depends on the package without it, with xcodebuild and Xcode 27.1, as the apps build it.
 
 ## Design
 
-The design and its work packages are steel thread ST0001, kept with [Intent](https://github.com/matthewsinclair/intent) under `intent/`. Run `intent st show ST0001` to read it.
+The design and its work packages are steel thread ST0001, kept with [Intent](https://github.com/matthewsinclair/intent) under `intent/`. Run `intent st show ST0001` to read it. `ArcaLaunch` and the row's macOS 27 fixes are steel thread STc203646d7444f4f1 (issue 0003).
 
 ## Licence
 

@@ -27,20 +27,55 @@ public final class MastheadRow: NSMenuItem {
   /// Shows a page: in the About window, unless a test looks at it instead.
   var present: @MainActor (AboutDocument.Page) -> Void = { _ in }
 
+  /// Where the row takes the app's icon from (issue 0003).
+  public enum AppIcon: Sendable {
+    /// The app's icon as AppKit gives it, `NSApp.applicationIconImage`: the
+    /// row as it was before 0.3.0.
+    case application
+    /// The icon file that the bundle's `CFBundleIconFile` names, read by URL.
+    /// On macOS 27, AppKit's default app icon drew nothing in Menuz's row
+    /// (Utilz issue 0073), and a read by name can resolve through the app's
+    /// assets to that default again. When the bundle names no file, or the
+    /// file is missing or is not an image, the row shows the app's icon, and
+    /// `log` is told why, once.
+    case bundleFile
+  }
+
   /// The row for the app named `app`, whose config folder is found from
   /// `environment` as `${XDG_CONFIG_HOME:-$HOME/.config}/<app>`, and whose
   /// bundle holds its default masthead.yaml and About files. `owned` names
   /// the values the app gives, and `value` is asked for each of them at every
-  /// open, nil meaning not yet. `log` gets each refusal once, when it first
-  /// appears.
+  /// open, nil meaning not yet. `appIcon` says where the row's icon comes
+  /// from. `log` gets each refusal once, when it first appears.
   public convenience init(
     app: String, environment: [String: String] = ProcessInfo.processInfo.environment, bundle: Bundle = .main,
     owned: Set<String> = [], value: @escaping @MainActor (String) -> String? = { _ in nil },
-    log: @escaping @MainActor (String) -> Void
+    appIcon: AppIcon = .application, log: @escaping @MainActor (String) -> Void
   ) {
+    let file = appIcon == .bundleFile ? MastheadRow.iconFile(in: bundle) : nil
+    let image = file?.image
     self.init(
       app: app, environment: environment, bundle: bundle, owned: owned, value: value, log: log,
-      icon: { NSApplication.shared.applicationIconImage })
+      icon: { image ?? NSApplication.shared.applicationIconImage })
+    if let why = file?.why { log(why) }
+  }
+
+  /// The image in the icon file that `bundle`'s `CFBundleIconFile` names,
+  /// read by URL, or why there is none. Moved from Menuz's
+  /// `setAppIcon(bundle:)` (Utilz issue 0073), which set the app's icon from
+  /// it; the row now reads it alone, and the app's icon is left as it is.
+  static func iconFile(in bundle: Bundle) -> (image: NSImage?, why: String?) {
+    guard let named = bundle.object(forInfoDictionaryKey: "CFBundleIconFile") as? String, !named.isEmpty else {
+      return (nil, "The bundle names no icon file (CFBundleIconFile), so the row shows the app's icon")
+    }
+    let file = named.hasSuffix(".icns") ? named : named + ".icns"
+    guard let url = bundle.url(forResource: file, withExtension: nil) else {
+      return (nil, "The bundle has no \(file), so the row shows the app's icon")
+    }
+    guard let image = NSImage(contentsOf: url) else {
+      return (nil, "\(url.path) is not an image, so the row shows the app's icon")
+    }
+    return (image, nil)
   }
 
   /// The same, with `icon` asked for the app's icon at each read.
@@ -69,6 +104,7 @@ public final class MastheadRow: NSMenuItem {
     self.log = log
     self.icon = icon
     super.init(title: "", action: nil, keyEquivalent: "")
+    Self.asksForImage(self)
     present = { [weak self] page in self?.show(page) }
     target = self
     action = #selector(showAbout(_:))
@@ -93,6 +129,20 @@ public final class MastheadRow: NSMenuItem {
     item.subtitle = masthead.subheading
     item.image = masthead.icon == .app ? icon.map(sized) : nil
     item.isEnabled = true
+  }
+
+  /// Asks macOS to draw `item`'s image (issue 0003). macOS 27 draws a menu
+  /// item's image only when the item asks for it: the default visibility is
+  /// automatic, and automatic drew no image in Menuz's row (Utilz issue 0073)
+  /// or in Gtools' menu. The item asks for `.visible`, raw value 1 in
+  /// NSMenuItem.h, by key, once it says it has the setter, because the
+  /// property is new in the macOS 27 SDK, and a named reference does not
+  /// compile against an older SDK, even inside `if #available`. Moved from
+  /// Menuz's `drawsImage(_:)`.
+  static func asksForImage(_ item: NSMenuItem) {
+    if item.responds(to: NSSelectorFromString("setPreferredImageVisibility:")) {
+      item.setValue(1, forKey: "preferredImageVisibility")
+    }
   }
 
   /// A copy of `image` at the row's size.

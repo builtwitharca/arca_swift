@@ -1,0 +1,8 @@
+{
+  "id": "AC-e69447a3.1",
+  "text": "The row asks for its image: a row that MastheadRow makes reads back preferredImageVisibility 1 (visible), where the item has the setter, as macOS 27's does.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

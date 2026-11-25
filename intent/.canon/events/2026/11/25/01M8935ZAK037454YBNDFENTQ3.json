@@ -1,0 +1,15 @@
+{
+  "id": "01M8935ZAK037454YBNDFENTQ3",
+  "ts": "2026-11-25T10:14:21.268Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "wp.new",
+  "subject": {
+    "type": "wp",
+    "id": "STc203646d7444f4f1/e69447a3"
+  },
+  "payload": {
+    "scope": "S",
+    "title": "The row's two macOS 27 fixes and ArcaLaunch, released as 0.3.0"
+  }
+}

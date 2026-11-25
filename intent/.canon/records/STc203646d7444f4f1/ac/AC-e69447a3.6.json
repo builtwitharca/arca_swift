@@ -1,0 +1,8 @@
+{
+  "id": "AC-e69447a3.6",
+  "text": "CI's adopter job builds an app that imports ArcaLaunch beside ArcaMasthead and ArcaLogConsole, with no ARCA_SWIFT_STRICT.",
+  "kind": "non-test",
+  "state": {
+    "is": "unsatisfied"
+  }
+}

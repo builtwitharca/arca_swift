@@ -1,0 +1,8 @@
+{
+  "id": "AC-e69447a3.3",
+  "text": "ArcaLaunch decides before any side effect: XCTest's host, by the presence of XCTestConfigurationFilePath, an empty value included, takes no lock; a copy that takes the lock launches; a copy that finds it held hands over, naming the holder's pid when it is known; a copy that cannot take it launches unlocked, with the reason.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

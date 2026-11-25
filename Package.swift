@@ -4,6 +4,8 @@
 // SwiftUI web view sets (design.md "The package"). ArcaCore is internal: the
 // libraries share it, and an app imports only the libraries it uses.
 // ArcaLogConsole (WP-09) needs neither ArcaCore nor another package.
+// ArcaLaunch (issue 0003) needs neither either: the test-host check and the
+// instance lock that an app's launch makes first.
 // ArcaTestSupport holds what the test targets share, and no product has it.
 // ArcaMastheadExample is an app that shows the row, the About window and a
 // console, built here and by CI, and in no product.
@@ -27,6 +29,7 @@ let package = Package(
   products: [
     .library(name: "ArcaMasthead", targets: ["ArcaMasthead"]),
     .library(name: "ArcaLogConsole", targets: ["ArcaLogConsole"]),
+    .library(name: "ArcaLaunch", targets: ["ArcaLaunch"]),
   ],
   dependencies: [
     .package(url: "https://github.com/jpsim/Yams", from: "6.0.1"),
@@ -44,6 +47,7 @@ let package = Package(
       swiftSettings: settings
     ),
     .target(name: "ArcaLogConsole", swiftSettings: settings),
+    .target(name: "ArcaLaunch", swiftSettings: settings),
     .executableTarget(
       name: "ArcaMastheadExample", dependencies: ["ArcaMasthead", "ArcaLogConsole"], resources: [.process("Resources")],
       swiftSettings: settings
@@ -56,5 +60,6 @@ let package = Package(
     .testTarget(
       name: "ArcaLogConsoleTests", dependencies: ["ArcaLogConsole", "ArcaTestSupport"], swiftSettings: settings
     ),
+    .testTarget(name: "ArcaLaunchTests", dependencies: ["ArcaLaunch"], swiftSettings: settings),
   ]
 )

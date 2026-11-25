@@ -1,0 +1,8 @@
+{
+  "id": "AC-e69447a3.7",
+  "text": "0.3.0 is tagged on hv's word, on the commit that lands this WP, and README and CHANGELOG say what it adds and how an app adopts it.",
+  "kind": "non-test",
+  "state": {
+    "is": "unsatisfied"
+  }
+}

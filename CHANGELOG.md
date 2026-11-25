@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-11-25
+
+### Added
+
+- `ArcaLaunch`, what an app's launch does first (issue 0003). `ArcaLaunch.begin(app:log:)` is the first call in the app's `applicationDidFinishLaunching`. Under XCTest's host it returns false, so the app runs none of its launch path. Otherwise it takes an instance lock, so one copy of the app runs at a time: a second copy says that the app already runs, names that copy's pid, and quits. `ArcaLaunch.launched` is `applicationWillTerminate`'s guard. The lock keeps Conflab's contract: `~/Library/Application Support/<app>/instance.lock`, an exclusive `flock`, and the holder's pid as decimal digits and one newline.
+- `MastheadRow`'s `appIcon: .bundleFile` draws the icon file that the bundle's `CFBundleIconFile` names, read by URL, for an app whose AppKit icon draws nothing, as Menuz's did on macOS 27 (issue 0003). The default, `.application`, is the row as before.
+
+### Fixed
+
+- The masthead row asks macOS to draw its image. macOS 27 draws a menu item's image only when the item asks for it, so the row showed no icon there (issue 0003).
+
+### Changed
+
+- CI's adopter job imports `ArcaLaunch` too, so CI builds it as an app's dependency.
+- README's build section names Xcode 27.1, which CI has used since 0.2.1.
+
 ## [0.2.1] - 2026-10-25
 
 ### Added

@@ -1,0 +1,8 @@
+{
+  "id": "AC-e69447a3.4",
+  "text": "The instance lock keeps Conflab's contract (its ST0125 design, decision 7): one file per app, Application Support/<app>/instance.lock; a second copy is refused and told the holder's pid; a released lock is taken again; a command started while it is held does not keep it; the holder writes its pid as decimal digits and one newline, and nothing else; no pid yet, and a pid that no longer runs, are not named; a path that cannot hold a lock fails, naming where.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

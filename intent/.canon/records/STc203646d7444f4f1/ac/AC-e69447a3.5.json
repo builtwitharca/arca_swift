@@ -1,0 +1,8 @@
+{
+  "id": "AC-e69447a3.5",
+  "text": "ArcaLaunch.begin carries the decision out: a hand-over writes \"<app> already runs as pid N, so this copy quits. To run this one, quit that copy first.\" to stderr and the app's log, quits the app, and returns false; the test host returns false; a launch, locked or not, returns true and sets launched.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

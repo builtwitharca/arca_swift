@@ -1,0 +1,14 @@
+{
+  "schema": "intent/thread@4.0",
+  "id": "STc203646d7444f4f1",
+  "origin": "01M8935R05F2FCXP80D3S54EP7",
+  "realised": true,
+  "title": "The menu bar apps' copies in arca_swift: the row's image and icon, and ArcaLaunch (issue 0003)",
+  "slug": "the-menu-bar-apps-copies-in-arca-swift-the-row-s",
+  "status": "wip",
+  "created": "2026-11-25",
+  "objective": "arca_swift carries what each estate menu bar app copies today (issue 0003), so that the apps stop copying it: the masthead row asks for its image on macOS 27, the row can take its icon from the bundle's icon file, and a new product, ArcaLaunch, carries the XCTest-host check and a single-instance guard as one call that an app's applicationDidFinishLaunching makes first. It ships as 0.3.0, and Utilz's menuz moves to it under Utilz issue 0114.",
+  "context": "",
+  "body": "",
+  "preamble": ""
+}
