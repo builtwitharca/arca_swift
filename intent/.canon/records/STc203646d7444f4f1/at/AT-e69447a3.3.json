@@ -1,0 +1,10 @@
+{
+  "id": "AT-e69447a3.3",
+  "kind": "test",
+  "file": "Tests/ArcaLaunchTests/LaunchDecisionTests.swift",
+  "covers": [
+    "AC-e69447a3.3"
+  ],
+  "status": "green",
+  "note": "Covers AC-e69447a3.3; Tests/ArcaLaunchTests/LaunchDecisionTests.swift cites it. Red: moved from Conflab's ConflabTests/LaunchDecisionTests.swift and TestHostTests.swift, which proved them at 08b94be5 (Conflab ST0125/WP-07); names changed only. Green: R1 (01M896DE8C7H2NJT194DXSXNYY, 25 Nov 2026) at 1e8a5519, ARCA_SWIFT_STRICT=1 swift test exit 0, 240 tests in 34 suites, every run passed, this file's suite included."
+}

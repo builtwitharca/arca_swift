@@ -1,0 +1,10 @@
+{
+  "id": "AT-e69447a3.5",
+  "kind": "test",
+  "file": "Tests/ArcaLaunchTests/CarryOutTests.swift",
+  "covers": [
+    "AC-e69447a3.5"
+  ],
+  "status": "green",
+  "note": "Covers AC-e69447a3.5; Tests/ArcaLaunchTests/CarryOutTests.swift cites it. Red: R1 (01M896DE8C7H2NJT194DXSXNYY, 25 Nov 2026) over its ArcaLaunch stub: theHandOverSaysSo, aHostGoesNoFurther and aLaunchGoesOn each failed at its own expectations. Green: R1 (01M896DE8C7H2NJT194DXSXNYY, 25 Nov 2026) at 1e8a5519, ARCA_SWIFT_STRICT=1 swift test exit 0, 240 tests in 34 suites, every run passed, this file's suite included."
+}

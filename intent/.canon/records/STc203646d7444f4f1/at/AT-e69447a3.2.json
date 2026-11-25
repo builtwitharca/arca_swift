@@ -1,0 +1,10 @@
+{
+  "id": "AT-e69447a3.2",
+  "kind": "test",
+  "file": "Tests/ArcaMastheadTests/MastheadRowIconTests.swift",
+  "covers": [
+    "AC-e69447a3.2"
+  ],
+  "status": "green",
+  "note": "Covers AC-e69447a3.2; Tests/ArcaMastheadTests/MastheadRowIconTests.swift cites it. Red: R1 (01M896DE8C7H2NJT194DXSXNYY, 25 Nov 2026) over base c005f282 and its appIcon stub: showsTheBundleFile failed at isRed(centre), fallsBackAndSaysWhy at said.count == 1; theDefaultIsTheAppsIcon passed there, as named. Green: R1 (01M896DE8C7H2NJT194DXSXNYY, 25 Nov 2026) at 1e8a5519, ARCA_SWIFT_STRICT=1 swift test exit 0, 240 tests in 34 suites, every run passed, this file's suite included."
+}
