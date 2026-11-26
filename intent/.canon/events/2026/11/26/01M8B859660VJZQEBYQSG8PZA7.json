@@ -1,0 +1,14 @@
+{
+  "id": "01M8B859660VJZQEBYQSG8PZA7",
+  "ts": "2026-11-26T06:19:50.343Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "STc203646d7444f4f1/AC-e69447a3.7"
+  },
+  "payload": {
+    "evidence": "Tag 0.3.0 (annotated, object d6b053ecca3641011f472a76ea4052c6d42d3343) on 940f91b5440b2ca5b280c9283a0164a884157426, the commit that lands WP e69447a3, pushed by hv on both remotes (upstream and local), ls-remote read by ic 26 Nov. CHANGELOG [0.3.0] - 2026-11-25 says what ArcaLaunch and appIcon .bundleFile add; README's ArcaLaunch section says how an app adopts it (.upToNextMinor(from: \"0.3.0\"), the begin guard, the launched guard)."
+  }
+}

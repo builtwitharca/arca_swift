@@ -1,0 +1,14 @@
+{
+  "id": "01M8B8595MBTTS8JTGX1K32H4N",
+  "ts": "2026-11-26T06:19:50.324Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "41e63807-58e9-48cc-8948-6d89573a7c2d",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "STc203646d7444f4f1/AC-e69447a3.6"
+  },
+  "payload": {
+    "evidence": "CI run 45765409791 (builtwitharca/arca_swift), attempt 1, at 940f91b5440b2ca5b280c9283a0164a884157426: adopter job success. Its adopter Package.swift takes ArcaMasthead, ArcaLogConsole and ArcaLaunch, and main.swift imports all three; the adopter job sets no ARCA_SWIFT_STRICT (ci.yml at 940f91b5). Read by vc and ic, 26 Nov."
+  }
+}

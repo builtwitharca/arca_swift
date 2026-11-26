@@ -3,6 +3,7 @@
   "text": "0.3.0 is tagged on hv's word, on the commit that lands this WP, and README and CHANGELOG say what it adds and how an app adopts it.",
   "kind": "non-test",
   "state": {
-    "is": "unsatisfied"
+    "is": "satisfied",
+    "evidence": "Tag 0.3.0 (annotated, object d6b053ecca3641011f472a76ea4052c6d42d3343) on 940f91b5440b2ca5b280c9283a0164a884157426, the commit that lands WP e69447a3, pushed by hv on both remotes (upstream and local), ls-remote read by ic 26 Nov. CHANGELOG [0.3.0] - 2026-11-25 says what ArcaLaunch and appIcon .bundleFile add; README's ArcaLaunch section says how an app adopts it (.upToNextMinor(from: \"0.3.0\"), the begin guard, the launched guard)."
   }
 }

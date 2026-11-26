@@ -3,6 +3,7 @@
   "text": "CI's adopter job builds an app that imports ArcaLaunch beside ArcaMasthead and ArcaLogConsole, with no ARCA_SWIFT_STRICT.",
   "kind": "non-test",
   "state": {
-    "is": "unsatisfied"
+    "is": "satisfied",
+    "evidence": "CI run 45765409791 (builtwitharca/arca_swift), attempt 1, at 940f91b5440b2ca5b280c9283a0164a884157426: adopter job success. Its adopter Package.swift takes ArcaMasthead, ArcaLogConsole and ArcaLaunch, and main.swift imports all three; the adopter job sets no ARCA_SWIFT_STRICT (ci.yml at 940f91b5). Read by vc and ic, 26 Nov."
   }
 }
