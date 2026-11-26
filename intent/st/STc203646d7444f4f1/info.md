@@ -1,9 +1,9 @@
 ---
 st_id: STc203646
 title: The menu bar apps' copies in arca_swift: the row's image and icon, and ArcaLaunch (issue 0003)
-status: WIP
+status: Completed
 created: 2026-11-25
-completed:
+completed: 2026-11-26
 ---
 
 # STc203646: The menu bar apps' copies in arca_swift: the row's image and icon, and ArcaLaunch (issue 0003)

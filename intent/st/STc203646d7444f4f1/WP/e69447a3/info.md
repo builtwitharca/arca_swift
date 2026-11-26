@@ -2,7 +2,7 @@
 wp_id: WP-e694
 title: The row's two macOS 27 fixes and ArcaLaunch, released as 0.3.0
 scope: S
-status: WIP
+status: Done
 ---
 
 # WP-e694: The row's two macOS 27 fixes and ArcaLaunch, released as 0.3.0
